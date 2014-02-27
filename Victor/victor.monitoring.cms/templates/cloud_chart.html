@@ -1,0 +1,88 @@
+
+var chart_{{cloud}};
+$(document).ready(function() {
+	chart_{{cloud}} = new Highcharts.Chart({
+		chart: {
+			renderTo: 'container_{{cloud}}',
+			defaultSeriesType: 'column',
+			zoomType: 'xy',
+			margin: [, , , 100]
+		},
+		title: {
+			text: 'CMS group-site associations for {{cloud}} sites: Space summary'
+		},					
+		credits:  {
+                   enabled:true,
+                   text: 'Victor site cleaning, {{today}}',
+                   position:{align:"right",x:-10,verticalAlign:"bottom",y:-5},
+                   style:{cursor:"pointer",color:"#909090",fontSize:"10px"}
+                   }, 
+		xAxis: {
+			categories: [
+					{% for site in info.site_list %}
+                                 '{{site}}'
+                                 {% if not forloop.last %},{% endif %}
+                             {% endfor %}
+			],
+			labels: {
+				rotation: -45,
+				align: 'right',
+				style: {
+					 font: 'normal 11px Helvetica, sans-serif'
+				}
+			}
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Terabytes'
+			}
+		},
+		legend: {
+						backgroundColor: '#FFFFFF',
+						reversed: true
+					},
+		tooltip: {
+			formatter: function() {
+				return ''+
+					this.y+'TB';
+			}
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0
+			}
+		},
+	    series: [
+	        {
+	            name: 'Used',
+			    data: [
+			             {% for used in info.used_list %}
+                                      {{used}}{% if not forloop.last %},{% endif %}
+                         {% endfor %}
+			          ]
+	    	}, 
+	    	{
+			    name: 'Total',
+			    data: [
+			             {% for total in info.total_list %}
+                                      {{total}}{% if not forloop.last %},{% endif %}
+                         {% endfor %}
+			          ]				
+		    },
+		    {
+			    name: 'Full threshold',
+			    type: 'scatter',
+			    color: '#FF0000',
+			    marker: {symbol: 'triangle-down'},
+			    data: [
+			             {% for threshold in info.threshold_list %}
+                                      {{threshold}}{% if not forloop.last %},{% endif %}
+                         {% endfor %}
+			          ]
+			}	
+		]
+		
+	});
+});

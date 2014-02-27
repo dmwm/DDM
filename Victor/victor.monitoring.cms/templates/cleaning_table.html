@@ -1,0 +1,87 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+<div id="demo">			
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="cleaning_table">
+	    <thead>
+	        <tr>
+		        <th> Dataset name           </th>
+		        <th> Replica creation dates </th>
+		        <th> Size [GB]              </th>
+		        <th> CPU time [s]           </th>
+		        <th> # file accesses <BR> in selected blocks </th>
+		        <th> # file accesses <BR> in all blocks </th>				                
+                <th> Max # file accesses <BR> in any block</th>             
+                <th> Selected/Total <BR> blocks in dataset</th>   
+
+			</tr>    
+	    </thead>
+	    
+	    <tbody>
+	    {% for row in datasets %}
+	        {% spaceless %}	        
+			<tr>
+			    <td align="center" class="dsn" id="dsn" name="dsn">{{row.0}}</td>
+                <td align="center">{{row.1|date:"Y-m-d"}} to {{row.2|date:"Y-m-d"}}</td>
+			    <td align="center">{{row.3}}</td>
+			    <td align="center">{{row.5}}</td>
+			    <td align="center">{{row.4}}</td>
+			    <td align="center">{{row.10}}</td>             			    			    
+			    <td align="center">{{row.9}}</td>			      
+			    <td align="center">{{row.6}}/{{row.8}}</td>
+			</tr>
+			{% endspaceless %}
+		{% endfor %}		
+		</tbody>
+		
+		<tfoot>
+		    <tr>
+		        <th> <input name="search_datasets" value="Filter datasets"       class="search_init" type="text" /> </th>
+		        <th> <input name="search_rcdate"   value="Filter rcdate"         class="search_init" type="text" /> </th>
+		        <th> <input name="search_size"     value="Filter size"           class="search_init" type="text" /> </th>
+		        <th> <input name="search_cputime"  value="Filter CPU time"       class="search_init" type="text" /> </th>
+		        <th> <input name="search_accesses" value="Filter #accesses"      class="search_init" type="text" /> </th>
+		        <th> <input name="search_total"    value="Filter Total Accesses" class="search_init" type="text" /> </th>		        
+		        <th> <input name="search_max"      value="Filter Max Accesses"   class="search_init" type="text" /> </th>
+		        <th> <input name="search_selected" value="Filter #selected"      class="search_init" type="text" /> </th>		        
+			</tr>
+	    </tfoot>	
+	</table>
+</div>
+
+<p>
+<ul id="icons" class="ui-widget ui-helper-clearfix">
+<li href="#" id="reset_button" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-trash"></span>Reset selection&nbsp;</li>
+<li href="#" id="select_all_button" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-star"></span>Select all&nbsp;</li>
+<li href="#" id="blocks_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>View selected blocks&nbsp;</li>
+<li href="#" id="datasets_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>View selected datasets&nbsp;</li>
+<li href="#" id="instructions_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-info"></span> Instructions&nbsp;</li>
+</ul>
+</p>
+
+<div id="instructions">
+	<p>
+		<b>Instructions</b>
+	</p>
+	<p>
+	    <ol>
+	        <li>Select the rows on the table that you wish to delete. You can use the "Select all" button to select all rows. If you apply a filter and then use the "Select all" 
+	        button, all rows passing your filter will be added to the selection and previously selected rows will <b>not</b> be removed.</li>
+	        <li>Whenever you are done selecting rows, click on the "View selected blocks" or "View selected datasets" button. </li>
+	    </ol>	    
+	</p>
+	<p>
+	If you view the blocks, the dialog box will display the unpopular blocks selected by Victor - <b>all of them pass the Victor conditions</b>. On the contrary, if you view the 
+	selected datasets, you have to be aware that <b>part of the blocks in the selected datasets may NOT pass the Victor conditions</b> (e.g. other custodial or non-custodial copies).
+	</p>
+	<p> 
+	You can reset the selection at any moment by clicking on the Trash icon.
+	</p>
+</div>
+
+<div id="dialog" title="Selection" class="clipboard_frank"> <p> </p> </div>

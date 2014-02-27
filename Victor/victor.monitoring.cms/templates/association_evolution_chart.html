@@ -1,0 +1,70 @@
+var chart;
+$(document).ready(function() {
+   chart = new Highcharts.Chart({
+      
+      chart: {
+         renderTo: 'container_association',
+         type: 'spline',
+         zoomType: 'xy'
+      },
+      
+      title: {
+         text: 'Evolution of used space for {{group}} in {{site}}'
+      },
+      
+      credits:  {
+         enabled:true,
+         text: 'Victor site cleaning, {{today}}',
+         position:{align:"right",x:-10,verticalAlign:"bottom",y:-5},
+         style:{cursor:"pointer",color:"#909090",fontSize:"10px"}
+      },
+      
+      xAxis: {
+         type: 'datetime',
+         maxZoom: 3600000, // 1 hour
+         /*dateTimeLabelFormats: { 
+            month: '%e. %b',
+            year: '%b'
+         }*/
+      },
+      
+      yAxis: {
+         title: {
+            text: 'TeraBytes'
+         },
+         min: 0
+      },
+      
+      tooltip: {
+         formatter: function() {
+             return '<b>'+  Highcharts.dateFormat('%B %e %Y', this.x) +'</b><br/>'+this.series.name +': '+ this.y +'TB';
+         }
+      },
+      
+      plotOptions: {
+           spline: {
+	           lineWidth: 4,
+	           states: {
+	               hover: {
+	                   lineWidth: 5
+	               }
+	           },
+	           marker: {
+		           enabled: false,
+		           states: {
+		               hover: {
+		                   enabled: true,
+		                   symbol: 'circle',
+		                   radius: 5,
+		                   lineWidth: 1
+		               }
+		           }
+	           }
+          }
+      },
+      
+      series: [{name: 'Used',  data: {{data_used}}  }, 
+               {name: 'Total', data: {{data_total}} }
+              ]
+   }); 
+});

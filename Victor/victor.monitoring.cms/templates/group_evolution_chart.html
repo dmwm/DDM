@@ -1,0 +1,79 @@
+var group_chart;
+$(document).ready(function() {
+   group_chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'container_group',
+         defaultSeriesType: 'area',
+         zoomType: 'xy'
+      },
+      title: {
+			text: 'CMS group summary for {{group}}: Space summary'
+		},
+      credits:  {
+                   enabled:true,
+                   text: 'Victor site cleaning, {{today}}',
+                   position:{align:"right",x:-10,verticalAlign:"bottom",y:-5},
+                   style:{cursor:"pointer",color:"#909090",fontSize:"10px"}
+        }, 
+      xAxis: {
+         type: 'datetime',
+         maxZoom: 3600000, // 1 hour
+         /*dateTimeLabelFormats: { 
+            month: '%e. %b',
+            year: '%b'
+         }*/
+      },
+      
+      yAxis: {
+         title: {
+            text: 'TeraBytes'
+         },
+         min: 0,
+         labels: {
+            formatter: function() {
+               return this.value;
+            }
+         }
+      },
+      
+      tooltip: {
+         formatter: function() {
+             return '<b>'+  Highcharts.dateFormat('%B %e %Y', this.x) +'</b><br/>'+this.series.name +': '+ this.y +'TB';
+         }
+      },
+      
+      plotOptions: {
+         area: {
+            stacking: 'normal',
+            lineColor: '#666666',
+            lineWidth: 1,
+            marker: {
+                   enabled: false,
+                   states: {
+                       hover: {
+                           enabled: true,
+                           symbol: 'circle',
+                           radius: 5,
+                           lineWidth: 1
+                       }
+                   }
+             }
+         }
+      },
+      series: [      
+	      {% for site in data_group %}
+		      {
+		         name: '{{site.0}}',
+		         data: {{site.1}}
+		      },
+	      {% endfor %}       
+	      
+	      {
+	    	  type: 'spline',
+	    	  name: 'Total',
+	    	  data: {{totals_group}}				    	  
+	      }
+      ]
+   });
+});
+

@@ -1,0 +1,62 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+<div margin: auto; align="center"; width="100%">
+	<table>
+		<tr>
+		    <td>
+				<img src="/media2/images/CMS_LOGO.gif" alt="CMS Experiment" width="103" height="103"/>
+			</td>
+			<td>
+				<img src="/media2/images/header_blue.png" alt="Victor: Automatic site cleaning" width="700" height="103"/>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<BR>
+
+<table align="center" cellspacing="0" cellpadding="0" border="0" align="center">
+    <tbody>
+        <tr>
+            <td nowrap="">
+                <ul id="MenuBar2" class="MenuBarHorizontal">
+                
+                    <li><a href="/victor/accounting" class="style1">Overview</a></li>
+                    
+                    <li><a href="#" class="MenuBarItemSubmenu style1">Associations</a>
+                    <ul>
+	                    {% for region in regions %}	                    
+		                        <li>
+		                        <a class="MenuBarItemSubmenu">{{region.name}}</a>
+		                        <ul>
+		                            {% for site in region.sites %}
+				                        <li><a class="MenuBarItemSubmenu"> {{site.name}} </a>
+					                        <ul>
+					                            {% for group in site.groups %}
+					                                <li><a href="/victor/association_view/T2_{{region.name}}_{{site.name}}/{{group}}"> {{group}} </a></li>
+					                            {% endfor %}
+					                        </ul>
+				                        </li>
+				                    {% endfor %}		                   	                    
+		                        </ul>
+		                        </li>		                    
+	                    {% endfor %}
+	                </ul>
+	                </li>
+	                <li><a href="/popdb" class="style1">Popularity</a></li>
+	                <li><a href="https://svnweb.cern.ch/trac/popdb/newticket?component=Victor-CMS" target="_blank" class="style1">Bugs&Requests</a></li>
+	                <li><a href="/victor/about" class="style1">About</a></li>
+                </ul>          
+            </td>
+        </tr>
+    </tbody>
+</table>    
+
+
+<BR>

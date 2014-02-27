@@ -1,0 +1,60 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+<div id="demo">			
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="summary_table">
+	    <thead>
+	        <tr>
+		        <th> Cloud        </th>
+		        <th> Site         </th>
+		        <th> Tier         </th>
+		        <th> Group        </th>
+				<th> Total (TB)   </th>
+				<th> Used (TB)    </th>
+				<th> Cleaned (TB) </th>
+				<th> Full         </th>
+			</tr>    
+	    </thead>
+	    
+	    <tbody>
+	    {% for row in rows %}
+	        {% spaceless %}	        
+			<tr goto="/victor/association_view/{{row.2}}_{{row.0}}_{{row.1}}/{{row.3}}">
+			    <td align="center">{{row.0}}</td>
+			    <td align="center">{{row.1}}</td>
+			    <td align="center">{{row.2}}</td>
+			    <td align="center">{{row.3}}</td>
+			    <td align="center">{{row.4}}</td>
+			    <td align="center">{{row.5}}</td>
+			    <td align="center">{{row.6}}</td>
+			    {% if row.7 %}
+			        <td bgcolor="#FF7878" align="center">{{row.7}}</td>
+			    {% else %}
+			        <td align="center">{{row.7}}</td>
+			    {% endif %}			    		    
+			</tr>
+			{% endspaceless %}
+		{% endfor %}		
+		</tbody>
+		
+		<tfoot>
+		    <tr>
+		        <th> <input name="search_clouds" value="Filter clouds" class="search_init" type="text" /> </th>
+		        <th> <input name="search_sites" value="Filter sites"  class="search_init" type="text"  /> </th>
+		        <th> <input name="search_tiers" value="Filter tiers"  class="search_init" type="text"  /> </th>
+		        <th> <input name="search_group" value="Filter groups"  class="search_init" type="text"  /> </th>
+		        <th> <input name="search_total" value="Filter total" class="search_init" type="text" /> </th>
+		        <th> <input name="search_used" value="Filter used" class="search_init" type="text" />   </th>
+		        <th> <input name="search_cleaned" value="Filter cleaned" class="search_init" type="text" />    </th>
+				<th> <input name="search_full" value="Filter full" class="search_init" type="text" /> </th>
+			</tr>
+	    </tfoot>	
+	</table>
+</div>
+
+<p>Rows in the table link to the detailed page for the associations</p>
