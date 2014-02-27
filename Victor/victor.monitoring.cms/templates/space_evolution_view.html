@@ -1,0 +1,337 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Victor the cleaning agent</title>
+		
+		<link type="text/css" href="/media2/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+		<link type="text/css" href="/media2/css/datatables/demo_table_jui.css" rel="stylesheet" />
+		<link type="text/css" href="/media2/css/SpryMenuBar/SpryMenuBarHorizontal.css" rel="stylesheet"  />
+		
+		<script type="text/javascript" src="/media2/js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="/media2/js/jquery-ui-1.8.16.custom.min.js"></script>		
+		<script type="text/javascript" src="/media2/js/jquery.dataTables.min.js"></script>		
+		<script type="text/javascript" src="/media2/js/highcharts.js"></script>
+		<script type="text/javascript" src="/media2/js/exporting.js"></script>
+		<script type="text/javascript" src="/media2/js/SpryMenuBar.js"></script>
+		
+		<!-- Plotting style in high-charts -->
+		<script type="text/javascript" src="/media2/js/grid.js"></script>
+		
+		<!-- Create the high-charts -->
+		<script type="text/javascript">
+            {% include "association_evolution_chart.html" %}
+		</script>
+		<script type="text/javascript">
+            {% include "site_evolution_chart.html" %}
+		</script>
+		<script type="text/javascript">
+            {% include "group_evolution_chart.html" %}
+		</script>		
+				
+		<!-- Data tables initialization -->
+		<script type="text/javascript">    
+		    var asInitVals = new Array();	
+		    
+		    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function(oSettings)
+		    {
+		        var anRows = [];
+		        for (var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++)
+		        {
+		            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+		            anRows.push(nRow);
+		        }
+		        return anRows;
+		    };
+
+			$(document).ready(function() {
+				$("#association").hide();
+				$("#instructions").hide();
+				/* Add a click handler to the rows */
+				$("#cleaning_table tr").click( function() {
+					if ( $(this).hasClass('row_selected') )
+						$(this).removeClass('row_selected');
+					else
+						$(this).addClass('row_selected');
+				} );
+								
+				var oTable = $('#cleaning_table').dataTable( {
+	                "bJQueryUI": true,
+	                "bAutoWidth":false,
+	                "sPaginationType": "full_numbers",
+	                "iDisplayLength": 25,
+	                "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+	                "aoColumnDefs": [{ "bSortable": true,   "aTargets": [0,1,2,3,4,5] },
+	                                 { "bSearchable": true, "aTargets": [0,1,2,3,4,5] }
+	                                ],
+	                "aaSorting": [[1,'asc']],                								
+					"oLanguage": {"sSearch": "Search all columns:"}
+				} );
+												
+				$("tfoot input").keyup( function () {
+					/* Filter on the column (the index) of this element */
+					oTable.fnFilter( this.value, $("tfoot input").index(this) );
+				} );
+				
+				/* Provide a little bit of user friendliness to the textboxes in the footer */
+				$("tfoot input").each( function (i) {
+					asInitVals[i] = this.value;
+				} );
+				
+				$("tfoot input").focus( function () {
+					if ( this.className == "search_init" )
+					{
+						this.className = "";
+						this.value = "";
+					}
+				} );
+				
+				$("tfoot input").blur( function (i) {
+					if ( this.value == "" )
+					{
+						this.className = "search_init";
+						this.value = asInitVals[$("tfoot input").index(this)];
+					}
+				} );
+				
+				$("#get_rows").click(function() {
+					selectedrows = fnGetSelected(oTable);
+					length = selectedrows.length;
+					for( i=0; i < length; i++){					  
+					  $("div.clipboard_frank").find("p").not(".alert").append("<p class=\"addedtext\">"+ $(selectedrows[i]).text() + "</p>")
+					}					
+				});
+				
+								
+			} );
+			
+			function fnGetSelected( oTableLocal )
+			{
+				var aReturn = new Array();
+				var aTrs = oTableLocal.fnGetNodes();
+				
+				for ( var i=0 ; i<aTrs.length ; i++ )
+				{
+					if ( $(aTrs[i]).hasClass('row_selected') )
+					{
+						aReturn.push( aTrs[i] );
+					}
+				}
+				return aReturn;
+			}
+			
+			function fnGetAll( oTableLocal )
+			{
+				var aReturn = new Array();
+				var aTrs = oTableLocal.fnGetFilteredNodes();
+				
+				return aTrs;
+			}			
+			
+			$(function(){				
+				
+				var aux = "";
+				
+				// Tabs
+				$('#tabs').tabs();
+
+				// Dialog			
+				$('#dialog').dialog({
+					autoOpen: false,
+					width: 800,
+					maxHeight: 300,
+					buttons: {
+						"Close": function() { 
+							$(this).dialog("close"); 
+						}, 
+					}
+				});								
+			
+				$('#datasets_link').click(function(){
+					var oTable = $('#cleaning_table').dataTable( );
+					selectedrows = fnGetSelected(oTable);
+					length = selectedrows.length;
+					$("div.clipboard_frank").html("<p></p>");
+					var appended_datasets = "";
+					for( i=0; i < length; i++){
+						if ( appended_datasets == "" )
+               	            appended_datasets = $(selectedrows[i]).find('td:eq(0)').text();
+               	        else
+               	    	    appended_datasets = appended_datasets + ", " + $(selectedrows[i]).find('td:eq(0)').text();
+					     //$("div.clipboard_frank").append("<p class=\"addedtext\">"+ $(selectedrows[i]).find('td:eq(0)').text() + "</p>");
+					}
+					$("div.clipboard_frank").append("<p class=\"addedtext\">"+ appended_datasets + "</p>");
+					$('#dialog').dialog('open');
+					alert("Be aware that Victor works at block level. If you clean the complete dataset you might delete some blocks that are popular, fresh or don't have other copies");
+					return false;
+				});
+
+				
+				$('#blocks_link').click(function(){
+                    var oTable = $('#cleaning_table').dataTable( );
+                    selectedrows = fnGetSelected(oTable);
+                    length = selectedrows.length;
+                    $("div.clipboard_frank").html("<p></p>");
+                    var appended_blocks = "";
+                    for( i=0; i < length; i++){
+                            dataset = $(selectedrows[i]).find('td:eq(0)').text();
+					        var link = '/victor/get_blocks/'+$('#association').text()+'/'+dataset;
+                            $.get(link, function(data)                            		
+                                  { 
+                            	    if ( appended_blocks == "" )
+                            	         appended_blocks = data;
+                            	    else
+                            	    	appended_blocks = appended_blocks + ", " + data;									
+                					$("div.clipboard_frank").html("<p class=\"addedtext\">"+ appended_blocks + "</p>");
+                				  }
+
+                                    );                            
+                    }
+                    $('#dialog').dialog('open');
+                    
+                    return false;
+                 });
+				
+				$('#instructions_link').click(function(){
+					console.log($("#instructions").html())
+                	$("div.clipboard_frank").html($("#instructions").html());
+                	$('#dialog').dialog('open');
+                    return false;
+                 });
+
+				
+				// Reset Link
+				$('#reset_button').click(function(){
+					var oTable = $('#cleaning_table').dataTable( );
+					
+					selectedrows = fnGetSelected(oTable);
+					length = selectedrows.length;
+					for( i=0; i < length; i++){					  
+					     $(selectedrows[i]).removeClass('row_selected')
+					}				
+					return true;
+				});
+				
+				// Select All Link
+				$('#select_all_button').click(function(){
+					var oTable = $('#cleaning_table').dataTable( );
+					
+					selectedrows = fnGetAll(oTable);
+					length = selectedrows.length;
+					for( i=0; i < length; i++){					  
+					     $(selectedrows[i]).addClass('row_selected')
+					}				
+					return true;
+				});
+				
+				//hover states on the static widgets
+				$('#dialog_link, #reset_button, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); }, 
+					function() { $(this).removeClass('ui-state-hover'); }
+				);		
+								
+			});
+					
+						
+	 	</script>	 	    	
+	 	
+		<!-- jQuery css -->
+		<style type="text/css">
+			body{ font: 70% "Helvetica", sans-serif; margin: 50px; background-color:#F2F2F2;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>
+		
+		{% include "tracking.html" %}
+		
+	</head>
+
+	<body>
+	    
+	    {% include "header.html"%}
+	    
+	    <div id="association">{{site}}^{{group}}</div>
+	    
+	    <h1>{{site}}: {{group}} - Generated {{today}}</h1>
+	    
+	    <h2>Deletion suggestions</h2>
+	    {% if block_table %}
+	        {% include "cleaning_table.html" %}
+	    {% else %}
+	       {%if full %}
+			    <div class="ui-widget">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						The site is full but there are no deletion suggestions! This may be a problem in Victor or the underlying Popularity or DAS services</p>
+					</div>
+				</div>		    
+		    {% else %}
+		        <div class="ui-widget">
+					<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+						The association is not reaching its pledge and Victor did not make any deletion suggestion.</p>
+					</div>
+				</div>
+			{% endif %}		
+	    {% endif %}
+	    
+	    <BR>
+	    <h2>Space evolution</h2>
+	    
+	    <div id="tabs">
+		    <ul>
+				<li><a href="#tabs-association">Association</a></li>
+				<li><a href="#tabs-site">Site</a></li>
+				<li><a href="#tabs-group">Group</a></li>
+			</ul>
+			
+		    <!-- Add the containers for the charts -->		
+			 			             
+			    <div id="tabs-association">			        			         
+					<h2>Space evolution for {{group}} on {{site}}</h2>
+					<!-- Add the container for the chart-->		
+					<p>
+						<div id="container_association" style="width: 800px; height: 400px; margin: 0 auto"></div>
+					</p>
+				</div>
+				
+				<div id="tabs-site">			        			         
+					<h2>Space evolution of all the groups on {{site}}</h2>
+					<!-- Add the container for the chart-->		
+					<p>
+						<div id="container_site" style="width: 800px; height: 400px; margin: 0 auto"></div>
+					</p>
+				</div>
+				
+				
+				<div id="tabs-group">			        			         
+					<h2>Space evolution of {{group}} on all the sites</h2>
+					<!-- Add the container for the chart-->		
+					<p>
+						<div id="container_group" style="width: 800px; height: 400px; margin: 0 auto"></div>
+					</p>
+				</div>			
+		</div> 		    
+    
+    	<script type="text/javascript">
+			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgRight:"/media2/css/SpryMenuBarRightHover.gif"});
+			var MenuBar2 = new Spry.Widget.MenuBar("MenuBar2", {imgDown:"/media2/css/SpryMenuBarDownHover.gif", imgRight:"/media2/css/SpryMenuBarRightHover.gif"});			
+        </script>		
+
+    </body>
+</html>
+

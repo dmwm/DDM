@@ -1,0 +1,154 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Victor the cleaning agent</title>
+		
+		<link type="text/css" href="/media2/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+		<link type="text/css" href="/media2/css/datatables/demo_table_jui.css" rel="stylesheet" />
+		<link type="text/css" href="/media2/css/SpryMenuBar/SpryMenuBarHorizontal.css" rel="stylesheet"  />
+		
+		<script type="text/javascript" src="/media2/js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="/media2/js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="/media2/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="/media2/js/highcharts.js"></script>
+		<script type="text/javascript" src="/media2/js/exporting.js"></script>
+		<script type="text/javascript" src="/media2/js/SpryMenuBar.js"></script>
+		
+		<!-- Plotting style in high-charts -->
+		<script type="text/javascript" src="/media2/js/grid.js"></script>
+		
+		<!-- Create the high-charts -->
+		<script type="text/javascript">
+			{% for cloud, info in clouds %}
+			    {% include "cloud_chart.html" %}
+			{% endfor %}				
+		</script>
+		<script type="text/javascript">					
+			$(function(){
+				// Tabs
+				$('#tabs').tabs({ selected: {{default_tab}} });				
+				
+				//Passing the mouse over table rows will show the hand to indicate a link
+				$("td").mouseover(function(){
+					$(this).parents("tr").css("cursor","pointer")
+					 });
+				
+				//Clicking on a table row will take you to the historic view
+				var newURL;
+				$("td").click(function(){
+		            newURL = $(this).parents("tr").attr("goto");
+		            if( newURL.length != 0 ) 
+		            {
+		            	//window.open(newURL,'_blank');
+		            	window.location = newURL;
+		            }		                                        
+		        });
+			});
+		</script>
+		
+		<!-- Data tables initialization -->
+		<script type="text/javascript">    
+		    var asInitVals = new Array();
+		
+			$(document).ready(function() {
+				var oTable = $('#summary_table').dataTable( {
+	                "bJQueryUI": true,
+	                "bAutoWidth":false,
+	                "sPaginationType": "full_numbers",
+	                "iDisplayLength": 25,
+	                "aLengthMenu": [[10, 25, 50,-1], [10, 25, 50, "All"]],
+	                "aoColumnDefs": [{ "bSortable": true,   "aTargets": [0,1,2,3,4,5,6,7] },
+	                                 { "bSearchable": true, "aTargets": [0,1,2,3,4,5,6,7] }
+	                                ],
+	                "aaSorting": [[0,'asc']],                								
+					"oLanguage": {"sSearch": "Search all columns:"}
+				} );
+				
+				$("tfoot input").keyup( function () {
+					/* Filter on the column (the index) of this element */
+					oTable.fnFilter( this.value, $("tfoot input").index(this) );
+				} );
+				
+				/* Provide a little bit of user friendliness to the textboxes in the footer */
+				$("tfoot input").each( function (i) {
+					asInitVals[i] = this.value;
+				} );
+				
+				$("tfoot input").focus( function () {
+					if ( this.className == "search_init" )
+					{
+						this.className = "";
+						this.value = "";
+					}
+				} );
+				
+				$("tfoot input").blur( function (i) {
+					if ( this.value == "" )
+					{
+						this.className = "search_init";
+						this.value = asInitVals[$("tfoot input").index(this)];
+					}
+				} );
+								
+			} );
+						
+	 	</script>	
+	 	
+		
+		<!-- jQuery css -->
+		<style type="text/css">
+			body{ font: 70% "Helvetica", sans-serif; margin: 50px; background-color:#F2F2F2;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>
+		{% include "tracking.html" %}
+	</head>
+
+	<body>
+	
+	    {% include "header.html"%}	                    
+        
+        <h1>Accounting summary - Generated {{today}}</h1>
+        
+        <h2>Table with all group-site associations</h2>
+        {% include "summary_table.html" %}		
+				
+		<h2>Accounting summary by region</h2>
+		<div id="tabs">
+		    <ul>
+				{% for cloud, info in clouds %}			
+					<li><a href="#tabs-{{cloud}}">{{cloud}}</a></li>
+				{% endfor %}
+			</ul>
+			
+		    <!-- Add the containers for the charts -->		
+			{% for cloud, info in clouds %}			 			             
+			    <div id="tabs-{{cloud}}">			        			         
+						<div id="container_{{cloud}}" style="width: 800px; height: 400px; margin: 0 auto"></div>
+				</div>			
+			{% endfor %}
+		</div>
+		
+		<script type="text/javascript">
+			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgRight:"/media2/css/SpryMenuBarRightHover.gif"});
+			var MenuBar2 = new Spry.Widget.MenuBar("MenuBar2", {imgDown:"/media2/css/SpryMenuBarDownHover.gif", imgRight:"/media2/css/SpryMenuBarRightHover.gif"});			
+        </script>		
+		
+	</body>
+
+</html>
+

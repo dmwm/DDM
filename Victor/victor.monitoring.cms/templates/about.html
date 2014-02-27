@@ -1,0 +1,81 @@
+<!--
+@copyright: European Organization for Nuclear Research (CERN)
+@author: Fernando H. Barreiro U{fernando.harald.barreiro.megino@cern.ch<mailto:fernando.harald.barreiro.megino@cern.ch>}, CERN, 2011-2012
+@license: Licensed under the Apache License, Version 2.0 (the "License");
+You may not use this file except in compliance with the License.
+You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
+-->
+
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Victor the cleaning agent</title>
+		<link type="text/css" href="/media2/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />		
+		<link type="text/css" href="/media2/css/SpryMenuBar/SpryMenuBarHorizontal.css" rel="stylesheet"  />		
+		<script type="text/javascript" src="/media2/js/SpryMenuBar.js"></script>
+				
+		<!-- jQuery css -->
+		<style type="text/css">
+			body{ font: 75% "Helvetica", sans-serif; margin: 50px; background-color:#F2F2F2;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;}
+		</style>
+	    
+	    {% include "tracking.html" %}
+	    					
+	</head>
+
+	<body>
+	    
+	    {% include "header.html"%}	    
+
+		<h1> Victor. Automatic site cleaning </h1>
+				
+		<p>Victor is a fully automated, popularity-based site cleaning agent. On a daily basis, Victor scans the Tier2s for full group-site associations and tries to find
+		   unpopular, old blocks that can be deleted by the group or site administrators. </p>		  			
+		   
+		<p align="center"><img src="/media2/images/Workflow.png" alt="Workflow" width="700" /></p>
+		
+		<h3>1. Getting storage space information</h3>
+		<p>Victor focuses on the cleaning of T2 wan_stores with a granularity of physicsgroup-site association. Victor does not attempt to clean the local space.
+		
+		 <p align="center"><img src="/media2/images/CMS_storage.png" alt="Storage division" width="250" /></p>
+		The information sources are:
+		    <ul>
+		        <li>Used space: <a href="https://cmsweb.cern.ch/phedex/datasvc/json/prod/groupusage"> the PHedEX group usage API</a></li>
+		        <li>Pledged space: a manually generated python dictionary with the group pledges extracted from <a href="https://twiki.cern.ch/twiki/bin/view/CMS/CMST2Associations%23Space_Planning_for_Central_and_G">the official twiki</a></li>
+		    </ul> 
+		    Cleaning is triggered when a group reaches 90% of its pledged resources on a site and Victor will try to suggest unpopular replicas to free up space up to 70% of the pledge. The thresholds are configurable and could be changed.
+		</p>
+		
+		<h3>2. Getting the unpopular replicas</h3>
+		<p>
+		    A PhEDEX-Popularity API provides the group’s blocks on a site (with cdate, #file accesses, cpu time, size…). The blocks are sorted from oldest to newest and the following filters are applied:
+		    <ul>
+                <li>Blocks must be older than 90 days</li>
+				<li>Blocks can’t be custodial (this is the case in T2 anyways)</li>
+				<li>Blocks must have a custodial copy</li>
+				<li>Blocks must have another T2 copy, unless the dataset is really old (work in progress)</li>
+				<li>Popularity in the last 30 days lower than [1, 10, 100] file accesses</li>
+			</ul>
+            The definition of popularity metrics can be tuned during validation. At the moment Popularity accounts CRAB file accesses only.
+        </p>
+        
+        <h3>3. Deletion of blocks</h3>
+		<p>No automatic actions are carried out for the moment. The decisions – blocks to clean for groups that exceed the pledge - are published on this web interface. The web interface provides a 
+		“shopping cart“ system where the group responsibles can select blocks in a copy&pastable way. Then the group responsibles will request the deletion of blocks to PheDEX themselves. </p>
+		
+		<p align="center"><img src="/media2/images/card.png" alt="Victor: Automatic site cleaning" width="300" /></p>
+    	
+    	<script type="text/javascript">
+			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgRight:"/media2/css/SpryMenuBarRightHover.gif"});
+			var MenuBar2 = new Spry.Widget.MenuBar("MenuBar2", {imgDown:"/media2/css/SpryMenuBarDownHover.gif", imgRight:"/media2/css/SpryMenuBarRightHover.gif"});			
+        </script>		      
+    </body>
+</html>

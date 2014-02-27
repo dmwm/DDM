@@ -1,0 +1,3 @@
+include module.cfg
+recursive-include config/cli *xsl *xml *cfg
+recursive-include config *
