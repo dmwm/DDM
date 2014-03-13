@@ -1,0 +1,4 @@
+include module.cfg
+include config/cron.d/victor.agent.cms
+recursive-include config/dq2/etc *
+recursive-include lib *
