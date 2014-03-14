@@ -1,0 +1,28 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+TNS_ADMIN=/etc/
+PYTHONPATH=/opt/dq2/lib
+
+EXECUTABLE=/opt/dq2/lib/dq2/victor/run.py
+LOG=/tmp/dq2.log
+ERRLOG=/tmp/dq2_error.log
+
+MAILTO=cms-popdb-alarms@cern.ch
+SUBJECT_ERR="Subject: Problem: victor.agent.cms"
+SUBJECT_OK="Subject: victor.agent.cms report"
+MIME="MIME-Version: 1.0"
+CONTENTTYPE="Content-Type: text/html"
+CONTENTDISPO="Content-Disposition: inline"
+
+00 10 * * * root /usr/bin/python2.6 $EXECUTABLE  2>$ERRLOG ; STATUS=$?; [ $STATUS -ne 0 ] && ( echo ${SUBJECT_ERR}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO; echo -e "<pre>Problem running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n"; cat $ERRLOG; echo "</pre>") | /usr/sbin/sendmail $MAILTO ; [ $STATUS -eq 0 ] && ( echo ${SUBJECT_ERR}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO;  echo -e "<pre>Finished running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n</pre>") | /usr/sbin/sendmail $MAILTO ;
+
+
+
+
+
+
+
+
+
+
