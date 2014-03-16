@@ -15,7 +15,7 @@ MIME="MIME-Version: 1.0"
 CONTENTTYPE="Content-Type: text/html"
 CONTENTDISPO="Content-Disposition: inline"
 
-00 10 * * * root /usr/bin/python2.6 $EXECUTABLE  2>$ERRLOG ; STATUS=$?; [ $STATUS -ne 0 ] && ( echo ${SUBJECT_ERR}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO; echo -e "<pre>Problem running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n"; cat $ERRLOG; echo "</pre>") | /usr/sbin/sendmail $MAILTO ; [ $STATUS -eq 0 ] && ( echo ${SUBJECT_ERR}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO;  echo -e "<pre>Finished running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n</pre>") | /usr/sbin/sendmail $MAILTO ;
+00 10 * * * root /usr/bin/python2.6 $EXECUTABLE  2>$ERRLOG ; STATUS=$?; [ $STATUS -ne 0 ] && ( echo ${SUBJECT_ERR}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO; echo -e "<pre>Problem running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n"; cat $ERRLOG; echo "</pre>") | /usr/sbin/sendmail $MAILTO ; [ $STATUS -eq 0 ] && ( echo ${SUBJECT_OK}; echo $MIME; echo $CONTENTTYPE; echo  $CONTENTDISPO;  echo -e "<pre>Finished running the application $EXECUTABLE on " `hostname` "\ncheck log file $LOG\n</pre>") | /usr/sbin/sendmail $MAILTO ;
 
 
 
