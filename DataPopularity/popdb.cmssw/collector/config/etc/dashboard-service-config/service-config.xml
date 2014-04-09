@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<dashboard-service-config>
+<service-group name="cmssw-collector">
+ <services>   
+   <service name="cmssw-mon" module="dashboard.popdb-cmssw.CMSSWMonCollector" class="CMSSWMonCollector">
+     <config>
+       <param name="id">CMSSW-MON</param>
+       <param name="localQueue">/opt/dashboard/var/messages/cmssw</param>
+       <param name="bufferSize">10000</param>
+       <param name="transfersDBTable">T_RAW_CMSSW</param>
+       <param name="rejectedDBTable">T_RAW_REJ</param>
+       <param name="dbsection">cms_cmssw_w</param>
+     </config>
+   </service>
+ </services>   
+</service-group>
+
+<service-group name="cmssw-listener">
+ <services>   
+   <service name="cmssw-udp" module="dashboard.popdb-cmssw.CMSSWUDPListener" class="CMSSWUDPListener">
+     <config>
+       <param name="id">CMSSW-UDP</param>
+       <param name="localQueue">/opt/dashboard/var/messages/cmssw</param>
+       <param name="udp_port">insert_CMSSW_PORT</param>
+       <param name="udp_host">hostname</param>
+     </config>
+   </service>
+ </services>   
+
+</service-group>
+
+</dashboard-service-config>
