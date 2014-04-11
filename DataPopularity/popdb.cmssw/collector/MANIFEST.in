@@ -1,0 +1,6 @@
+include LICENSE
+include module.cfg
+recursive-include config *
+
+global-exclude *~
+

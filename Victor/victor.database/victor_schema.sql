@@ -5,12 +5,12 @@
 --- You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 
 
-DROP TABLE t_cleaned_dataset;
-DROP TABLE t_accounting_record;
-DROP TABLE t_run_config;
-DROP TABLE t_run_site;
-DROP TABLE t_run;
-DROP SEQUENCE seq_run;
+-- DROP TABLE t_cleaned_dataset;
+-- DROP TABLE t_accounting_record;
+-- DROP TABLE t_run_config;
+-- DROP TABLE t_run_site;
+-- DROP TABLE t_run;
+-- DROP SEQUENCE seq_run;
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- Sequence to auto_increment the runId
@@ -105,3 +105,11 @@ CREATE TABLE T_RUN_CONFIG (
 
 CREATE INDEX runid_index ON t_cleaned_dataset (runId);
 
+------------------------------------------------------------
+
+GRANT SELECT ON T_ACCOUNTING_RECORD TO CMS_CLEANING_AGENT_R;
+GRANT SELECT ON T_RUN               TO CMS_CLEANING_AGENT_R;
+GRANT SELECT ON T_RUN_SITE          TO CMS_CLEANING_AGENT_R;
+GRANT SELECT ON T_CLEANED_DATASET   TO CMS_CLEANING_AGENT_R;
+GRANT SELECT ON T_RUN_CONFIG        TO CMS_CLEANING_AGENT_R;
+commit;
