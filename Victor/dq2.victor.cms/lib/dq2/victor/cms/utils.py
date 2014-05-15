@@ -9,11 +9,39 @@ You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE
 
 from dq2.common import log as logging
 
-import urllib2
+import urllib2, httplib
 import simplejson
+import os
 
 logger = logging.getLogger("dq2.victor.utils")
 
+
+class HTTPSClientAuthHandler(urllib2.HTTPSHandler):
+    """
+    Simple HTTPS client authentication class based on provided
+    key/ca information
+    """
+    def __init__(self, key=None, cert=None, level=0):
+        if  level > 1:
+            urllib2.HTTPSHandler.__init__(self, debuglevel=1)
+        else:
+            urllib2.HTTPSHandler.__init__(self)
+        self.key = key
+        self.cert = cert
+
+    def https_open(self, req):
+        """Open request method"""
+        #Rather than pass in a reference to a connection class, we pass in
+        # a reference to a function which, for all intents and purposes,
+        # will behave as a constructor
+        return self.do_open(self.get_connection, req)
+
+    def get_connection(self, host, timeout=300):
+        """Connection method"""
+        if  self.key:
+            return httplib.HTTPSConnection(host, key_file=self.key,
+                                                cert_file=self.cert)
+        return httplib.HTTPSConnection(host)
 
 def get_json_data_from_file(file):
 
@@ -63,4 +91,20 @@ def get_json_data_improper(url):
         logger.critical('Node usage values could not be retrieved from %s'%(url))
         raise Exception('Nodatafound', 'Node usage values could not be retrieved from %s'%(url))
     
-    return data      
+    return data
+
+def get_json_data_https(url):
+	
+    headers = {"Accept": "application/json", "User-Agent": "Victor"}
+    req = urllib2.Request(url=url,headers=headers)
+    opener = urllib2.build_opener(HTTPSClientAuthHandler(os.getenv('X509_USER_PROXY'),os.getenv('X509_USER_PROXY')))
+    f = opener.open(req)
+    data = simplejson.load(f)
+    f.close()
+
+    if not data:
+        logger.critical('Node usage values could not be retrieved from %s'%(url))
+        raise Exception('Nodatafound', 'Node usage values could not be retrieved from %s'%(url))
+
+    return data
+
