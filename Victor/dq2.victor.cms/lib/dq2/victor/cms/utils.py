@@ -8,10 +8,10 @@ You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE
 """
 
 from dq2.common import log as logging
+from dq2.victor import config
 
 import urllib2, httplib
 import simplejson
-import os
 
 logger = logging.getLogger("dq2.victor.utils")
 
@@ -97,7 +97,10 @@ def get_json_data_https(url):
 	
     headers = {"Accept": "application/json", "User-Agent": "Victor"}
     req = urllib2.Request(url=url,headers=headers)
-    opener = urllib2.build_opener(HTTPSClientAuthHandler(os.getenv('X509_USER_PROXY'),os.getenv('X509_USER_PROXY')))
+    cert = config.get_config('certificate', type='str')
+    key = config.get_config('privatekey', type='str')
+
+    opener = urllib2.build_opener(HTTPSClientAuthHandler(cert=cert,key=key))
     f = opener.open(req)
     data = simplejson.load(f)
     f.close()
