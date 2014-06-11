@@ -1,0 +1,170 @@
+{% extends "victorinterface/base.html"%}
+{% block css %}
+{{ block.super }}
+<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+
+<!--
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+
+{% endblock js_include %}
+-->
+
+{% block sub_title %}
+{{ block.super }}
+<h2>Victor Json Interface Documentation </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+{{block.super}}
+
+
+
+
+<div class="documentation">
+
+	<table class="elements" cellspacing="0">
+
+        <tr>
+                <td class="elementName" colspan="2"><a href="{% url accessedBlocksStat %}">accessedBlocksStat</a></td>
+        </tr>
+        <tr>
+                <td class="feature" width="15%">Method</td>
+                <td class="descr" width="85%">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with Sites and the list of blocks accessed in the last 5 weeks, with the corresponding statistics.
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Arguments</td>
+                <td class="descr">
+                        SiteName (e.g. T2_IT_Pisa or T2_IT_%)
+			<br>tstart (default: 30 days ago)  
+			<br>tstop (default: today)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+			1. Retrieve the list for all the sites: <a href="{% url accessedBlocksStat %}?sitename=T%">accessedBlocksStat/?sitename=T%</a>
+
+			<br> 2. Retrieve the list for a given site (e.g. T2_IT_Pisa): <a href="{% url accessedBlocksStat %}?sitename=T2_IT_Pisa">accessedBlocksStat/?sitename=T2_IT_Pisa</a>
+			<br> 3. Retrieve the list for sites satisfying a regex (e.g. T2_UK_%) <a href="{% url accessedBlocksStat %}?sitename=T2_UK_%">accessedBlocksStat/?sitename=T2_UK_%</a>
+
+                        <br>
+                </td>
+        </tr>
+
+
+	<tr>
+                <td class="elementName" colspan="2">popdbcombine</td>
+        </tr>
+        <tr>
+                <td class="feature" width="15%">Method</td>
+                <td class="descr" width="85%">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Combines the information of the block popularity for a given site with the PhEDEx list of blocks in that site. The popularity of each block is obtained using the API accessedBlocksStat, and reflects the same time range.
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Arguments</td>
+                <td class="descr">
+                        SiteName (e.g. T2_IT_Pisa)
+                        <br>tstart (default: 30 days ago)  
+                        <br>tstop (default: today)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list for a given site (e.g. T2_IT_Pisa): <a href="{% url popdbcombine %}?sitename=T2_IT_Pisa">popdbcombine/?sitename=T2_IT_Pisa</a>
+			<br>
+                        2. Retrieve the list for a given site (e.g. T2_IT_Pisa) in a specified time window: <a href="{% url popdbcombine %}?sitename=T2_IT_Pisa&tstart=2012-02-10&tstop=2012-02-11">popdbcombine/?sitename=T2_IT_Pisa&tstart=2012-02-10&tstop=2012-02-11</a>
+                        <br>
+                </td>
+        </tr>
+
+        <tr>
+                <td class="elementName" colspan="2"><a href="{% url accessedBlocksStatLastAcc %}">accessedBlocksStatLastAcc</a></td>
+        </tr>
+        <tr>
+                <td class="feature" width="15%">Method</td>
+                <td class="descr" width="85%">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with Sites and the list of blocks with the number of days since the last access.
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Arguments</td>
+                <td class="descr">
+                        SiteName (e.g. T2_IT_Pisa or T2_IT_%)
+                        <br>tstart (default: 30 days ago)
+                        <br>tstop (default: today)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list for all the sites: <a href="{% url accessedBlocksStatLastAcc %}?sitename=T%">accessedBlocksStatLastAcc/?sitename=T%</a>
+
+                        <br> 2. Retrieve the list for a given site (e.g. T2_IT_Pisa): <a href="{% url accessedBlocksStatLastAcc %}?sitename=T2_IT_Pisa">accessedBlocksStatLastAcc/?sitename=T2_IT_Pisa</a>
+                        <br> 3. Retrieve the list for sites satisfying a regex (e.g. T2_UK_%) <a href="{% url accessedBlocksStatLastAcc %}?sitename=T2_UK_%">accessedBlocksStatLastAcc/?sitename=T2_UK_%</a>
+
+                        <br>
+                </td>
+        </tr>
+
+        <tr>
+                <td class="elementName" colspan="2">popdbcombineLastAcc</td>
+        </tr>
+        <tr>
+                <td class="feature" width="15%">Method</td>
+                <td class="descr" width="85%">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Combines the information of the block last access for a given site with the PhEDEx list of blocks in that site. The number of days since last access of each block is obtained using the API accessedBlocksStatLastAcc. In case of missing block information from accessedBlocksStatLastAcc API (block hasn't been accessed since the start of Popularity's record), the value of <i>lastdayacc</i> is set to 999. 
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Arguments</td>
+                <td class="descr">
+                        SiteName (e.g. T2_IT_Pisa)
+                        <br>tstart (default: 30 days ago)
+                        <br>tstop (default: today)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list for a given site (e.g. T2_IT_Pisa): <a href="{% url popdbcombineLastAcc %}?sitename=T2_IT_Pisa">popdbcombineLastAcc/?sitename=T2_IT_Pisa</a>
+                        <br>
+                        2. Retrieve the list for a given site (e.g. T2_IT_Pisa) in a specified time window: <a href="{% url popdbcombineLastAcc %}?sitename=T2_IT_Pisa&tstart=2012-02-10&tstop=2012-02-11">popdbcombineLastAcc/?sitename=T2_IT_Pisa&tstart=2012-02-10&tstop=2012-02-11</a>
+                        <br>
+                </td>
+        </tr>
+
+
+	</table>
+
+</div>
+
+
+
+
+
+
+{% endblock body_content%}

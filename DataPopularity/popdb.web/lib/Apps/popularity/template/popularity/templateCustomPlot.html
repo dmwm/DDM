@@ -1,0 +1,144 @@
+{% extends "popularity/base.html" %}
+
+{% block css %}
+{{ block.super }}
+                <link href="{{ STATIC_URL  }}css/plots.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+{% block caption %}
+{% with "<p>To add an item to the chart select it from the table and click the chart button.<br>The date input parameters identify the time window in which the popularity is evaluated. <br/>The data are ordered by their popularity in the defined date window, and can be selected/deselected. <br/>The popularity  is  displayed for the full length of its lifetime, and not only in the time window used for the ranking definition, in the lower chart. The metric used for the popularity ranking can be chosen as: CPU time [h], number of access, number of users.</p>" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block body_content %}
+	{{ block.super }}
+
+ <div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" rules="all" class="display" id="DataSetTable">
+            <thead>
+                    <tr >
+                            <th width="100%">{{ elementtype }}</th>
+                    </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+<!--
+                    <tr ALIGN="center" >
+                            <th width="20%">DataSet</th>
+                            <th   COLSPAN=2 width="20%">Accesses</th>
+                            <th   COLSPAN=2 width="20%">CPU Time</th>
+                            <th   COLSPAN=2 width="20%">Users*day</th>
+                    </tr>
+-->
+            </tfoot>
+            </table>
+        </div>
+        </div>
+	<div ALIGN="center">
+        <table CELLSPACING=15>
+        <tr>
+                <td>
+                <BUTTON TYPE="submit"  id="add_selected">
+                <IMG SRC="{{ STATIC_URL  }}images/Line-chart-icon.png" ALIGN="absmiddle" width="30" height="30">
+                ADD TO CHART
+                </BUTTON>
+                </td>
+
+                <td>
+                <BUTTON TYPE="submit" id="clear_plot">
+                <IMG SRC="{{ STATIC_URL  }}images/clear.png" ALIGN="absmiddle" width="30" height="30">
+                CLEAR CHART
+                </BUTTON>
+                </td>
+        </tr>
+        <tr>
+        </tr>
+        </table>
+	</div>
+
+{% include  'includeInput.html' with datepicker="true" choice_metric="true" choice_TimeAggr="true" datatype="dataSet" sitename="true" snlist=siteslist %}
+<div id class="plot_div">
+    <div id="plot1"></div>
+</div>
+{% endblock body_content%}
+
+
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/hcplotlib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/dataTableLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/modules/exporting.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/datePickerChanges.js"></script>
+<script>
+
+    var data = []
+
+    var info = {
+             placeholder: "plot1",
+	     htitle: "Popularity",
+	     today: new Date().toDateString(),
+	     ytitle: "val",
+	     credits: "Popularity Service",
+	     }
+
+
+    <!-- This function build the url getting the custom parameters -->
+    function buildUrl(url,theInfo){
+	var apiUrl = url + "?";
+	{% include  'getInputParams.html' with datepicker="true" choice_metric="true" choice_TimeAggr="true" sitename="true" %}
+
+	theInfo.ytitle = $("#select_metric option:selected").text();
+        return apiUrl;
+	};
+
+    var jsonurl= "{{insert_jsonurl}}"
+    var inputtableurl =  "{{insert_inputtableurl}}"
+
+        $(document).ready(function(){
+		setDates();
+		var table = DataSetTable(inputtableurl);
+
+		$("#DataSetTable tbody").click(function(event) {
+                        $(event.target.parentNode).toggleClass('row_selected');
+                });
+
+
+		$('#add_selected').click( function() {
+                	var anSelected = fnGetSelected(table);
+			var fullUrl = buildUrl(jsonurl, info);
+			console.log(fullUrl);
+                        console.log(anSelected);
+                        for(i = 0; i < anSelected.length; i++){
+                                console.log(table.fnGetData(anSelected[i], 0))
+                                additemtotimeplot(table.fnGetData(anSelected[i], 0), fullUrl, info)
+                        }
+		} );
+	
+		$('#clear_plot').click( function() {
+                        cleartimeplot(info);
+                });
+
+        });
+
+
+     function updatehctimeplot(url, theInfo) {
+        var fullUrl = buildUrl(url,theInfo);
+        updateplot(fullUrl, theInfo);
+        };
+
+
+    {% with thefunction="updatehctimeplot(jsonurl, info)" %}
+    {% include  'onChangeInput.html' with datepicker="true"  choice_metric="true" choice_popular="true" choice_TimeAggr="true" choice_sitename="true"%}
+    {% endwith %}
+
+</script>
+
+
+{% endblock js %}

@@ -1,0 +1,90 @@
+<table class="input_table">
+{% if datepicker %}
+    <tr>
+	<td>
+    StartDate: <input type="text" class="inputDate" name="startDate" id="startDate"/>
+	</td>
+	<td>
+    EndDate:   <input type="text" class="inputDate" name="endDate"   id="endDate"/>	
+	</td>
+	<td>
+    <input type="submit" id="submit">
+	</td>
+    </tr>
+{% endif %}
+
+<tr>
+{% if datatier %}
+            <td>
+            Select DataTier:
+            <select name="dataTier" id="select_dataTier">
+                <option >ALL</option>
+            {% for tier in dtlist %}
+                <option {% if tier == "AOD" %}selected{% endif %}>{{ tier }}</option>
+            {% endfor %}
+            </select>
+           </td>
+{% endif %}
+{% if sitename %}
+            <td>
+            Select Site:
+            <select name="siteName" id="select_siteName">
+                <option selected>all</option>
+            {% for site in snlist %}
+                <option>{{ site }}</option>
+            {% endfor %}
+            </select>
+           </td>
+{% endif %}
+{% if choice_popular %}
+
+                        <td>
+                        Show
+                        <select name="select_popIdx" id="select_popIdx">
+                        <option>1</option>
+                        <option selected="selected">5</option>
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                        </select>
+                        most populars
+                        </td>
+{% endif %}
+{% if choice_TimeAggr %}
+                        <td>
+                        Time Aggregation:
+                            <select name="select_timeAggr" id="select_timeAggr">
+                                <option selected="selected">day</option>
+                                <option>week</option>
+                                <option>month</option>
+                                <option>quarter</option>
+                                <option>year</option>
+                            </select>
+                        </td>
+{% endif %}
+{% if choice_metric %}
+                        <td>
+                        Metric:
+                            <select name="select_metric" id="select_metric">
+                                <option value="totcpu" selected="selected">Total CPU Time [h] </option>
+                                <option value="naccess"                   >Number of Accesses </option>
+                                <option value="nusers"                    >Number of Users    </option>
+                            </select>
+                        </td>
+ 
+{% endif %}
+
+{% if choice_centraluser %}
+                        <td>
+                        Select User
+                        <select name="select_centraluser" id="select_centraluser">
+                        <option value=0 >Local User</option>
+                        <option value=1 >Grid  User</option>
+                        </select>
+                        </td>
+{% endif %}
+
+
+</tr>
+
+</table>

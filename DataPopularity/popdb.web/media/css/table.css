@@ -1,0 +1,11 @@
+/* Additional CSS styiling for the dataTable tables */
+/* base css file for dataTables in media/css/table/table.css */
+
+#table{
+	
+margin-top:5%;
+text-align: left;
+font-family: arial, verdana, sans-serif;
+font-size: 110%;
+
+}

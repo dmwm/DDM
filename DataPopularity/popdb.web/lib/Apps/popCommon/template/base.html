@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+{% block head %}
+    <head>
+        {% block meta %}{% endblock meta %}
+
+        <title>{% block title %}{% endblock title %}</title>
+
+        {% block css %}
+		<link href="{{ STATIC_URL  }}css/style.css" rel="stylesheet" type="text/css">
+                <link href="{{ STATIC_URL  }}css/table/table.css" rel="stylesheet" type="text/css">            	
+		<link href="{{ STATIC_URL  }}css/table/page.css" rel="stylesheet" type="text/css">
+		<link href="{{ STATIC_URL  }}css/ui-lightness/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css"/>
+                <link href="{{ STATIC_URL  }}css/nav_menu.css" rel="stylesheet" type="text/css">
+                <link href="{{ STATIC_URL  }}css/table.css" rel="stylesheet" type="text/css">
+	{% endblock css%}
+        
+        {% block js_include %}
+        	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> -->
+                <!-- <script type="text/javascript" src="{{ STATIC_URL  }}js/jquery.js" language="javascript" ></script>-->
+                <script type="text/javascript" src="{{ STATIC_URL  }}js/jquery-1.8.0.min.js"></script>
+                <script type="text/javascript" src="{{ STATIC_URL  }}js/jquery-ui.min.js"></script>
+                <script type="text/javascript" src="{{ STATIC_URL  }}js/table/jquery.dataTables.js" language="javascript"></script>
+                <script type="text/javascript" src="{{ STATIC_URL  }}js/menu.js"></script>
+	{% endblock js_include %}
+        
+        {% block js_head %}
+        	<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-25493909-1']);
+			  _gaq.push(['_trackPageview']);
+			
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+
+			</script>
+        	
+        {% endblock js_head%}
+        
+    </head>
+    
+{% endblock head %}
+
+<body>
+
+<div id="layout">
+  <div id="header">
+        <div id="right-head"> </div>
+        <div id="left-head">
+        <div id="main-title">
+	<table>
+		<tr>
+		    <td>
+			<img src="{{ STATIC_URL  }}images/logoCMS-300x300.gif" width="100" height="100"/>
+		    </td>
+	            <td>
+                        <!--
+                        <img src="{{ STATIC_URL  }}images/header_red.png" width="700" height="103"/>
+		        -->
+                        <div class="title">CMS POPULARITY SERVICE</div>
+                        <div class="disclaimer"> CERN IT Experiment Support </div>
+                    </td>
+                    <!--
+                    <td>
+                        <img src="{{ STATIC_URL  }}images/PopPlogo.jpeg" width="198px" height="190px"/>
+                    </td>
+                    -->
+		</tr>
+	</table>
+
+                        {% block current_app %}
+                        <div class="disclaimer" style="background: #B0B0B0; color: white; font-style: normal; font-weight:bold; font-variant: small-caps; margin: 13px 0 0 0; padding: 0 38px 0 0"> {{current_app_name}} </div>
+                        {% endblock current_app %}
+
+
+        </div>
+<!--
+        <div class="disclaimer"> CERN IT-ES Group </div>
+-->
+
+        {% block top_nav %}
+<ul class="topnav">
+                    <li>
+                        <a href="#">Plots</a>
+                        <ul class="subnav">
+                            <li><a href="{% url datatierplot %}">most popular DataTiers</a></li>
+                            <li><a href="{% url datasetplot %}">most popular DataSets</a></li>
+                            <li><a href="{% url datasetnameplot %}">most popular ProcessedDatasets</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Custom Plots</a>
+                        <ul class="subnav">
+                            <li><a href="{% url customdsplot %}">plot DataSets</a></li>
+                            <li><a href="{% url customdsnplot %}">plot Processed DataSets</a></li>
+                            <li><a href="{% url customdtplot %}">plot DataTiers</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Tables</a>
+                        <ul class="subnav">
+                            <li><a href="{% url userstat %}">User Stats</a></li>
+                            <li><a href="{% url corruptedfiles %}">Corrupted Files</a></li>
+                            <li><a href="{% url datasettable %}">Most Popular DataSet</a></li>
+                            <li><a href="{% url datasetnametable %}">Most Popular ProcessedDatasets</a></li>
+                            <li><a href="{% url datatiertable %}">Most Popular DataTiers</a></li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">API</a>
+                        <ul class="subnav">
+                            <li><a href="{% url victorinterfaceindex %}">Victor Json Interface</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url xrdIndex  %}">Xrd Popularity</a></li>
+                    <li><a href="/victor/accounting">Victor</a></li>
+                    <li>
+                        <a href="#">Support</a>
+                        <ul class="subnav">
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/wiki">Wiki</a></li>
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/newticket?component=Popularity">Bug Report</a></li>
+                           <li><a href="{% url popularityutility %}">Utility</a></li>
+                           <li><a href="{% url popularityversionlog %}">Versions log</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+
+        {% endblock top_nav %}
+         </div>
+  </div>
+  <div id="container">
+
+    <div id="sub-title">
+    	{% block sub_title %}
+	{% endblock sub_title %}
+    </div>
+    <div id="main">
+    	{% block body_content %}
+	        {% block caption %}
+                {% if captionlabel %}
+                	{% include  'caption.html' %}
+                {% endif %}
+                {% endblock caption %}
+	{% endblock body_content%}
+
+        {% block jsonref %}
+        <br/>
+        <br/>
+            {% if withjsonref == "True" %}
+                    {% include  'jsonref.html' %}
+            {% endif %}
+        {% endblock jsonref %}
+    </div>
+  <div id="footer"></div>
+</div>
+</div>
+
+</body>
+
+</html>
+
+{% block js %}
+{% endblock js %}

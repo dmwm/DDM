@@ -1,0 +1,14 @@
+{% extends "popularity/templateCustomPlot.html"%}
+
+{% block subtitle %}
+{% with "DataTiers Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+
+{% block js %}
+{% url dataTiers as insert_inputtableurl %}
+{% url getSingleDTPlotStat as insert_jsonurl %}
+{{ block.super }}
+{% endblock js %}

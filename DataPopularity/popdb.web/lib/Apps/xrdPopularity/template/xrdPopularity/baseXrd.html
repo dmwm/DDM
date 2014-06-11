@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block css %}
+{{ block.super }}
+	<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+        <link type="text/css" href="{{ STATIC_URL  }}css/SpryMenuBar/SpryMenuBarHorizontal.css" rel="stylesheet"  />
+        <link type="text/css" href="{{ STATIC_URL  }}css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+
+{% endblock css%}
+
+
+{% block js_include %}
+{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/pageUpdater.js"></script>
+       <!-- <script src="http://code.highcharts.com/stock/highstock.js"></script> -->
+       <!-- <script type="text/javascript" src="{{ STATIC_URL  }}js/highcharts.js"></script> -->
+       <script type="text/javascript" src="{{ STATIC_URL  }}js/highstock.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL  }}js/modules/exporting.js"></script>
+       <script type="text/javascript" src="{{ STATIC_URL  }}js/SpryMenuBar.js"></script>
+        <!-- Plotting style in high-charts -->
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/grid.js"></script>
+
+{% endblock js_include %}
+
+{% block current_app %}
+{% with current_app_name="XRD Popularity -- Beta version for EOS @ CERN" %}
+{{ block.super }}
+{% endwith %}
+{% endblock current_app %}
+
+{% block top_nav %}
+         <ul id="MenuBar2" class="MenuBarHorizontal">
+
+                    <li><a href="#" class="style1">Plots</a>
+                                                    <ul>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Most Popular</a>
+                                        <ul>
+                                               <li><a href="{% url xrdDataSetPlot     %}">DataSets          </a></li>
+                                               <li><a href="{% url xrdDataSetNamePlot %}">Processed Datasets</a></li>
+                                               <li><a href="{% url xrdDataTierPlot    %}">DataTiers         </a></li>
+                                        </ul>
+                                        </li>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Custom Plots</a>
+                                        <ul>
+                                               <li><a href="{% url xrdCustomdsplot          %}">DataSets            </a></li>
+                                               <li><a href="{% url xrdCustomprocesseddsplot %}">Processed DataSets  </a></li>
+
+                                        </ul>
+                                        </li>
+                                        <li><a href="{% url xrdUserDataPlot    %}">User Collections               </a></li>
+
+                        </ul>
+                    </li>
+
+                    <li><a href="#" class="style1">Tables</a>
+                    <ul>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Most Popular</a>
+                                        <ul>
+                                             <li><a href="{% url xrdDataSetTable     %}">DataSet          </a></li>
+                                             <li><a href="{% url xrdDataSetNameTable %}">ProcessedDatasets</a></li>
+                                             <li><a href="{% url xrdDataTierTable    %}">DataTiers        </a></li>
+
+                                        </ul>
+                                        </li>
+                                        <li><a href="{% url xrdLocalGlobalUserStatTable    %}">DataTiers Global Vs Local   </a></li>
+                                        <li><a href="{% url xrdUserDataTable    %}">User Collections              </a></li>
+                                        <li><a href="{% url xrdUserStatTable    %}">User Stats                    </a></li>
+
+                                        </ul>
+                    <li><a href="#" class="style1">xrd monitor</a>
+                    <ul>
+                            <li><a href="{% url xrdMonPlotAccessRate %}">Monitor Access rates</a></li>
+                            <li><a href="{% url xrdMonPlotPPS %}">Monitor PPSTest Accesses</a></li>
+
+                    </ul>
+                    <li><a href="#" class="style1">User Collection</a>
+                    <ul>
+                            <li><a href="{% url xrdUserDataTable %}">Table  </a></li>
+                            <li><a href="{% url xrdUserDataPlot  %}">Plot   </a></li>
+
+                    </ul>
+                    <li><a href="{% url popularityindex %}">CRAB Popularity</a></li>
+                    <li><a href="#" class="style1">Support</a>
+                    <ul>
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/wiki">Wiki</a></li>
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/newticket?component=Popularity">Bug Report</a></li>
+                           <li><a href="{% url popularityutility %}">Utility</a></li>
+                           <li><a href="{% url xrdpopularityversionlog %}">Versions log</a></li>
+                    </ul>
+                    </ul>
+
+                        </li>
+                </ul>
+ <script type="text/javascript">
+                        var MenuBar2 = new Spry.Widget.MenuBar("MenuBar2");                 
+        </script>
+
+{% endblock top_nav %}
+
+
+
+{% block subtitle %}
+{% if subTitlelabel %}
+{{ block.super }}
+{% else %}
+{% with "put subtitle here" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endif %}
+{% endblock subtitle %}
+
+
+{% block caption %}
+{% if captionlabel %}
+{{ block.super }}
+{% else %}
+{% with "put caption here" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endif %}
+{% endblock caption %}
+
+
+{% block jsonref %}
+{% with "True" as withjsonref %}
+{{ block.super }}
+{% endwith %}
+{% endblock jsonref %}
+

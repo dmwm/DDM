@@ -1,0 +1,13 @@
+{% extends "xrdPopularity/xrdDSTemplateTable.html"%}
+
+{% block subtitle %}
+{% with "ProcessedDataSet Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+
+{% block js %}
+{% url xrdDSNameStatInTimeWindow as insert_jsonurlbase %}
+{{ block.super }}
+{% endblock js %}

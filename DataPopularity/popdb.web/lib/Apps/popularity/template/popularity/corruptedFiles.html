@@ -1,0 +1,84 @@
+{% extends "popularity/base.html"%}
+
+{% block jsonref %}
+{% with "True" as withjsonref %}
+{{ block.super }}
+{% endwith %}
+{% endblock jsonref %}
+
+{% block caption %}
+{% with "List of files (per site) that ALWAYS failed in job accesses in the last 15 days. <br> Only CMSSW errors 8020 and 8021 are accounted for the job failures.<br> The table provides the number of access failures and the distinct days in which these failures did occur. <br>Only files with at least 5 failures or 3 distinct days of failures are summarized in the table. <br><br>double-click on the table raws to retrieve the list of corrupted files for a specific site." as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2> Corrupted Files: Detailed view </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+{{block.super}}
+
+            <div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="corruptedFiles">
+            <thead>
+	                    <tr>
+                            <th width="15%">SiteName</th>
+                            <th width="10%">Naccesses</th>
+                            <th width="10%">Ndays</th>
+                            <th width="65%">Filename</th>
+	                    </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                            <tr>
+                            <th width="15%"><input name="search_siteName" value="Filter SiteName" class="search_init" type="text" /></th>
+                            <th width="10%"><input name="search_path" value="" class="search_init" type="hidden" /></th></th>
+                            <th width="10%"><input name="search_path" value="" class="search_init" type="hidden" /></th></th>
+                            <th width="65%"><input name="search_Filename" value="Filter Filename" class="search_init" type="text" /></th>
+                            </tr>
+            </tfoot>
+	    </table>
+	    </div>
+        </div>
+
+
+
+{% endblock body_content%}
+
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/dataTableLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/datePickerChanges.js"></script>
+<script>
+
+
+    var info = {
+		placeholder: "corruptedFiles",
+		sorting : [ [1,'desc'] ],
+		iDisplayLength : 10,
+		aoColumns : [ 
+                                 { "mDataProp": "SITENAME" },
+                                 { "mDataProp": "NACC" },
+                                 { "mDataProp": "NDAYS" },
+                                 { "mDataProp": "FILENAME" },
+                         ],
+	     }
+
+
+    var jsonurl = "{% url getCorruptedFiles %}"
+    function getData(url,info){	
+	corruptedFilesTable(url,info);
+       }
+
+       {% with thefunction="getData(jsonurl,info);" %}
+
+        $(document).ready(function(){
+		{{thefunction}}
+		});
+     {% endwith %}
+</script>
+
+{% endblock js %}
