@@ -1,0 +1,30 @@
+{% if datepicker %}
+        var startDate=$("#startDate").val();
+        if (startDate != '') {apiUrl=apiUrl+"&tstart="+startDate;}
+        var endDate=$("#endDate").val();
+        if (endDate !='') {apiUrl=apiUrl+"&tstop="+endDate; }
+{% endif %}
+{% if datatier %}
+        var dataTier = $("#select_dataTier").val();
+        apiUrl = apiUrl+"&collname=" + dataTier 
+{% endif %}
+{% if sitename %}
+        var siteName = $("#select_siteName").val();
+        if (siteName != "all"){apiUrl = apiUrl+"&sitename=" + siteName }
+{% endif %}
+{% if choice_popular %}
+        var popIdx = $("#select_popIdx").val();
+        apiUrl = apiUrl + "&n=" + popIdx 
+{% endif %}
+{% if choice_TimeAggr %}
+        var timeAggr = $("#select_timeAggr").val();
+        apiUrl = apiUrl + "&aggr=" + timeAggr 
+{% endif %}
+{% if choice_metric %}
+        var metric = $("#select_metric").val();
+        apiUrl = apiUrl+ "&orderby=" + metric;
+{% endif %}
+{% if choice_centraluser %}
+        var val = $("#select_centraluser").val();
+	apiUrl = apiUrl + "&centraluser=" + val;
+{% endif %}

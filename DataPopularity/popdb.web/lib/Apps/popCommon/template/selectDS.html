@@ -1,0 +1,25 @@
+<table class="input_table">
+
+<meta charset="utf-8">
+	
+	<script>
+	$(function() {
+
+		$( "#select_dataSet" ).autocomplete({
+                        {% url availableDataSets as the_url %}
+			source: "availableDataSets",
+                        minLength: 3,
+		});
+	});
+	</script>
+
+
+
+<div class="demo">
+
+<div class="ui-widget">
+	<label for="dataset">DataSet: </label>
+	<input id="select_dataSet" />
+</div>
+
+</table>

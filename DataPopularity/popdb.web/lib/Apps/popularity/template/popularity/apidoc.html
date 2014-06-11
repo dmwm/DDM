@@ -1,0 +1,360 @@
+{% extends "popularity/base.html"%}
+{% block css %}
+{{ block.super }}
+<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+
+{% endblock js_include %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2>Popularity API Documentation</h2>
+{% endblock sub_title %}
+
+{% block caption %}
+{% endblock caption %}
+
+{% block body_content %}
+{{block.super}}
+
+
+
+
+<div class="documentation">
+
+	<table class="elements" cellspacing="0" summary="Contacts template">
+	<tr>
+		<td class="elementName" colspan="2">getDSdata</td>
+	</tr>
+	<tr>
+		<td class="feature">Method</td>
+		<td class="descr">GET</td>
+	</tr>
+	<tr>
+		<td class="feature">Description</td>
+		<td class="descr">
+			Return a JSON for the n most popular datasets in a specified time window.
+			<br> For every dataset, the popularity (measured by a specified metric) is provided for the full length of its lifetime. 
+			<br>
+			<br> Takes the following arguments: 
+			<br>	- sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+			<br>	- tstart (Default: one week ago)  
+			<br>	- tstop (Default: today)
+			<br>	- aggr (Default: day. Accepted values: day, week, month, quarter, year )
+			<br>	- n (define how many elements to return, e.g. '5' for 5 first most popular)
+			<br>	- orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+		</td>
+	</tr>
+	<tr>
+		<td class="feature">Examples</td>
+		<td class="descr">
+			1. Retrieve the list of 5 most popular datasets by total cpu time:                          
+			<br><a href="/popdb/popularity/getDSdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDSdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu</a>
+			<br>
+			<br> 2. Retrieve the list for a given site (e.g. T2_IT_Pisa):
+			<br><a href="/popdb/popularity/getDSdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T2_IT_Pisa&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDSdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T2_IT_Pisa&n=5&aggr=day&orderby=totcpu</a>
+		
+		</td>
+	</tr>
+
+	<tr>
+                <td class="elementName" colspan="2">getDTdata</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON for the n most popular datatiers in a specified time window.
+                        <br> For every datatier, the popularity (measured by a specified metric) is provided for the full length of its lifetime.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+                        <br>    - aggr (Default: day. Accepted values: day, week, month, quarter, year )
+                        <br>    - n (define how many elements to return, e.g. '5' for 5 first most popular)
+                        <br>    - orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list of 5 most popular datatiers by total cpu time:
+                        <br><a href="/popdb/popularity/getDTdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDTdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu</a>
+                        <br>
+                        <br> 2. Retrieve the list for a given site (e.g. T0_CH_CERN):
+                        <br><a href="/popdb/popularity/getDTdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T0_CH_CERN&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDTdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T0_CH_CERN&n=5&aggr=day&orderby=totcpu</a>
+
+                </td>
+        </tr>
+
+<tr>
+                <td class="elementName" colspan="2">getDSNdata</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the list of the most popular processed datasets in a specified time window.
+                        <br> For every dataset, the popularity (measured by a specified metric) is provided for the full length of its lifetime.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+                        <br>    - aggr (Default: day. Accepted values: day, week, month, quarter, year )
+                        <br>    - n (define how many elements to return, e.g. '5' for 5 first most popular)
+                        <br>    - orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list of 5 most popular processed datasets by total cpu time:
+                        <br><a href="/popdb/popularity/getDSNdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDSNdata?&tstart=2012-6-27&tstop=2012-7-5&n=5&aggr=day&orderby=totcpu</a>
+                        <br>
+                        <br> 2. Retrieve the list for a given site (e.g. T0_CH_CERN):
+                        <br><a href="/popdb/popularity/getDSNdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T0_CH_CERN&n=5&aggr=day&orderby=totcpu">/popdb/popularity/getDSNdata?&tstart=2012-6-27&tstop=2012-7-5&sitename=T0_CH_CERN&n=5&aggr=day&orderby=totcpu</a>
+
+                </td>
+        </tr>
+	
+	<tr>
+                <td class="elementName" colspan="2">getSingleDSstat</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of a dataset. The popularity (measured by a specified metric) is provided for the full length of the dataset lifetime.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - aggr (Default: day. Accepted values: day, week, month, quarter, year )
+                        <br>    - orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Total cpu time values for dataset /DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12-PU_S7_START52_V9-v2/AODSIM:
+                        <br><a href="/popdb/popularity/getSingleDSstat?orderby=totcpu&name=/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12-PU_S7_START52_V9-v2/AODSIM">/popdb/popularity/getSingleDSstat?orderby=totcpu&name=/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12-PU_S7_START52_V9-v2/AODSIM</a>
+                </td>
+        </tr> 
+
+
+                <td class="elementName" colspan="2">getSingleDTstat</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of a datatier. The popularity (measured by a specified metric) is provided for the full length of the datatier lifetime.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - aggr (Default: day. Accepted values: day, week, month, quarter, year )
+                        <br>    - orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Total cpu time values for datatier ALCARECO:
+                        <br><a href="/popdb/popularity/getSingleDTstat?orderby=totcpu&name=ALCARECO">popdb/popularity/getSingleDTstat?orderby=totcpu&name=ALCARECO</a>
+                </td>
+        </tr>
+
+
+                <td class="elementName" colspan="2">getSingleDNstat</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of a processed dataset. The popularity (measured by a specified metric) is provided for the full length of the processed dataset lifetime.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - aggr (Default: day. Accepted values: day, week, month, quarter, year )
+                        <br>    - orderby (define the popularity metric. Default: totcpu. Accepted values: totcpu, naccess, nusers)
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Total cpu time values for processed dataset:
+                        <br><a href="/popdb/popularity/getSingleDNstat?orderby=totcpu&name=Summer12-PU_S7_START52_V9-v1">/popdb/popularity/getSingleDNstat?orderby=totcpu&name=Summer12-PU_S7_START52_V9-v1</a>
+                </td>
+        </tr>
+
+	<tr>
+                <td class="elementName" colspan="2">DSStatInTimeWindow</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of all datasets in terms of number of Accesses, CPU time and Users per day, in a specific time window.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Datasets popularity values for the week from 2012-6-26 to 2012-7-3 in site T2_IT_Pisa:
+                        <br><a href="/popdb/popularity/DSStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa">/popdb/popularity/DSStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa</a>
+                </td>
+        </tr>
+
+        <tr>
+                <td class="elementName" colspan="2">DataTierStatInTimeWindow</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of all datatiers in terms of number of Accesses, CPU time and Users per day, in a specific time window.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Datatiers popularity values for the week from 2012-6-26 to 2012-7-3 in site T2_IT_Pisa:
+                        <br><a href="/popdb/popularity/DataTierStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa">/popdb/popularity/DataTierStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa</a>
+                </td>
+        </tr>
+
+        <tr>
+                <td class="elementName" colspan="2">DSNameStatInTimeWindow</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the popularity of all processed datasets in terms of number of Accesses, CPU time and Users per day, in a specific time window.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (e.g. T2_IT_Pisa. Default: 'summary' for the overall view)
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Processed datasets popularity values for the week from 2012-6-26 to 2012-7-3 in site T2_IT_Pisa:
+                        <br><a href="/popdb/popularity/DSNameStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa">/popdb/popularity/DSNameStatInTimeWindow/?&tstart=2012-6-26&tstop=2012-7-3&sitename=T2_IT_Pisa</a>
+                </td>
+        </tr>
+
+<tr>
+                <td class="elementName" colspan="2">getUserStat</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with user activity statistics on a given datatier in a specified time window. The statistics are provided in terms of number of Accesses, CPU time and Sites accessed.
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - collname (specify the datatier for witch collect the user statistics e.g. 'GEN-SIM'. Default: 'AOD')
+                        <br>    - tstart (Default: one week ago)
+                        <br>    - tstop (Default: today)
+                        <br>    - orderby (Default: totcpu)
+
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Users statistics releted to AOD datatier for the week from 2012-6-26 to 2012-7-3:
+                        <br><a href=" /popdb/popularity/getUserStat/?collname=AOD&tstart=2012-6-26&tstop=2012-7-3"> /popdb/popularity/getUserStat/?collname=AOD&tstart=2012-6-26&tstop=2012-7-3</a>
+                </td>
+        </tr>
+
+<tr>
+                <td class="elementName" colspan="2">getCorruptedFiles</td>
+        </tr>
+        <tr>
+                <td class="feature">Method</td>
+                <td class="descr">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+                        Return a JSON with the list of files (per site) that ALWAYS failed in job accesses in the last 10 days
+                        <br>
+                        <br> Takes the following arguments:
+                        <br>    - sitename (Default: summary for the overall view)
+                        <br>    - orderby (Default: totcpu)
+
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Overall view of corrupted files:
+                        <br><a href="/popdb/popularity/getCorruptedFiles/">/popdb/popularity/getCorruptedFiles/</a>
+                        <br>
+			<br>2. Corrupted files on site T2_IT_Pisa:
+                        <br><a href="/popdb/popularity/getCorruptedFiles/?sitename=T2_IT_Pisa">/popdb/popularity/getCorruptedFiles/?sitename=T2_IT_Pisa</a>
+                </td>
+        </tr>
+
+
+	</table>
+
+</div>
+
+
+
+
+
+
+{% endblock body_content%}

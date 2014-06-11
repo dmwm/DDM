@@ -1,0 +1,20 @@
+{% extends "popularity/templateCustomPlot.html"%}
+
+{% block subtitle %}
+{% with "DataSet Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+{% block body_content %}
+{% with "DataSet" as elementtype %}
+{{ block.super }}
+{% endwith %}
+{% endblock body_content %}
+
+
+{% block js %}
+{% url dataSets as insert_inputtableurl %}
+{% url getSingleDSPlotStat as insert_jsonurl %}
+{{ block.super }}
+{% endblock js %}

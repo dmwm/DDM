@@ -1,0 +1,211 @@
+{% extends "popularity/base.html" %}
+
+{% block jsonref %}
+{% with "False" as withjsonref %}
+{{ block.super }}
+{% endwith %}
+{% endblock jsonref %}
+
+{% block caption %}
+{{ block.super }}
+<div class="caption">
+<p>To add a dataSet to the chart select it from the table and click the chart button.
+<br/>
+The date input parameters identify the time window showed in the main chart. 
+The popularity  of the dataSets is displayed for the full length of its lifetime, in the lower chart.
+After the creation of the chart, the time window showed on the main chart can be changed selectioning the desired part on lower chart. 
+The popularity metric showed in the chart can be chosen as: CPU time [h], number of access, number of users.
+It is also possible to filter the search by a site name.</p>
+</div>
+{% endblock caption %}
+
+{% block css %}
+{{ block.super }}
+                <link href="{{ STATIC_URL  }}css/plots.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block js_include %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2> DataSet Time Evolution </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+	{{ block.super }}
+
+
+        <div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" rules="all" class="display" id="DataSetTable">
+            <thead>
+                    <tr >
+                            <th width="100%">DataSet</th>
+                    </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+<!--
+                    <tr ALIGN="center" >
+                            <th width="20%">DataSet</th>
+                            <th   COLSPAN=2 width="20%">Accesses</th>
+                            <th   COLSPAN=2 width="20%">CPU Time</th>
+                            <th   COLSPAN=2 width="20%">Users*day</th>
+                    </tr>
+-->
+            </tfoot>
+            </table>
+        </div>
+	</div>
+	<div ALIGN="center">
+	<table CELLSPACING=15>
+	<tr>
+		<td>
+		<BUTTON TYPE="submit"  id="add_selected">
+  		<IMG SRC="{{ STATIC_URL  }}images/Line-chart-icon.png" ALIGN="absmiddle" width="30" height="30">
+  		ADD TO CHART
+		</BUTTON>
+		</td>
+
+                <td>
+                <BUTTON TYPE="submit" id="clear_plot">
+                <IMG SRC="{{ STATIC_URL  }}images/clear.png" ALIGN="absmiddle" width="30" height="30">
+                CLEAR CHART
+                </BUTTON>
+                </td>
+        </tr>
+	<tr>
+	</tr>
+	</table>
+<!--
+		<img src="url" alt="add to chart button" id="add_selected"/><a id="add_selected"> Add selection to the plot </a> | <a id="clear_plot"> Clear plot </a>
+-->
+	</div>
+
+{% include  'includeInput.html' with datepicker="true" choice_metric="true" choice_TimeAggr="true" datatype="dataSet" sitename="true" snlist=siteslist %}
+
+<br><br>
+
+<div id class="plot_div">    
+    <div id="placeholder"></div>
+</div>
+{% endblock body_content%}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/hcplotlib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/dataTableLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/datePickerChanges.js"></script>
+
+<script>
+
+        var info = {
+            datatype: "DataSets",
+            today: new Date().toDateString()
+        }
+
+    $(document).ready(function(){
+                setDefaultEndDate();
+                setDefautlStartDate();
+                var table = DataSetTable('{% url dataSets %}');
+                console.log(table);
+		$("#DataSetTable tbody").click(function(event) {
+        		//$(table.fnSettings().aoData).each(function (){
+            		//$(this.nTr).removeClass('row_selected');
+        		//});
+        		$(event.target.parentNode).toggleClass('row_selected');
+    		});
+		/*
+		$("#DataSetTable tbody > tr").click( function() {
+			console.log(this);
+        		$(this).toggleClass('row_selected');
+    		} );
+		/*
+		$('#add_selected').click( function() {
+        		var anSelected = fnGetSelected(table);
+			var selectedds = table[anSelected];
+			console.log(table.fnGetData(anSelected[0], 0));
+			additemtotimeplot(table.fnGetData(anSelected[0], 0), '{% url getSingleDSPlotStat %}');
+    		} );
+		*/
+		/*
+		function fnGetSelected( oTableLocal )
+		{
+		    return oTableLocal.$('tr.row_selected');
+		}
+		*/
+                $('#add_selected').click( function() {
+                        var anSelected = fnGetSelected(table);
+			console.log(anSelected)
+			for(i = 0; i < anSelected.length; i++){
+				console.log(table.fnGetData(anSelected[i], 0))
+				additemtotimeplot(table.fnGetData(anSelected[i], 0), '{% url getSingleDSPlotStat %}')
+			}
+                        //var selectedds = table[anSelected];
+                        //console.log(table.fnGetData(anSelected[0], 0));
+                        //additemtotimeplot(table.fnGetData(anSelected[0], 0), '{% url getSingleDSPlotStat %}');
+                } );
+
+		$('#clear_plot').click( function() {
+			cleartimeplot();
+		});
+
+        $('#select_popIdx').bind("change", function() {
+                updateplot('{% url getSingleDSPlotStat %}');
+        });
+        $('#select_timeAggr').bind("change", function() {
+                updateplot('{% url getSingleDSPlotStat %}');
+        });
+        $('#select_siteName').bind("change", function() {
+                updateplot('{% url getSingleDSPlotStat %}');
+        });
+        $('#select_metric').bind("change", function() {
+                updateplot('{% url getSingleDSPlotStat %}');
+        });
+        $('#submit').bind('click', function() {
+                updateplot('{% url getSingleDSPlotStat %}')
+        });
+
+
+        });
+/*
+    var alreadyFetched = {};
+	var data = []
+	var placeholder;
+	var options = {}
+	
+	var plotDS=1
+        var info = {
+            datatype: "DataSets",
+            today: new Date().toDateString()
+        }
+    {% url getDSPlotData as the_url %}
+        $(document).ready(function(){
+
+                setDefaultEndDate();
+                setDefautlStartDate();
+                hctimeplot("{{ the_url }}", info);
+        });
+
+
+        $('#select_popIdx').bind("change", function() {
+                hctimeplot("{{ the_url }}", info);
+        });
+        $('#select_timeAggr').bind("change", function() {
+                hctimeplot("{{ the_url }}", info);
+        });
+        $('#select_siteName').bind("change", function() {
+                hctimeplot("{{ the_url }}", info);
+        });
+        $('#select_metric').bind("change", function() {
+                hctimeplot("{{ the_url }}", info);
+        });
+        $('#submit').bind('click', function() {
+                hctimeplot("{{ the_url }}", info)
+        });
+*/
+</script>
+
+{% endblock js %}

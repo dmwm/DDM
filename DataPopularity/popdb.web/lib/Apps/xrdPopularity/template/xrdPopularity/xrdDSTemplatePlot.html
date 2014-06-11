@@ -1,0 +1,76 @@
+{% extends "xrdPopularity/baseXrd.html" %}
+
+{% block css %}
+{{ block.super }}
+                <link href="{{ STATIC_URL  }}css/plots.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+{% block caption %}
+{% with "The date input parameters identify the time window in which the popularity is evaluated. <br/>The data are ordered by their popularity in the defined date window, and can be selected/deselected. <br/>The popularity  is  displayed for the full length of its lifetime, and not only in the time window used for the ranking definition, in the lower chart. The metric used for the popularity ranking can be chosen as: CPU time [h], number of access, number of users.</p>" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block body_content %}
+	{{ block.super }}
+{% include  'includeInput.html' with datepicker="true"  choice_metric="true" choice_popular="true" choice_centraluser="true" choice_TimeAggr="true" %}
+<br><br>
+
+<div id class="plot_div">    
+    <div id="plot1"></div>
+</div>
+{% endblock body_content%}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/hcplotlib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/modules/exporting.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/datePickerChanges.js"></script>
+<script>
+
+    var data = []
+
+    var info = {
+             placeholder: "plot1",
+	     htitle: "Popularity",
+	     today: new Date().toDateString(),
+	     ytitle: "val",
+	     credits: "Popularity Service",
+	     }
+
+
+    <!-- This function build the url getting the custom parameters -->
+    function buildUrl(url,theInfo){
+	var apiUrl = url + "?";
+
+	{% include  'getInputParams.html' with datepicker="true"   choice_metric="true" choice_popular="true" choice_centraluser="true" choice_TimeAggr="true" %}
+
+	theInfo.ytitle = $("#select_metric option:selected").text();
+        return apiUrl;
+	};
+
+     function hctimeplot(url, theInfo) {
+	var fullUrl = buildUrl(url,theInfo);
+	requestData(fullUrl,theInfo);
+	};
+
+    var jsonurl= "{{insert_jsonurl}}"
+    {% with thefunction="hctimeplot(jsonurl,info);" %}
+
+        $(document).ready(function(){
+
+	         setDates();
+                {{thefunction}};
+        });
+
+    {% include  'onChangeInput.html' with datepicker="true"  choice_metric="true" choice_popular="true" choice_centraluser="true" choice_TimeAggr="true" %}
+
+    {% endwith %}
+</script>
+
+
+{% endblock js %}

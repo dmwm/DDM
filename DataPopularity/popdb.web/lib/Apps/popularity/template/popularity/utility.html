@@ -1,0 +1,64 @@
+{% extends "popularity/base.html"%}
+{% block css %}
+{{ block.super }}
+
+<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+
+<!--
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+
+{% endblock js_include %}
+-->
+
+{% block sub_title %}
+{{ block.super }}
+<h2>Popularity utilities </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+{{block.super}}
+
+
+
+
+<div class="documentation">
+
+        <table class="elements" cellspacing="0">
+        <tr>
+                <td class="elementName" colspan="2">Popularity client script</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+		The script provide access to the Popularity API performing sso_auth and sso_request.<br/>
+		It is based on X509_USER_KEY X509_USER_CERT SSO authentication.<br/>
+		Can be used it also wo/ grid env, justneed the usercert and userpem files in $HOME/.globus.<br/>
+                <br/>
+		Usage:<br/>
+		python popularityCLI.py &lt;API Name&gt; &lt;OutputFIle&gt;<br/>
+                <br/>
+ 		e.g<br/>
+  		python popularityCLI.py popularity/getCorruptedFiles myOutput.json
+		</td>
+        </tr>
+        <tr>
+                <td class="feature">Link</td>
+                <td class="descr">
+		Donwload <a href="{{ STATIC_URL  }}src/popularityCLI.py.txt" target="_blanc">HERE</a>
+                </td>
+        </tr>
+
+        </table>
+
+</div>
+
+
+
+
+
+
+{% endblock body_content%}

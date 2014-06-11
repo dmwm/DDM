@@ -1,0 +1,66 @@
+{% extends "base.html"%}
+{% block css %}
+{{ block.super }}
+<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+
+{% endblock js_include %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2>Tables Documentation </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+{{block.super}}
+
+
+
+
+<div class="documentation">
+
+	<table class="elements" cellspacing="0" summary="Contacts template">
+	<tr>
+		<td class="elementName" colspan="2">DataTierStatInTimeWindow</td>
+	</tr>
+	<tr>
+		<td class="feature" width="25%">Method</td>
+		<td class="descr" width="75%">GET</td>
+	</tr>
+	<tr>
+		<td class="feature">Description</td>
+		<td class="descr">
+			Return a JSON with the list of the datasets (DataTier) accessed within a time window, for a given Site.
+			<br> The JSON  includes the number of accesses and CPUtime for each dataset. 
+			<br> Takes the following arguments: 
+			<br>	- SiteName (e.g. T2_IT_Pisa, or summary for the overall view)
+			<br>	- tstart (default: one week ago)  
+			<br>	- tstop (default: today)
+		</td>
+	</tr>
+	<tr>
+		<td class="feature">Examples</td>
+		<td class="descr">Administrative Assistant
+			1. Retrieve the list for all the sites:                          
+			<br><a href="DataTierStatInTimeWindow/?tstart=2011-05-10&tstop=2011-06-10&sitename=summary">DataTierStatInTimeWindow/?tstart=2011-05-10&tstop=2011-06-10&sitename=summary</a>
+			<br> 2. Retrieve the list for a given site (e.g. T2_IT_Pisa):
+			<br><a href="DataTierStatInTimeWindow/?tstart=2011-05-10&tstop=2011-06-10&sitename=T2_IT_Pisa">DataTierStatInTimeWindow//?tstart=2011-05-10&tstop=2011-06-10&sitename=T2_IT_Pisa</a>
+		
+		</td>
+	</tr>
+	</table>
+
+</div>
+
+
+
+
+
+
+{% endblock body_content%}

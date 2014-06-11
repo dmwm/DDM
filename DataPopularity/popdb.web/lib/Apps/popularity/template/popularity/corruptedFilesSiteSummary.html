@@ -1,0 +1,85 @@
+{% extends "popularity/base.html"%}
+
+{% block jsonref %}
+{% with "True" as withjsonref %}
+{{ block.super }}
+{% endwith %}
+{% endblock jsonref %}
+
+{% block caption %}
+{% with "Summary of the corrupted files found per site.<br> A file is defined corrupded if ALWAYS failed in job accesses in the last 15 days.<br> Only CMSSW errors 8020 and 8021 are accounted for the job failures.<br> The table provides for each site and dataset, the number of failing files, with the max (min) number of failures and distinct days of failures as well. <br>Only files with at least 5 failures or 3 distinct days of failures are summarized in the table. <br><br>double-click on the table raws to retrieve the list of corrupted files for a specific site." as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2> Corrupted Files: Site Summary </h2>
+{% endblock sub_title %}
+
+{% block body_content %}
+{{block.super}}
+
+            <div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="corruptedFiles">
+            <thead>
+	                    <tr>
+                            <th width="15%">SiteName</th>
+                            <th width="10%">Number of Files</th>
+                            <th width="5%">Max Failures per file</th>
+                            <th width="5%">Min Failures per file</th>
+                            <th width="5%">Max distinct days per file</th>
+                            <th width="5%">Min distinct days per file</th>
+	                    </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                            <tr>
+                            <th width="15%"><input name="search_siteName" value="Filter SiteName" class="search_init" type="text" /></th>
+                            </tr>
+            </tfoot>
+	    </table>
+	    </div>
+        </div>
+
+
+
+{% endblock body_content%}
+
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/dataTableLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}js/datePickerChanges.js"></script>
+<script>
+
+    var info = {
+		placeholder: "corruptedFiles",
+		sorting : [ [1,'desc'] ],
+		iDisplayLength : 10,
+		aoColumns : [ 
+                                 { "mDataProp": "SITENAME" },
+                                 { "mDataProp": "FILES" },
+                                 { "mDataProp": "MAXACC" },
+                                 { "mDataProp": "MINACC" },
+                                 { "mDataProp": "MAXDAYS" },
+                                 { "mDataProp": "MINDAYS" },
+                         ],
+	     }
+
+
+    var jsonurl = "{% url getCorruptedFilesSiteSummary %}"
+    function getData(url,info){	
+	corruptedFilesTable(url,info);
+    };
+
+
+       {% with thefunction="getData(jsonurl,info);" %}
+
+        $(document).ready(function(){
+		{{thefunction}}
+		});
+     {% endwith %}
+</script>
+
+{% endblock js %}

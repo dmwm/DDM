@@ -1,0 +1,91 @@
+{% extends "xrdPopularity/baseXrd.html"%}
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+
+{% block subtitle %}
+{% with "Insertions" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+
+{% block caption %}
+{% with "the table caption" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+
+{% block body_content %}
+{{block.super}}
+
+{% include  'includeInput.html' with datepicker="true"%}
+
+	<div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" rules="all" class="display" id="xrdMonitoringDataTable">
+            <thead>
+                    <tr ALIGN="center" >
+                            <th width="20%">Time</th>
+                            <th   COLSPAN=2 width="20%">insertions</th>
+                    </tr>
+                    <tr>
+                            <th width="20%"></th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">rate [Hz]</th>
+                    </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                    <tr>
+                            <th width="20%"></th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">rate [Hz]</th>
+                    </tr>
+                    <tr>
+                            <th width="20%"><input name="search_Date" value="Filter Date" class="search_init" type="text" /></th>
+                            <th width="10%"><input  name="search_InsertionsN" value="Filter Insertions N"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input  name="search_Insertions%" value="Filter Insertions rate"  class="search_init" type="text"  /></th>
+                    </tr>
+            </tfoot>
+	    </table>
+        </div>
+
+
+{% endblock body_content%}
+
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/dataTableLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/datePickerChanges.js"></script>
+
+<script>
+
+    <!-- This function build the url getting the custom parameters -->
+    function buildUrl(url){
+	var apiUrl = url + "?";
+
+	{% include  'getInputParams.html' with datepicker="true"  %}
+
+
+	return apiUrl;
+	};
+
+       var jsonurl= buildUrl("{% url xrdmonendtime %}")
+       {% with thefunction="xrdMonitoringDataTable(jsonurl);" %}
+
+        $(document).ready(function(){
+		setDates();
+		{{thefunction}}
+		});
+
+    {% include  'onChangeInput.html' with datepicker="true"  %}
+
+    {% endwith %}
+</script>
+
+{% endblock js %}

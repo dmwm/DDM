@@ -1,0 +1,20 @@
+{% extends "xrdPopularity/xrdTemplateCustomPlot.html"%}
+
+{% block subtitle %}
+{% with "Processed DataSet Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+{% block body_content %}
+{% with "Processed DataSet" as elementtype %}
+{{ block.super }}
+{% endwith %}
+{% endblock body_content %}
+
+
+{% block js %}
+{% url xrdProcessedDataSets as insert_inputtableurl %}
+{% url xrdGetSingleProcessedDSPlotStat as insert_jsonurl %}
+{{ block.super }}
+{% endblock js %}

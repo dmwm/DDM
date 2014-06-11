@@ -1,0 +1,88 @@
+{% extends "xrdPopularity/baseXrd.html" %}
+
+
+{% block css %}
+{{ block.super }}
+                <link href="{{ STATIC_URL  }}css/plots.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block js_include %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+{% block subtitle %}
+{% with "PPS test files" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+{% block caption %}
+{% with "Number of pps test files accessed per hour in the time range defined by [StartDate, EndDate]<br> Counting how many files are open/close in read more by <br> A) the server_username dteam001 (legend <b> pps_dteam_x_H </b>) <br> B) client_host like 'srmmon%' (legend <b> pps_srmmon_x_H</b>)<br> In both cases the file names satisfy the regex file_lfn like '/eos/ppsscratch/test/slstest-eospps/%'" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block body_content %}
+	{{ block.super }}
+
+{% include  'includeInput.html'	with datepicker="true"  %}
+
+
+<div id class="plot_div">    
+    <div id="plot1"></div>
+</div>
+{% endblock body_content%}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/highStockPlotLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/datePickerChanges.js"></script>
+<script>
+
+    var data = []
+
+    var info = {
+             placeholder: "plot1",
+	     htitle: "Test Accesses",
+	     today: new Date().toDateString(),
+	     plots:  ["pps_srmmon_x_H", "pps_dteam_x_H"],
+	     yvals:  ["absolute","absolute"],
+	     ytitle: "Entries/h",
+	     credits: "Popularity Service",
+	     }
+
+    <!-- This function build the url getting the custom parameters -->
+    function buildUrl(url,theInfo){
+	var apiUrl = url + "?";
+
+	{% include  'getInputParams.html' with datepicker="true"  %}
+
+	for (i = 0; i<theInfo.plots.length; i++){
+		apiUrl = apiUrl + "&plot=" + theInfo.plots[i] + "&yval=" + theInfo.yvals[i]
+        }
+
+        return apiUrl;
+	};
+
+     function hctimeplot(url, theInfo) {
+	var fullUrl = buildUrl(url,theInfo);
+	requestData(fullUrl,theInfo);
+	};
+
+
+    var jsonurl= "{% url xrdMonPlotData %}"
+    {% with thefunction="hctimeplot(jsonurl,info); " %}
+
+        $(document).ready(function(){
+
+	         setDates();
+                {{thefunction}};
+        });
+
+    {% include  'onChangeInput.html' with datepicker="true"  %}
+
+    {% endwith %}
+</script>
+
+
+{% endblock js %}

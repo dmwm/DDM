@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block css %}
+{{block.super}}
+<link href="{{ STATIC_URL }}css/404.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block body_content %}
+{{block.super}}
+
+<div style="background: none repeat scroll 0% 0% white; height: 500px; border: 2px solid; font-size: 250%;">
+<div id="notfound-image" ></div>
+<div style="vertical-align: middle">
+	<h1>ERROR 404:</h1>
+	<p><a style="color: red;">{{ request_path }}</a><br/>
+	Resource not found</p>
+</div>
+
+</div>
+
+{% endblock body_content %}

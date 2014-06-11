@@ -1,0 +1,165 @@
+body {
+	margin: 0; padding: 0;
+	font: 10px normal Arial, Helvetica, sans-serif;
+	background-color: #F2F2F2;
+}
+
+#header {
+/*	background: url(header_bg.gif) no-repeat center top;*/
+	text-align: center;
+        width: 100%;
+	/*width: 990px;*/
+	/*padding-top: 130px auto;
+	padding-left: 25px auto;*/
+}
+#header .disclaimer {
+	color: #999;
+        font-style: italic;
+        font-size: 180%;
+	padding: 0 30px 0 0;
+        /*margin-top: 20px;*/
+	text-align: right;
+	/*display: block;*/
+        float: left;
+        width: 100%;
+        position: relative;
+        /*margin-right: 25%;*/ 
+}
+#header .disclaimer a {	
+color: #ccc;
+}
+
+/*
+#main-title {
+float: left;
+font-weight: bold;
+font-size: 200%;
+margin-left: 5% ;
+margin-top: 1% ;
+}
+*/
+
+#main-title {
+font-family: futura;
+float: left;
+width: 100%;
+/*padding: 0 0 35px 0;*/
+/*margin-left: 5% ;*/
+/*margin-top: 1% ;*/
+}
+
+
+#main-title .title{
+font-size: 450%;
+float: left;
+padding: 0 0 0 60px;
+}
+
+#sub-title {
+font-weight: bold;
+font-size: 150%;
+margin-left: 0%;
+margin-right: 0%;
+margin-top: 2%;
+margin-bottom: 2%;
+text-align: left;
+}
+
+.description {
+	display: block;
+	font-size: 100%;
+	font-weight: normal;
+}
+
+#layout {
+
+	/* width:85%; */
+	margin-left: 5%;
+	width: 1024px;
+	margin: 0px auto 20px auto;
+
+}
+
+#header, #footer { 
+padding: 2em 2%; 
+/*margin: 1em 0;*/
+}
+
+
+#container {
+float: left;
+width: 100%;
+padding: 0 2em;
+}
+#container .input_table{
+/*	width: 600px;*/
+	font-weight: bold;
+	font-size: 110%;
+/*        border: 1px solid black;*/	
+}
+
+#container .input_table td{
+        padding:10px 10px;
+}
+/*
+#top-image {
+height: 90px;
+float: left;
+background-image: url(../images/logoCMS-300x300.gif);
+width: 100px;
+height: 100px;
+margin-top: 2%;
+
+position:relative;
+}
+*/
+
+#left-head {
+/*height: 190px;*/
+float: left;
+position: relative:
+top: 0;
+width: 75%;
+}
+
+#right-head {
+height: 190px;
+background-image: url(../images/PopPlogo.jpeg);
+width: 198px;
+float: right;
+position:relative;
+top: 0 ; 
+}
+
+h1 {
+font-family: arial, verdana, sans-serif;
+font-variant: small-caps;
+}
+
+h2 {
+font-family: arial, verdana, sans-serif;
+font-variant: small-caps;
+}
+
+#notfound-image {
+float: left;
+vertical-align: middle;
+height: 200px;
+width: 200px;
+background: url(../images/404.jpg) no-repeat center;
+position:relative;
+}
+
+p.errors {
+color: red;
+font-size: 120%;
+text-align:center;
+}
+
+
+.jsonref {
+font-size: 120%;
+float: left;
+padding: 10px 0px;
+font-family: arial, verdana, sans-serif;
+}

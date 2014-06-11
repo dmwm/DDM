@@ -1,0 +1,89 @@
+{% extends "xrdPopularity/baseXrd.html" %}
+
+
+{% block css %}
+{{ block.super }}
+                <link href="{{ STATIC_URL  }}css/plots.css" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block js_include %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+{% block subtitle %}
+{% with "Access rates" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+{% block caption %}
+{% with "Rate of files accessed per hour in the time range defined by [StartDate, EndDate]<br>The mean rate is evaluated on a time window of 1h <BR> The different accesses are <br> <b>  inserttime_x_H </b>: this monitors the rate of insertions in the DB from the MSG Broker. It's workflow related. Holes in this distribution do not mean that data are lost, because they are still cached in the MSG queue. <br><b>starttime_x_H</b>: mean rate (over 1h) of opening files. This quantity depends on the actual rate of open files (in read mode) in EOS * the inefficiencies of the popularity chain (if any). <br><b>starttime_norepl_x_H</b>: as starttime, but excludes the internal <b> /replicate  </b> files. <br><b>starttime_repl_x_H</b>: as starttime <b> ONLY </b> for the internal <b> /replicate  </b> files. <br><b>endtime_x_H</b>: as starttime, but for the close time" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+{% block body_content %}
+	{{ block.super }}
+
+{% include  'includeInput.html'	with datepicker="true"  %}
+
+
+<div id class="plot_div">    
+    <div id="plot1"></div>
+</div>
+{% endblock body_content%}
+
+{% block js %}
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/highStockPlotLib.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL  }}xrdPopularity/js/datePickerChanges.js"></script>
+<script>
+
+    var data = []
+
+    var info = {
+             placeholder: "plot1",
+	     htitle: "Rate of accesses",
+	     today: new Date().toDateString(),
+	     plots:  ["inserttime_x_H", "starttime_x_H", "starttime_norepl_x_H", "starttime_repl_x_H", "endtime_x_H"],
+	     yvals:  ["rate","rate","rate","rate","rate"],
+	     ytitle: "rate [Hz]",
+	     credits: "Popularity Service",
+	     }
+
+
+    <!-- This function build the url getting the custom parameters -->
+    function buildUrl(url,theInfo){
+	var apiUrl = url + "?";
+
+	{% include  'getInputParams.html' with datepicker="true"  %}
+
+	for (i = 0; i<theInfo.plots.length; i++){
+		apiUrl = apiUrl + "&plot=" + theInfo.plots[i] + "&yval=" + theInfo.yvals[i]
+        }
+
+        return apiUrl;
+	};
+
+     function hctimeplot(url, theInfo) {
+	var fullUrl = buildUrl(url,theInfo);
+	requestData(fullUrl,theInfo);
+	};
+
+
+    var jsonurl= "{% url xrdMonPlotData %}"
+    {% with thefunction="hctimeplot(jsonurl,info);" %}
+
+        $(document).ready(function(){
+
+	         setDates();
+                {{thefunction}};
+        });
+
+    {% include  'onChangeInput.html' with datepicker="true"  %}
+
+    {% endwith %}
+</script>
+
+
+{% endblock js %}

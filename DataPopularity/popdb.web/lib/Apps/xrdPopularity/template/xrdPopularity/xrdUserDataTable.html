@@ -1,0 +1,20 @@
+{% extends "xrdPopularity/xrdDSTemplateTable.html"%}
+
+{% block subtitle %}
+{% with "User Collection Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+
+{% block caption %}
+{% with "Popularity of  DataSets in terms of # Accesses, CPU time, Users*day and read MB, in  a specific time window" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock caption %}
+
+
+{% block js %}
+{% url xrdUserDSStatInTimeWindow as insert_jsonurlbase %}
+{{ block.super }}
+{% endblock js %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}DataPopularity::POPULARITY{% endblock title %}
+
+{% block css %}
+{{ block.super }}
+	<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+        <link type="text/css" href="{{ STATIC_URL  }}css/SpryMenuBar/SpryMenuBarHorizontal.css" rel="stylesheet"  />
+        <link type="text/css" href="{{ STATIC_URL  }}css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+
+{% endblock css%}
+
+
+{% block js_include %}
+{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL  }}popularity/js/pageUpdater.js"></script>
+        <!-- <script type="text/javascript" src="{{ STATIC_URL  }}js/highcharts.js"></script> -->
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/highstock.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/modules/exporting.js"></script>
+        <!-- Plotting style in high-charts -->
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/grid.js"></script>
+        <!-- 
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/table/jquery.dataTables.js" language="javascript"></script>
+        -->
+        <script type="text/javascript" src="{{ STATIC_URL  }}js/SpryMenuBar.js"></script>
+{% endblock js_include %}
+
+{% block current_app %}
+{% with current_app_name="CRAB Popularity" %}
+{{ block.super }}
+{% endwith %}
+{% endblock current_app %}
+
+        {% block top_nav %}
+         <ul id="MenuBar2" class="MenuBarHorizontal">
+
+                    <li><a href="#" class="style1">Plots</a>
+                    		                    <ul>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Most popular</a>
+                                        <ul>
+                    	                       <li><a href="{% url datasetplot %}"     >DataSets</a></li>
+                                               <li><a href="{% url datasetnameplot %}" >ProcessedDatasets</a></li>
+                                               <li><a href="{% url datatierplot %}"    >DataTiers</a></li>
+					</ul>
+                                        </li>
+					<li>
+                                        <a class="MenuBarItemSubmenu">Custom</a>
+                                        <ul>
+                                               <li><a href="{% url customdsplot %}"  >DataSets</a></li>
+                                               <li><a href="{% url customdsnplot %}" >Processed DataSets</a></li>
+                                               <li><a href="{% url customdtplot %}"  >DataTiers</a></li>
+                                        </ul>
+                                        </li>
+
+                        </ul>
+                    </li>
+
+                    <li><a href="#" class="style1">Tables</a>
+                    <ul>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Most Popular</a>
+                                        <ul>
+                                             <li><a href="{% url datasettable     %}">DataSet          </a></li>
+                                             <li><a href="{% url datasetnametable %}">ProcessedDatasets</a></li>
+                                             <li><a href="{% url datatiertable    %}">DataTiers        </a></li>
+                                        </ul>
+                                        </li>
+                                        <li><a href="{% url userstat         %}">User Stats                    </a></li>
+                                        <li>
+                                        <a class="MenuBarItemSubmenu">Corrupted Files</a>
+                                        <ul>
+                                             <li><a href="{% url corruptedfilesSiteSummary   %}">Site Summary     </a></li>
+                                             <li><a href="{% url corruptedfilesDSSummary     %}">Site & DS Summary</a></li>
+                                             <li><a href="{% url corruptedfiles              %}">File View        </a></li>
+
+                                        </ul>
+                                        </li>
+                                        </ul>
+                    <li><a href="#" class="style1">API</a>
+                    <ul>
+                            <li><a href="{% url victorinterfaceindex %}">Victor Json API</a></li>
+                            <li><a href="{% url popularityapidoc %}"    >Popularity Json API</a></li>
+
+                    </ul>
+		    <li><a href="{% url xrdIndex  %}">Xrd Popularity</a></li>
+                    <li><a href="/victor/accounting">Victor</a></li>
+                    <li><a href="#" class="style1">Support</a>
+                    <ul>
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/wiki">Wiki</a></li>
+                           <li><a href="https://svnweb.cern.ch/trac/popdb/newticket?component=Popularity">Bug Report</a></li>
+                           <li><a href="{% url popularityutility %}">Utility</a></li>
+                           <li><a href="{% url popularityversionlog %}">Versions log</a></li>
+
+                    </ul>
+
+                        </li>
+                </ul>
+ <script type="text/javascript">
+                        var MenuBar2 = new Spry.Widget.MenuBar("MenuBar2");                 
+        </script>
+
+        {% endblock top_nav %}
+
+{% block subtitle %}
+{% if subTitlelabel %}
+{{ block.super }}
+{% else %}
+{% with "put subtitle here" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endif %}
+{% endblock subtitle %}
+
+
+{% block caption %}
+{% if captionlabel %}
+{{ block.super }}
+{% else %}
+{% with "put caption here" as captionlabel %}
+{{ block.super }}
+{% endwith %}
+{% endif %}
+{% endblock caption %}
+
+

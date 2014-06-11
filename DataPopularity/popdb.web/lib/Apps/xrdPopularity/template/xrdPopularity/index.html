@@ -1,0 +1,72 @@
+{% extends "xrdPopularity/baseXrd.html"%}
+
+
+{% block js_include %}
+{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL  }}js/calendar/calendarDateInput.js"></script>
+{% endblock js_include %}
+
+
+{% block body_content %}
+{{block.super}}
+
+{% include  'includeInput.html' with datepicker="true" sitename="true" snlist=siteslist %}
+<!--
+
+	    <div id="table"><div id="dynamic">
+            <table cellpadding="0" cellspacing="0" border="0" rules="all" class="display" id="DataTierStatInTimeWindow">
+            <thead>
+                    <tr ALIGN="center" >
+                            <th width="20%">Data Tier</th>
+                            <th   COLSPAN=2 width="20%">Accesses</th>
+                            <th   COLSPAN=2 width="20%">CPU Time</th>
+                            <th   COLSPAN=2 width="20%">Users</th>
+                    </tr>
+                    <tr>
+                            <th width="20%"></th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">[%]</th>
+                            <th width="10%">[h]</th>
+                            <th width="10%">[%]</th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">[%]</th>
+                    </tr>
+            </thead>
+            <tfoot>
+                    <tr>
+                            <th width="20%"></th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">[%]</th>
+                            <th width="10%">[h]</th>
+                            <th width="10%">[%]</th>
+                            <th width="10%">[N]</th>
+                            <th width="10%">[%]</th>
+                    </tr>
+                    <tr>
+                            <th width="20%"><input name="search_DataTier" value="Filter DataTier" class="search_init" type="text" /></th>
+                            <th width="10%"><input  name="search_AccessesN" value="Filter Accesses N"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input  name="search_Accesses%" value="Filter Accesses %"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input name="search_CPU_Timeh" value="Filter CPU Time h"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input name="search_CPU Time%" value="Filter CPU Time %"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input name="search_UsersN" value="Filter Users"  class="search_init" type="text"  /></th>
+                            <th width="10%"><input name="search_Users" value="Filter Users %"  class="search_init" type="text"  /></th>
+                    </tr>
+<!--
+                    <tr ALIGN="center" >
+                            <th width="20%">Data Tier</th>
+                            <th   COLSPAN=2 width="20%">Accesses</th>
+                            <th   COLSPAN=2 width="20%">CPU Time</th>
+                            <th   COLSPAN=2 width="20%">Users</th>
+                    </tr>
+-->
+            </tfoot>
+            <tbody>
+            </tbody>
+	    </table>
+          </div>
+        </div>
+
+
+{% endblock body_content%}
+
+

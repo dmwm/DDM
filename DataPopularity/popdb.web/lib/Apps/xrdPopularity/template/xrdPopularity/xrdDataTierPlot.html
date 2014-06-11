@@ -1,0 +1,13 @@
+{% extends "xrdPopularity/xrdDSTemplatePlot.html"%}
+
+{% block subtitle %}
+{% with "DataTier Popularity" as subTitlelabel %}
+{{ block.super }}
+{% endwith %}
+{% endblock subtitle %}
+
+
+{% block js %}
+{% url xrdGetDTPlotData as insert_jsonurl %}
+{{ block.super }}
+{% endblock js %}

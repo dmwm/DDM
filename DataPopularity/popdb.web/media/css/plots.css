@@ -1,0 +1,20 @@
+/* class for the div that should contain plotLegend and placeholder */
+.plot_div{
+margin: auto;	
+}
+
+/* Style for plots legends <p>aragraph */
+#plotLegend{
+	
+    margin: 10px auto;
+    width: 900px;	
+}
+
+/* Style for plots div */
+#placeholder{
+    height: 300px;
+    margin: auto;
+    padding: 0;
+    position: relative;
+    width: 900px;	
+}

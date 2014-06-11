@@ -1,0 +1,26 @@
+{% extends "xrdPopularity/baseXrd.html"%}
+
+{% block css %}
+{{ block.super }}
+
+<link href="{{ STATIC_URL  }}css/documentation.css" rel="stylesheet" type="text/css">
+
+{% endblock css %}
+
+{% block sub_title %}
+{{ block.super }}
+<h2>Popularity tag versions </h2>
+{% endblock sub_title %}
+
+{% block caption %}
+{% endblock caption %}
+
+
+{% block body_content %}
+{{block.super}}
+
+
+{% include 'content_version_log.html' %}
+
+
+{% endblock body_content %}
