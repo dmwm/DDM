@@ -1,0 +1,10 @@
+#File created by the popularity-crab-cron rpm
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=insert_MAILTO
+
+LOGFILE=/opt/CMSDataPopularity/crab/log/cron-crab.log
+
+#*/30 * * * * cmspopdb /opt/CMSDataPopularity/crab/lib/cronPopDB.sh > $LOGFILE 2>&1 ; [ $? -ne 0 ] && cat $LOGFILE | mail -s "Problem POPDB CRAB CRON" $MAILTO
+
+
