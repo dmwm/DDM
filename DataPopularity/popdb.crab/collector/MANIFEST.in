@@ -1,0 +1,6 @@
+include module.cfg
+recursive-include lib *
+recursive-include config *
+
+global-exclude *~
+

@@ -30,8 +30,9 @@ setup(
         ('etc/dashboard-service-config/cmssw-listener/etc',glob.glob('config/etc/dashboard-service-config/cmssw-listener/etc/*')),
         ('etc/dashboard-service-config',glob.glob('config/etc/dashboard-service-config/*.cfg')),
         ('etc/dashboard-service-config',glob.glob('config/etc/dashboard-service-config/*.xml')),
-        ('cron', glob.glob('config/cron/*')),
+        ('cron', ['config/cron/dashbServices.config']),
         ('db', glob.glob('config/db/*')),
+        ('/etc/cron.d', ['config/cron/dashboard_service_config']),
    ]
     
 )
