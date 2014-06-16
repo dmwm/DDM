@@ -121,7 +121,7 @@ def request_data(date_tuple):
             attempt_count+=1
             time_sleep = factorial(attempt_count) * 60
             time.sleep(time_sleep)
-            logger.error("Failed to get_url. Attempt %s of %s\n%s\going to sleep for %s s, then retry.)"%(attempt_count,max_attemps,err,time_sleep))
+            logger.error("Failed to get_url. Attempt %s of %s\n%s\ngoing to sleep for %s s, then retry.)"%(attempt_count,max_attemps,err,time_sleep))
             if attempt_count >= max_attemps:
                 raise Exception
         
@@ -589,7 +589,7 @@ class DB2DB:
 
             self._HandleData(DashData)
             self.logger.info("\n--------------------------------------\nNumber of failed insert : bulk %s \t,\t single %s\n--------------------------------------\n" % (self.CountBulkInsertFailures,self.CountSingleInsertFailures))
-
+            self._commit()
 
         self.logger.info("\n--------------------------------------\nsize of the buffer retrieved from Dashboard %d \nNumber of jobs %s \n--------------------------------------\n" % (self.CountFiles,self.CountJobs))
         self.logger.info("\n--------------------------------------\nsize of the buffer uploaded into PopDB %d \nNumber of jobs %s      \n--------------------------------------\n" % (self.CountFilesInPop,self.CountJobsInPop))

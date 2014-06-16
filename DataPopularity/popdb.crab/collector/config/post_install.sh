@@ -13,7 +13,7 @@ echo "User that will run the service is $POPDBUSER"
 echo "EMAIL notification address is ${POPDB_NOTIFICATION}"
 
 #useradd --shell /bin/bash --create-home --home-dir /home/cern cern
-/usr/sbin/useraddcern cmspopdb
+#/usr/sbin/useraddcern cmspopdb
 
 sed -i "s@cmspopdb@$POPDBUSER@" /etc/cron.d/crab_popularity_collector
 sed -i "s;insert_MAILTO;${POPDB_NOTIFICATION};" /etc/cron.d/crab_popularity_collector

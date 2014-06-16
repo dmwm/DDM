@@ -32,7 +32,6 @@ setup(
         ('etc/dashboard-service-config',glob.glob('config/etc/dashboard-service-config/*.xml')),
         ('cron', ['config/cron/dashbServices.config']),
         ('db', glob.glob('config/db/*')),
-        ('/etc/cron.d', ['config/cron/dashboard_service_config']),
    ]
     
 )

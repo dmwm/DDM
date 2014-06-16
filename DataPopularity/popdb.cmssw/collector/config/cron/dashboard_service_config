@@ -1,3 +1,0 @@
-#File created by the dashboard.service-config rpm
-*/30 * * * * dboard /opt/dashboard/cron/dashbServices.sh > /opt/dashboard/var/log/cron-dashbServices.out 2>&1
-
