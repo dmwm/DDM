@@ -20,6 +20,7 @@ class confSettings:
             raise PopularityConfigException("configfile not found")
         try:
             self.parser = ConfigParser.SafeConfigParser()
+            self.parser.optionxform = str
             found = self.parser.read(self.configfilepath)
             logger.info("config found: %s" % found)
         except ConfigParser.ParsingError, err:
