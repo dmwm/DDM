@@ -6,7 +6,10 @@ popsettings = confSettings()
 
 os.environ['PYTHON_EGG_CACHE'] = popsettings.getSetting("popularity_project", "base_dir") + '/cache'
 
-DEBUG = True
+DEBUG = False
+if popsettings.getSetting("popularity_project", "debug_mode") == "True":
+    DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
