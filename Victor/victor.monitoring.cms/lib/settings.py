@@ -1,6 +1,6 @@
 # Django settings for victor_web project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
