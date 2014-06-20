@@ -1,0 +1,1 @@
+{"DB_CONN_STRING": "cms_eos_popularity_system/xxx@int2r_lb"}
