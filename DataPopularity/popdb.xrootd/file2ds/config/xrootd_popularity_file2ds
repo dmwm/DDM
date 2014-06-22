@@ -1,0 +1,9 @@
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=insert_MAILTO
+
+LOGFILE=/opt/CMSDataPopularity/xrootd/log/cron-crab.log
+
+#*/10 * * * * cmspopdb /opt/CMSDataPopularity/xrootd/lib/cronRestartFileToDS.sh > $LOGFILE 2>&1 ; [ $? -ne 0 ] && echo "check log in /opt/CMSDataPopularity/xrootd/log" | mail -s "Problem POPDB Xrootd File2DS CRON" $MAILTO
+
+
