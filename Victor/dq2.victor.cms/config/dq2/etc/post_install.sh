@@ -15,5 +15,7 @@ echo "EMAIL notification address is ${DASHB_NOTIFICATION}"
 #useradd --shell /bin/bash --create-home --home-dir /home/cern cern
 #/usr/sbin/useraddcern cmspopdb
 
+sed -i "s@cmspopdb@$DASHBUSER@" /etc/cron.d/victor.agent.cms
+
 changeOwner /opt/dq2/etc/dq2.cfg
 changeOwner /opt/dq2/etc/logging.cfg
