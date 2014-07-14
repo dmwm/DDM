@@ -36,7 +36,7 @@ class VictorDao:
         cursor = cx_Oracle.Cursor(self.__connection)    
         try:
             #query = "INSERT INTO CMS_CLEANING_AGENT.t_run (runDate) VALUES(SYSDATE)"
-            query = "INSERT INTO CMS_CLEANING_AGENT.t_run (runDate, runId) VALUES(SYSDATE, CMS_CLEANING_AGENT.SEQ_RUN.NEXTVAL)"                
+            query = "INSERT INTO t_run (runDate, runId) VALUES(SYSDATE, SEQ_RUN.NEXTVAL)"                
             cursor.execute(query)
             self.__connection.commit()
             self.__logger.info('Inserted a new run')
@@ -51,7 +51,7 @@ class VictorDao:
         
         cursor = cx_Oracle.Cursor(self.__connection)    
         try:
-            query = "UPDATE CMS_CLEANING_AGENT.t_run SET finished = 1 WHERE runId = (SELECT MAX(runId) FROM CMS_CLEANING_AGENT.t_run)" 
+            query = "UPDATE t_run SET finished = 1 WHERE runId = (SELECT MAX(runId) FROM t_run)" 
             cursor.execute(query)
             self.__connection.commit()
             self.__logger.info('Closed ongoing run')
@@ -67,7 +67,7 @@ class VictorDao:
         cursor = cx_Oracle.Cursor(self.__connection)
         runId = None    
         try:    
-            query = "SELECT MAX(runId) FROM CMS_CLEANING_AGENT.t_run WHERE finished = 0"
+            query = "SELECT MAX(runId) FROM t_run WHERE finished = 0"
             cursor.execute(query)    
             runId = cursor.fetchone()[0]      
             self.__logger.info('Got latest run %d' %runId)  
@@ -82,7 +82,7 @@ class VictorDao:
         
         cursor = cx_Oracle.Cursor(self.__connection)    
         try:
-            query = "INSERT INTO CMS_CLEANING_AGENT.t_run_site (runId, siteName) VALUES(:runId, :siteName)"
+            query = "INSERT INTO t_run_site (runId, siteName) VALUES(:runId, :siteName)"
             bindVar={'runId': runId, 'siteName': siteName}
             cursor.execute(query, bindVar)
             self.__connection.commit()
@@ -99,7 +99,7 @@ class VictorDao:
         cursor = cx_Oracle.Cursor(self.__connection)    
         try:
             query = '''
-                     INSERT INTO CMS_CLEANING_AGENT.t_accounting_record (runId, siteName, total, used, toBeDeleted, inDeletionQueue, newlyCleaned) 
+                     INSERT INTO t_accounting_record (runId, siteName, total, used, toBeDeleted, inDeletionQueue, newlyCleaned) 
                      VALUES(:runId, :siteName, :total, :used, :toBeDeleted, :inDeletionQueue, :newlyCleaned)
                      '''
             bindVar={'runId': runId, 'siteName': siteName, 'total': total, 'used': used, 'toBeDeleted': toBeDeleted, 'inDeletionQueue': inDeletionQueue, 'newlyCleaned': newlyCleaned}
@@ -118,7 +118,7 @@ class VictorDao:
         cursor = cx_Oracle.Cursor(self.__connection)    
         try:
             query = '''
-                     INSERT INTO CMS_CLEANING_AGENT.t_cleaned_dataset (runId, siteName, dsn, cont, rcdate, dsSize, nAcc, cpuTime) 
+                     INSERT INTO t_cleaned_dataset (runId, siteName, dsn, cont, rcdate, dsSize, nAcc, cpuTime) 
                      VALUES(:runId, :siteName, :dsn, :cont, :rcdate, :dsSize, :nAcc, :cpuTime)
                      '''
             bindVar={'runId': runId, 'siteName': siteName, 'dsn': dsn, 'cont': cont, 'rcdate': rcdate, 'dsSize': dsSize, 'nAcc': nAcc, 'cpuTime': cpuTime}
@@ -161,7 +161,7 @@ class VictorDao:
             
         try:
             try:
-                query = "INSERT INTO CMS_CLEANING_AGENT.t_run_site (runId, siteName) VALUES(:runId, :siteName)"
+                query = "INSERT INTO t_run_site (runId, siteName) VALUES(:runId, :siteName)"
                 bindVar={'runId': run, 'siteName': site}
                 cursor.execute(query, bindVar)
                 self.__connection.commit()
@@ -170,7 +170,7 @@ class VictorDao:
                 pass            
 
             query = """
-                     INSERT INTO CMS_CLEANING_AGENT.t_cleaned_dataset (runId, siteName, dsn, cont, rcdate, dsSize, nAcc, cpuTime, nBlock, maxAccsCont, totalAccsCont) 
+                     INSERT INTO t_cleaned_dataset (runId, siteName, dsn, cont, rcdate, dsSize, nAcc, cpuTime, nBlock, maxAccsCont, totalAccsCont) 
                      VALUES(%s, \'%s\', :dsn, :cont, :rcdate, :dsSize, :nAcc, :cpuTime, :nBlock, :maxAccCont, :totalAccCont)
                      """%(run, site)
             
@@ -217,7 +217,7 @@ class VictorDao:
                 newlycleaned = None
                 
             try:
-                query = "INSERT INTO CMS_CLEANING_AGENT.t_run_site (runId, siteName) VALUES(:runId, :siteName)"
+                query = "INSERT INTO t_run_site (runId, siteName) VALUES(:runId, :siteName)"
                 bindVar={'runId': run, 'siteName': site}                
                 cursor.execute(query, bindVar)
                 self.__connection.commit()
@@ -230,7 +230,7 @@ class VictorDao:
         try:
  
             query = '''
-                     INSERT INTO CMS_CLEANING_AGENT.t_accounting_record (runId, siteName, total, used, toBeDeleted, inDeletionQueue, newlyCleaned) 
+                     INSERT INTO t_accounting_record (runId, siteName, total, used, toBeDeleted, inDeletionQueue, newlyCleaned) 
                      VALUES(:runId, :site, :total, :used, :tobedeleted, :indeletionqueue, :newlycleaned)
                      '''
             
