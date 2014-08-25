@@ -137,7 +137,7 @@ class CMSSWMonCollector(Service):
                 except Exception, msg:
                     is_bulk = False
                     self._logger.warning("couldn't feed all the data: %s" % msg)
-                    self._logger.warning("inserting messages one by one")
+                    self._logger.warning("failed to insert %s messages. Inserting messages one by one" % len(bodies))
 
                     # Try to insert the messages one by one if any exception
                     for body in bodies: 
@@ -181,6 +181,10 @@ class CMSSWMonCollector(Service):
                     msgDict['fallback'] = '0'
             except:
                 msgDict['fallback'] = '-'
+
+            # convert time since Epoch to datetime
+            msgDict['start_date' ]  = datetime.utcfromtimestamp(int( msgDict['start_time'] ) )
+            msgDict['end_date'   ]  = datetime.utcfromtimestamp(int( msgDict['end_time'] ) )
 
             #self._logger.info(msgDict)
         
