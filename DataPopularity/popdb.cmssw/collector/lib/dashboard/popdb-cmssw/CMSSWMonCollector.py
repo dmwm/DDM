@@ -116,6 +116,15 @@ class CMSSWMonCollector(Service):
             return
         self.localQueue.purge(60, 60)  
         self._next_purge = time.time() + self.PURGE_INTERVAL
+
+    def validate_length(self,bodies):
+        a = [len(x.keys()) for x in bodies]
+        m = max(a)
+        if a[0] < m:
+            idx = a.index(m)
+            bodies[0], bodies[idx] = bodies[idx], bodies[0]
+            self._logger.warning("swap message positions 0 and %s. Missing keys %s" % (idx,[x for x in bodies[0].keys() if x not in bodies[idx].keys()]))
+        return bodies
     
     def insert_messages(self, names, bodies):
         """
@@ -132,6 +141,7 @@ class CMSSWMonCollector(Service):
             # Try to make a bulk insert 
             if len(bodies) > 0:
                 try:
+                    bodies = self.validate_length(bodies)
                     dao.insertMessages(bodies, self.transfers_db_table)
                     successes = len(bodies)
                 except Exception, msg:
