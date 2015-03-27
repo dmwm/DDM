@@ -406,6 +406,8 @@ class fileToDataSetAssociator:
                 continue
             if eosfile.find('/store/unmerged/') != -1:
                 continue
+            if eosfile.find('/store/t0streamer/') != -1:
+                continue
             if eosfile.find('/eos/pps/') != -1:
                 continue
             if eosfile.find('/eos/ppsscratch/') != -1:
