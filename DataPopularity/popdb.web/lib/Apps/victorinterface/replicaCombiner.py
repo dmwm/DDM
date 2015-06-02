@@ -17,7 +17,6 @@ class replicaCombiner:
     def __init__(self, lastAcc=False):
         self.lastAccOpt = lastAcc
         popsettings = confSettings()
-        self.popHost = popsettings.getSetting("victorinterface", "POPULARITY_HOST")
         self.interface = popsettings.getSetting("victorinterface", "DATASERVICE_INTERFACE") + 'Interface'
         try:
             module = __import__('Apps.victorinterface.utils.serviceInterface', globals(), locals(), [self.interface], -1)
@@ -47,7 +46,7 @@ class replicaCombiner:
             raise err
 
         try:
-            popinterface = popularityInterface(self.popHost)
+            popinterface = popularityInterface()
             pop_data = popinterface.get_json_data(sitename, source, timestart, timestop)
         except Exception, err:
             logger.error("Unable to fetch popularity information from PopDB")
@@ -114,7 +113,7 @@ class replicaCombiner:
             raise err
 
         try:
-            popinterface = popularityInterface(self.popHost, lastAcc = True)
+            popinterface = popularityInterface(lastAcc = True)
             pop_data = popinterface.get_json_data(sitename, source)
         except Exception, err:
             logger.error("Unable to fetch popularity information from PopDB")
