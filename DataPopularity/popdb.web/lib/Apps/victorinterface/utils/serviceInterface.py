@@ -18,6 +18,40 @@ class popularityInterfaceException(PopularityException):
 
 class popularityInterface(httpInterface):
 
+    def __init__(self, url,lastAcc=False):
+        if lastAcc:
+            resource = '/popdb/victorinterface/accessedBlocksStatLastAcc/'
+        else:
+            resource = '/popdb/victorinterface/accessedBlocksStat/'
+        httpInterface.__init__(self, url)
+        httpInterface.set_resource(self, resource)
+
+    def validateSiteName(self, sitename):
+        #pat = re.compile('^T[0-9][a-zA-Z0-9_]+$')
+        if  not Lexicon.wildcardtier(sitename):
+            raise popularityInterfaceException("Given hostname has not a valid format")
+
+    def get_json_data(self, site, source, timestart=None, timestop=None):
+        self.validateSiteName(site)
+            
+        params  = {'sitename':site, 'tstart': timestart, 'tstop': timestop}
+        if not timestart and not timestop:
+            params  = {'sitename':site}
+   
+        if Lexicon.accsource(source):
+            params['source'] = source
+        else:
+            raise popularityInterfaceException("Given source (access data source) is not valid")
+
+        pop_data = httpInterface.get_json_data(self, params)
+        try:
+            pop_data[site]
+        except KeyError:
+            logger.warning('WARNING: empty popularity results for %s' % site)
+        return pop_data
+
+class popularityDBInterface:
+
     def __init__(self, lastAcc=False):
         self.lastAcc = lastAcc
 

@@ -7,7 +7,7 @@ import datetime
 from Apps.popCommon.utils import Lexicon
 from Apps.popCommon.utils.confSettings import confSettings
 from Apps.popCommon.PopularityException import PopularityConfigException
-from Apps.victorinterface.utils.serviceInterface import popularityInterface
+from Apps.victorinterface.utils.serviceInterface import popularityDBInterface
 #from Apps.victorinterface.utils.serviceInterface import dasInterface
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class replicaCombiner:
             raise err
 
         try:
-            popinterface = popularityInterface()
+            popinterface = popularityDBInterface()
             pop_data = popinterface.get_json_data(sitename, source, timestart, timestop)
         except Exception, err:
             logger.error("Unable to fetch popularity information from PopDB")
@@ -113,7 +113,7 @@ class replicaCombiner:
             raise err
 
         try:
-            popinterface = popularityInterface(lastAcc = True)
+            popinterface = popularityDBInterface(lastAcc = True)
             pop_data = popinterface.get_json_data(sitename, source)
         except Exception, err:
             logger.error("Unable to fetch popularity information from PopDB")
