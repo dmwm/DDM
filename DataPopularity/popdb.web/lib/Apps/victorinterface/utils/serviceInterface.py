@@ -1,11 +1,13 @@
 from Apps.popCommon.utils.httpInterface import httpInterface, PopularityHttpInterfaceException
 from Apps.popCommon.utils import Lexicon
 from Apps.popCommon.PopularityException import PopularityException
-from Apps.victorinterface.utils import Victorinterfaceparams 
+from Apps.victorinterface.utils.Victorinterfaceparams import victorinterfaceparams, Paramvalidationexception 
+from Apps.victorinterface.database import victorinterfaceDB
 import json
 import re
 import logging
 import time
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,56 @@ class popularityInterface(httpInterface):
             raise popularityInterfaceException("Given source (access data source) is not valid")
 
         pop_data = httpInterface.get_json_data(self, params)
+        try:
+            pop_data[site]
+        except KeyError:
+            logger.warning('WARNING: empty popularity results for %s' % site)
+        return pop_data
+
+class popularityDBInterface:
+
+    def __init__(self, lastAcc=False):
+        self.lastAcc = lastAcc
+
+    def validateSiteName(self, sitename):
+        #pat = re.compile('^T[0-9][a-zA-Z0-9_]+$')
+        if  not Lexicon.wildcardtier(sitename):
+            raise popularityInterfaceException("Given hostname has not a valid format")
+
+    def get_json_data(self, site='T%', source='', timestart=datetime.now(), timestop=(datetime.now() - timedelta(days=30))):
+        
+        self.validateSiteName(site)
+            
+        if not Lexicon.accsource(source):
+            raise popularityInterfaceException("Given source (access data source) is not valid")
+
+        par = victorinterfaceparams()
+        try:
+            par.setSiteName(site)
+            logger.info('debug. siteName = %s' % par.SiteName)
+    
+            if source=='':
+                if par.SiteName == 'T2_CH_CERN' or par.SiteName == 'T0_CH_CERN':
+                    source = 'xrootd'
+                    par.SiteName = 'T2_CH_CERN'
+                else:
+                    source = 'crab'
+            par.setSource(source)
+
+            
+            if self.lastAcc:
+                pop_data = victorinterfaceDB.WhatInSiteWithStatLastAcc(collType='BlocksStat', params=par)
+            else:
+                par.setTStart(timestart)
+                par.setTStop(timestop)
+                pop_data = victorinterfaceDB.WhatInSiteWithStat(collType='BlocksStat', params=par)
+        except Paramvalidationexception as e:
+            raise popularityInterfaceException(e.getmessage())
+        except victorinterfaceDB.PopularityDBException as dbe:
+            raise popularityInterfaceException(dbe.getmessage())
+        except Exception as ex:
+            raise popularityInterfaceException(ex)
+
         try:
             pop_data[site]
         except KeyError:
