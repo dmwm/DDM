@@ -21,12 +21,12 @@ from dq2.victor.popularityInterface import PopularityInterface
 from dq2.victor.utils import callRetry, epochTime, dumpTemporaryInfo
 from dq2.victor.notifications import sendErrorMail
 
-from utils import get_json_data, get_json_data_from_file
+from utils import get_json_data, get_json_data_https, get_json_data_from_file
 
 
 """
 host = 'https://cmsweb.cern.ch'
-pophost = 'http://cms-popularity-prod.cern.ch'
+pophost = 'https://cmsweb.cern.ch'
 idx = 0
 limit = 0
 incomplete = '0'
@@ -192,8 +192,8 @@ class PopularityInterface(PopularityInterface):
             return unpopularBlocks
         
         else:
-            url = 'http://cms-popularity-prod.cern.ch/popdb/victorinterface/popdbcombine/?sitename=%s' %(site)
-            unpopularBlocks = get_json_data(url)
+            url = 'https://cmsweb.cern.ch/popdb/victorinterface/popdbcombine/?sitename=%s' %(site)
+            unpopularBlocks = get_json_data_https(url)
             
             dumpTemporaryInfo(unpopularBlocks, self.__tmpdirectory, 'blocks_%s'%(site))      
             return unpopularBlocks 
