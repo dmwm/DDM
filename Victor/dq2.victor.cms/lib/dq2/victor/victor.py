@@ -63,7 +63,7 @@ class Victor:
             self.__victorDao.insertAccountingSummary(accountingSummary)
             self.__victorDao.closeRun()
             
-        except Exception, e:             
+        except Exception as e:             
         
             print traceback.format_exc()
             self.__logger.critical(traceback.format_exc())     

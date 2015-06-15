@@ -358,7 +358,7 @@ def is_date (args):
                     int(tmp_time[1]),
                     int(tmp_time[2])
                 )
-            except ValueError, e:
+            except ValueError as e:
                 err_msg = 'Parameter value [%s] is not a valid date (%s)!' % (arg, str(e))
                 raise DQInvalidRequestException(err_msg)
             except ImportError:
@@ -371,7 +371,7 @@ def is_date (args):
                     int(tmp_date[1]),
                     int(tmp_date[2])
                 )
-            except ValueError, e:
+            except ValueError as e:
                 err_msg = 'Parameter value [%s] is not a valid date (%s)!' % (arg, str(e))
                 raise DQInvalidRequestException(err_msg)
             except ImportError:
@@ -394,7 +394,7 @@ def is_datetime (args):
     for arg in args:
         try:
             pass
-        except ValueError, e:
+        except ValueError as e:
             err_msg = 'Parameter value [%s] is not a valid datetime (%s)!' % (arg, str(e))
             raise DQInvalidRequestException(err_msg)        
     return True

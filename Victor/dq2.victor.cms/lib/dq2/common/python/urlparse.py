@@ -71,7 +71,7 @@ class Url (tuple):
         self.hostname = self.netloc[:self.netloc.find(':')]
         try:
             self.port = int(self.netloc[self.netloc.find(':')+1:])
-        except ValueError, e:
+        except ValueError as e:
             self.port = 80 # default port
         self.url = self.scheme +'://'+ self.netloc + self.path + '?' + self.query
     def __getattr__ (self, attrName):

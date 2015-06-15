@@ -61,7 +61,7 @@ class ReplicaPopularity:
         fdesc.close()
         try:
             self.pop_data=json.loads(popdata)
-        except ValueError, err:
+        except ValueError as err:
             logger.error('Unable to decode JSON from popdb output:')
             logger.error(popdata)
             raise err
@@ -94,7 +94,7 @@ class ReplicaPopularity:
         fdesc.close()
         try:
             phedex_data=json.loads(phedexdata)
-        except ValueError, err:
+        except ValueError as err:
             logger.error('Unable to decode JSON from PhEDEx datasvc output:')
             logger.error(phedexdata)
             raise err
@@ -119,7 +119,7 @@ class ReplicaPopularity:
                 dasData.append(dasBlockRecord)
             self.das_data={'data':dasData}
                 
-        except KeyError, err:
+        except KeyError as err:
             logger.error("missing key in PhEDEx record")
             logger.error(data)
             raise err
@@ -138,34 +138,34 @@ class ReplicaPopularity:
             if (interface == 'phedex'):
                 try:
                     self.get_phedex_blockreplica_data(sitename)
-                except Exception, err:
+                except Exception as err:
                     logger.error("Unable to fetch replica information from PhEDEx")
                     logger.error(err)
                     raise err
             elif (interface == 'das'):
                 try:
                     self.get_das_blockreplica_data(sitename)
-                except Exception, err:
+                except Exception as err:
                     logger.error("Unable to fetch replica information from DAS")
                     logger.error(err)
                     raise err
             else:
                 logger.error("Unable to fetch replica information - Unknow module specified in config file: %s" % interface)
                 raise Exception("Unable to fetch replica information")
-        except PopularityConfigException, err:
+        except PopularityConfigException as err:
             logger.error(err)
             raise err
 
         try:
             self.get_pop_data(sitename,timestart,timestop)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch popularity information from PopDB")
             logger.error(err)
             raise err
 
         try:
             data = self.das_data['data']
-        except KeyError, err:
+        except KeyError as err:
             logger.warning("No data in DAS query result")
             raise err
 

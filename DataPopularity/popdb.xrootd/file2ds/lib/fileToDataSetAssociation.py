@@ -152,7 +152,7 @@ class fileToDataSetAssociator:
             self.logger.info( 'Uploaded data into DB table %s \tsize %s' % (tableName , len(data) ) )
             del data[:]
             return True
-        except Exception, err :
+        except Exception as err :
             self.logger.error( 'failing upload data to table %s \nstatement %s\n%s\n%s' % (tableName, statement, Exception, err))
 
             try:
@@ -166,7 +166,7 @@ class fileToDataSetAssociator:
 
                 self.mergeUploadToDB(newstatement, data)
                 return True
-            except Exception, err :
+            except Exception as err :
                 self.logger.error( 'failing also mergeUpload data to table %s \nstatement %s\n%s\n%s\nData %s' % (tableName, newstatement, Exception, err, data))
                 raise err
             
@@ -308,7 +308,7 @@ class fileToDataSetAssociator:
             row = self.cursorQ.fetchone()[0]
             self.logger.info('Last Updated insertTime %s', row)
             return row
-        except Exception, err:
+        except Exception as err:
             self.logger.error('error in performing the query %s' % query )
             raise err
         
@@ -371,7 +371,7 @@ class fileToDataSetAssociator:
             self.countPhEDExQueries += 1 
             return ( True , dicData )
         
-        except Exception, err:
+        except Exception as err:
             self.logger.error("Error from PhEDEx interface \n%s" % err)
             return ( False , [] )
 

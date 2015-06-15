@@ -259,7 +259,7 @@ class Configurable (object):
         # get the subclass configured attribute
         try:
             isConfigured = cls.__dict__.get('isConfigured')
-        except AttributeError, e:
+        except AttributeError as e:
             setattr(cls, 'isConfigured', False)
             
         if cls.isConfigured is None or cls.isConfigured is False:

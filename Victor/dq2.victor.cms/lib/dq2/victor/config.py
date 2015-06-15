@@ -24,7 +24,7 @@ try:
     _config.read(['%s/etc/dq2.cfg' % os.environ.get('DQ2_HOME'),
                   os.path.expanduser('~/.dq2/etc/dq2.cfg'),
                   '/opt/dq2/etc/dq2.cfg'])
-except Exception, e:
+except Exception as e:
     raise BadConfigurationError('Could not parse configuration files due to error [%s]' % e)
 
 # configuration objects
@@ -48,7 +48,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
         value = None
         try:
             value = _config.get(section, param)
-        except Exception, e:
+        except Exception as e:
             pass
         if not value and mandatory:
             raise BadConfigurationError("Mandatory parameter '%s' missing from configuration file section [%s]" % (param, section))
@@ -95,7 +95,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
                 
                            
                     
-        except Exception, e:
+        except Exception as e:
             raise BadConfigurationError('Error reading parameter from configuration file [%s]' % param)
         _params.setdefault(section, {})
         _params[section][param] = value

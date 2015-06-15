@@ -117,7 +117,7 @@ def request_data(date_tuple):
         try:
             dashboard_data = get_url('%s?%s' % (dashboard_url, urllib.urlencode(params)))
             get_url_success = True
-        except Exception, err:
+        except Exception as err:
             attempt_count+=1
             time_sleep = factorial(attempt_count) * 60
             time.sleep(time_sleep)

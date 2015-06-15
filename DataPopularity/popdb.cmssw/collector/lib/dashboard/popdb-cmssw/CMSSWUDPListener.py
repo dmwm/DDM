@@ -61,12 +61,12 @@ class CMSSWUDPHandler(SocketServer.BaseRequestHandler):
             try:
                 mqid = gmq.add_message(msg)
                 #glogger.info("msg added as %s" % mqid)
-            except Exception,  err :
+            except Exception as  err :
                 glogger.error( "failing upload to local queue. Error: %s" % (err))
                 raise Exception
             global gcounter
             gcounter += 1
-        except Exception,  err :
+        except Exception as  err :
             glogger.error( "Error: %s" % (err))
             
 class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer): pass
@@ -95,7 +95,7 @@ class CMSSWUDPListener(Service):
             global gmq
             gmq = DQS(path = self.param('localQueue'))
             self._logger.info( "Created connection to local queue %s" % self.param('localQueue'))
-        except Exception,  err :
+        except Exception as  err :
             self._logger.error( "Failing connection to local queue %s" % (err))
             raise Exception
 
@@ -120,7 +120,7 @@ class CMSSWUDPListener(Service):
             while self.status() is not None:
                 pass
                         
-        except Exception,  err :
+        except Exception as  err :
             self._logger.error( "%s" % (err))
             self.server.shutdown()
             raise Exception

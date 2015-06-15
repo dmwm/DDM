@@ -112,7 +112,7 @@ class Config (object):
             try:
                 config.read(configFiles)
                 self._configs[packageName] = config
-            except ParsingError, msg:
+            except ParsingError as msg:
                 # @todo: we need to log the exception somewhere
                 # problem is without loading the config we have no logger
                 return None
@@ -184,7 +184,7 @@ def _load_configuration (aDir, configurationSection):
             
             if config.has_section(configurationSection):
                 return True
-        except (NoSectionError, ParsingError), e:
+        except (NoSectionError, ParsingError) as e:
             _LOADED[f] = str(e) # don't load again and store exception message
     
     # configurationSection/configurationSection.cfg
@@ -198,7 +198,7 @@ def _load_configuration (aDir, configurationSection):
                 for k, v in config.items(configurationSection):
                     _CONFIGURATIONS[configurationSection][k] = v
             return config.has_section(configurationSection)
-        except (NoSectionError, ParsingError), e:
+        except (NoSectionError, ParsingError) as e:
             _LOADED[f] = str(e) # don't load again and store exception message
     
     return False

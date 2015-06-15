@@ -16,14 +16,14 @@ class confSettings:
         try:
             self.configfilepath = [self.dirwalk(self.popularity_base, configfilename).next()+'/'+configfilename for configfilename in configfilenames]
             logger.info("popularity_base: %s" % self.popularity_base)
-        except Exception, err:
+        except Exception as err:
             raise PopularityConfigException("configfile not found")
         try:
             self.parser = ConfigParser.SafeConfigParser()
             self.parser.optionxform = str
             found = self.parser.read(self.configfilepath)
             logger.info("config found: %s" % found)
-        except ConfigParser.ParsingError, err:
+        except ConfigParser.ParsingError as err:
             raise PopularityConfigException("exception while reading config file - %s" % err.message)
             #raise err
             #logger.error("CONFIG FILE NOT FOUND")            

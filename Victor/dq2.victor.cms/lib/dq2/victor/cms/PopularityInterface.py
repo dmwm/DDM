@@ -225,7 +225,7 @@ class PopularityInterface(PopularityInterface):
                 
             unpopularBlocksListed = self.__parseUnpopularBlocks(site, blocks, threshold, creationlimit, physicsgroup)
 
-        except Exception, e:            
+        except Exception as e:            
             self.__logger.critical('Failed to process site %s [%s - %s]'%(site, e, traceback.format_exc()))
             sendErrorMail('%s\n%s'%(e,traceback.format_exc()))            
             return {} 

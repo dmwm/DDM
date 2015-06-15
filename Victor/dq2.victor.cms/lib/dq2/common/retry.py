@@ -15,11 +15,11 @@ def retry(func, *args, **kwargs):
     while True:
         try:
             return apply(func,args, kwargs)
-        except Exception, e:
+        except Exception as e:
             print e
-        except DQUnknownDatasetException, e:
+        except DQUnknownDatasetException as e:
             raise (e)            
-        except DQFatalError, e:
+        except DQFatalError as e:
             raise (e)        
         except:
             errno, errstr = sys.exc_info()[:2]

@@ -21,7 +21,7 @@ class replicaCombiner:
         try:
             module = __import__('Apps.victorinterface.utils.serviceInterface', globals(), locals(), [self.interface], -1)
             self.replicaInterface = getattr(module, self.interface)
-        except Exception, err:
+        except Exception as err:
             msg = 'unable to import replica interface: %s ' % self.interface
             logger.error(msg)
             raise Exception(msg)
@@ -40,7 +40,7 @@ class replicaCombiner:
         try:
             replica = self.replicaInterface(self.replicaHost)
             replica_data = replica.get_json_data(sitename)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch replica information from %s" % self.replicaInterface.__name__)
             logger.error(err)
             raise err
@@ -48,14 +48,14 @@ class replicaCombiner:
         try:
             popinterface = popularityDBInterface()
             pop_data = popinterface.get_json_data(sitename, source, timestart, timestop)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch popularity information from PopDB")
             logger.error(err)
             raise err
 
         try:
             data = replica_data['data']
-        except KeyError, err:
+        except KeyError as err:
             logger.warning("No replica data result")
             raise err
 
@@ -107,7 +107,7 @@ class replicaCombiner:
         try:
             replica = self.replicaInterface(self.replicaHost)
             replica_data = replica.get_json_data(sitename)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch replica information from %s" % self.replicaInterface.__name__)
             logger.error(err)
             raise err
@@ -115,14 +115,14 @@ class replicaCombiner:
         try:
             popinterface = popularityDBInterface(lastAcc = True)
             pop_data = popinterface.get_json_data(sitename, source)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch popularity information from PopDB")
             logger.error(err)
             raise err
 
         try:
             data = replica_data['data']
-        except KeyError, err:
+        except KeyError as err:
             logger.warning("No replica data result")
             raise err
 

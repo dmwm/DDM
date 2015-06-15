@@ -139,7 +139,7 @@ class phedexInterface(httpInterface):
             formatted_data={'data':dasData}
             return formatted_data
 
-        except KeyError, err:
+        except KeyError as err:
             msg = 'empty PhEDEx datasvc results for %s' % site
             logger.error(msg)
             raise phedexInterfaceException(msg)
@@ -175,14 +175,14 @@ class dasInterface(httpInterface):
     def decodeDasData(self, data):
         try:
             dataDict = json.loads(data)
-        except ValueError, err:
+        except ValueError as err:
             msg = "data from DAS could not be decoded to JSON"
             logger.debug(msg)
             logger.debug(err)
             raise dasInterfaceException(msg)
         try:
             queryStatus = dataDict['status']
-        except KeyError, err:
+        except KeyError as err:
             msg = "no status key in DAS record"
             logger.debug(msg)
             logger.debug(err)
@@ -191,7 +191,7 @@ class dasInterface(httpInterface):
             try:
                 if (dataDict['nresults']==0 or not dataDict['data']):
                     logger.warning('query did not return any result')
-            except KeyError, err:
+            except KeyError as err:
                 msg = "missing key in DAS record"
                 logger.debug(msg)
                 logger.debug(err)

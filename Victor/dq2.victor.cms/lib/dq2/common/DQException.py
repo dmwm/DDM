@@ -52,7 +52,7 @@ class DQException: # (Exception):
         import cPickle        
         try:
             return cPickle.dumps(self)            
-        except cPickle.PicklingError, e:
+        except cPickle.PicklingError as e:
             return str(self)
         
 
