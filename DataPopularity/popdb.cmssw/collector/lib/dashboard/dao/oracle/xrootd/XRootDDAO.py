@@ -53,7 +53,7 @@ class XRootDDAO(object):
         cursor = self._ctx.getCursor()
         sql = "INSERT INTO %s " % database_table
         try:
-            if type(message) == dict:
+            if isinstance(message, dict):
                 sql += "( %s ) " % ','.join(message.keys())
                 sql += "VALUES (:" + ',:'.join(message.keys()) + ")"
                 cursor.execute(sql, message)
