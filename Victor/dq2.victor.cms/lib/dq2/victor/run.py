@@ -7,7 +7,7 @@ Main module
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
-from dq2.common.optparse import OptionParser
+from optparse import OptionParser
 from dq2.victor.victor import Victor
 
 parser = OptionParser()
