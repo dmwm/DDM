@@ -30,7 +30,7 @@ try:
         logging.custhandlers                         = WriteAllRotatingFileHandler
         logging.handlers.WriteAllRotatingFileHandler = WriteAllRotatingFileHandler.WriteAllRotatingFileHandler
         logging.config.fileConfig(Config().getConfig(None).get('dq2', 'logging.config.file'))
-    except ConfigParser.NoSectionError, e:
+    except ConfigParser.NoSectionError as e:
         pass
     
     _logger = logging.getLogger('dq2.common.log')

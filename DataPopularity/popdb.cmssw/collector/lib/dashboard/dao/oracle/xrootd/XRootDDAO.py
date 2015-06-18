@@ -53,7 +53,7 @@ class XRootDDAO(object):
         cursor = self._ctx.getCursor()
         sql = "INSERT INTO %s " % database_table
         try:
-            if type(message) == dict:
+            if isinstance(message, dict):
                 sql += "( %s ) " % ','.join(message.keys())
                 sql += "VALUES (:" + ',:'.join(message.keys()) + ")"
                 cursor.execute(sql, message)
@@ -61,7 +61,7 @@ class XRootDDAO(object):
                 sql += "( %s ) " % ','.join(message[0].keys())
                 sql += "VALUES (:" + ',:'.join(message[0].keys()) + ")"
                 cursor.executemany(sql, message)
-        except IntegrityError, exc:
+        except IntegrityError as exc:
             code = exc.args[0].code
             if code == 1:
                 self._logger.warn("Message exists :: %s :: %s" % (message, exc))
@@ -69,6 +69,6 @@ class XRootDDAO(object):
             else:
                 self._logger.error("Unexpected oracle error :: %s :: %s" % (message, exc))
                 raise InternalException("Internal Server Error :: %s" % (exc))
-        except DatabaseError, exc:
+        except DatabaseError as exc:
             self._logger.error("Failed to insert the message :: %s :: %s" % (message, exc))
             raise InternalException("Internal Server Error :: %s" % (exc))

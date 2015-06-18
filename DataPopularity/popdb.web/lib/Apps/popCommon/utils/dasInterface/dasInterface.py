@@ -44,13 +44,13 @@ class DASInterface:
     def decodeDasData(self,data):
         try:
             dataDict=json.loads(data)
-        except ValueError, err:
+        except ValueError as err:
             logger.error("data from DAS could not be decoded to JSON")
             logger.error(data)
             raise err
         try:
             queryStatus=dataDict['status']
-        except KeyError, err:
+        except KeyError as err:
             logger.error("no status key in DAS record")
             logger.error(data)
             raise err
@@ -59,7 +59,7 @@ class DASInterface:
                 if (dataDict['nresults']==0 or not dataDict['data']):
                     logger.warning('query did not return any result')
                     logger.warning(data)
-            except KeyError, err:
+            except KeyError as err:
                 logger.error("missing key in DAS record")
                 logger.error(data)
                 raise err

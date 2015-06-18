@@ -52,20 +52,20 @@ class PHEDEXInterface:
         try:
             #dataDict=json.loads(data)
             dataDict=yaml.load(data)
-        except ValueError, err:
+        except ValueError as err:
             logger.error("data from PHEDEX could not be decoded to JSON")
             logger.error(data)
             raise err
         try:
             phedexData=dataDict['phedex']                
-        except KeyError, err:
+        except KeyError as err:
             logger.error("no phedex key in PHEDEX record")
             logger.error(data)
             raise err
 
         try:
             dbsData=phedexData['dbs']
-        except KeyError, err:
+        except KeyError as err:
             logger.error("no dbs key in PHEDEX record")
             logger.error(data)
             raise err

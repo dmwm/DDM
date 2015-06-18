@@ -51,7 +51,7 @@ class httpInterface:
         try:
             data = self.get_data(params)
             return json.loads(data)
-        except ValueError, err:
+        except ValueError as err:
             logger.error('Unable to decode JSON from %s' % self.caller.getinfo(pycurl.EFFECTIVE_URL))
             logger.error(data)
             raise err

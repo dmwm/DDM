@@ -41,6 +41,6 @@ def wrap_message (self, message, tuid='', component=''):
     """
     try:
         return self.__proceed(message, tuid=tuid, component=component)
-    except StandardError, e:
+    except StandardError as e:
         """don't stop the application because of a logging error."""
         pass

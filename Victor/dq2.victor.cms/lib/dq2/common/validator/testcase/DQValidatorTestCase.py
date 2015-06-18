@@ -1318,14 +1318,14 @@ class DQValidatorTestCase (DQTestCase):
         
         try:
             dq2.common.validator.is_uid([self.param_str_36])
-        except DQNonFatalError, e:
+        except DQNonFatalError as e:
             pass
         except:
             self.fail(err_msg)
         
         try:
             dq2.common.validator.is_uid([self.param_str_36])
-        except DQNonFatalError, e:
+        except DQNonFatalError as e:
             pass
         except:
             self.fail(err_msg)
@@ -1334,14 +1334,14 @@ class DQValidatorTestCase (DQTestCase):
         
         try:
             dq2.common.validator.is_uid([self.param_str_36])
-        except DQUserError, e:
+        except DQUserError as e:
             pass
         except:
             self.fail(err_msg)
             
         try:
             dq2.common.validator.is_uid([self.param_str_36])
-        except DQUserError, e:
+        except DQUserError as e:
             pass
         except:
             self.fail(err_msg)

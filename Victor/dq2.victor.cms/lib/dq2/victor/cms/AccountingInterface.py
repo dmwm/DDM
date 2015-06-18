@@ -216,7 +216,7 @@ class AccountingInterface(AccountingInterface):
             #THE PREVIOUS CASE IS ONLY VALID FOR T2s!!!
             self.__logger.info('Used space for site %s: %.2f' %(site, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No used space for site %s (%s)' %(site, e))
             return None               
         
@@ -229,7 +229,7 @@ class AccountingInterface(AccountingInterface):
             bytes = self.__groupusage[site][group]['node_bytes']
             self.__logger.info('Used space for site %s by group %s: %.2f' %(site, group, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No used space for site %s by group %s (%s)' %(site, group, e))
             return None                      
 
@@ -262,7 +262,7 @@ class AccountingInterface(AccountingInterface):
             bytes = groupPledges[site][group]
             self.__logger.info('Pledged space for site %s by group %s: %.2f' %(site, group, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No pledged space for site %s by group %s (%s)' %(site, group, e))
             return None    
 

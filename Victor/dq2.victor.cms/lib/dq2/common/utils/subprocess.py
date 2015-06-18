@@ -73,7 +73,7 @@ class SubprocessExecuter:
         """
         try:
             os.write( oWritePipe, "%s\n" % str( S_OK( oFunc( *stArgs ) ) ) )
-        except Exception, v:        
+        except Exception as v:        
             try:
                 os.write( oWritePipe, "%s\n" % str( S_ERROR( str( v ) ) ) )
             except :
@@ -138,7 +138,7 @@ class SubprocessExecuter:
                 sData = "".join( oFile.readlines() )
             else:
                 sData = oFile.readline()
-        except Exception, v:
+        except Exception as v:
             pass 
         if sData == "":
             #self.checkAlive()

@@ -62,7 +62,7 @@ class TrapOperationsOnClosedFilesTestCase (DQTestCase):
         """
         try:
             LOG.debug('Hello World!')
-        except ValueError, e:
+        except ValueError as e:
             fail(e)
 
 

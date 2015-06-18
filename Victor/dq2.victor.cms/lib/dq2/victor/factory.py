@@ -34,5 +34,5 @@ def create_tool(tool):
             mod = getattr(mod, c)
         
         return getattr(mod, clsname)(section)
-    except Exception, e:
+    except Exception as e:
         raise Exception ('Unable to initialize plug-in %s [%s]' % (tool, e))
