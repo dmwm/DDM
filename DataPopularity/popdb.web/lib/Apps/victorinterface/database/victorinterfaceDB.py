@@ -1,6 +1,6 @@
 from django.db import connection, connections, transaction
 from Apps.victorinterface.utils import victorinterfaceUtility
-from Apps.popCommon.PopularityException import PopularityDBException
+from Apps.popCommon.PopularityException import PopularityDBException, Paramvalidationexception
 from datetime import datetime, date, timedelta
 
 import logging
@@ -99,3 +99,40 @@ def WhatInSiteWithStatLastAcc(collType, params):
 
     return data
 
+def AccessStatsByDirAtSite(params):
+    # Provides access statistics aggregated by directory
+    # Requires parameters SiteName and DirName (the top-level dir from which to provide the statistics)
+    # Currently only supported for xrootd popularity at T2_CH_CERN (EOS)
+    
+    data = {}
+
+    logger.info('Using access data source: %s' % params.source)
+    if params.source == 'xrootd':
+        DBUSER = 'CMS_EOS_POPULARITY_SYSTEM'
+    else:
+        raise Paramvalidationexception('source', 'param source=%s unsupported, please select source=xrootd' % params.source)
+
+    logger.info('Using DBUSER: %s' % DBUSER)
+
+    vars = "'T2_CH_CERN' as SITENAME, regexp_replace(PATH,'^/eos/cms','') as PATH, (max_tday - to_date('1970-01-01','YYYY-MM-DD')) * 86400 as LASTDAY, (min_tday - to_date('1970-01-01','YYYY-MM-DD')) * 86400 as FIRSTDAY,  READ_ACC as NACC, READ_BYTES as READMBYTES"
+    table = "%s.%s" % (DBUSER, 'V_XRD_STAT2_AGGR1')
+    whereCondition =" 'T2_CH_CERN' like %s and regexp_replace(PATH,'^/eos/cms','') like %s" % ('%s', '%s')
+
+    query = "select %s from %s where %s" % (vars, table, whereCondition)
+
+    logger.info('AccessStatsByDirAtSite query: %s'% query)
+
+    # -----------------------------------
+
+    try:
+        cursor = connections[DBUSER].cursor()
+
+        # For wildcard queries, we need to add the % wildcard in the bind variable...
+        cursor.execute(query, [params.SiteName, params.DirName+'%'])
+
+        data = victorinterfaceUtility.genericTranslateInListDictVict(cursor, 'SITENAME', 'PATH')
+        
+    except Exception as e:
+        raise PopularityDBException(query, e)
+
+    return data
