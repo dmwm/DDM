@@ -15,7 +15,7 @@ TODO: insert query to xrootd database in case of params.source == 'xrootd'
 # once in the past days (configurable up to 5 weeks in the past)
 # organized per site, with additional CPU and nAcc stats
 
-def WhatInSiteWithStat(collType,params):
+def WhatInSiteWithStat(collType, params):
     
     data = []
 
@@ -42,18 +42,18 @@ def WhatInSiteWithStat(collType,params):
     else:
         return {}
 
-    whereCondition = "TDay >= trunc(to_date('%s','YYYY-MM-DD'),'W') and TDay <= trunc(to_date('%s','YYYY-MM-DD'),'W') " % (params.TStart,params.TStop)
+    whereCondition = "TDay >= trunc(to_date('%s','YYYY-MM-DD'),'W') and TDay <= trunc(to_date('%s','YYYY-MM-DD'),'W') " % (params.TStart, params.TStop)
     whereCondition+=" and SiteName like %s" % '%s'
 
     groupBy='sitename, collname'
     orderBy='sitename'
-    query = "select %s from %s where %s group by %s order by %s;" % (vars,table,whereCondition,groupBy,orderBy)
+    query = "select %s from %s where %s group by %s order by %s;" % (vars, table, whereCondition, groupBy, orderBy)
     logger.info("WhatInSiteWithStat query: %s" % query)
 
     try:
         cursor = connections[DBUSER].cursor()
-        cursor.execute(query,[params.SiteName])
-        data= victorinterfaceUtility.genericTranslateInListDictVict(cursor,'SITENAME','COLLNAME')
+        cursor.execute(query, [params.SiteName])
+        data= victorinterfaceUtility.genericTranslateInListDictVict(cursor, 'SITENAME', 'COLLNAME')
 #        data=_genericTranslateInListDict(cursor,'COLLNAME','SITENAME')
             
     except Exception as e:
@@ -79,7 +79,7 @@ def WhatInSiteWithStatLastAcc(collType, params):
     vars = "SITENAME, COLLNAME, (tday - to_date('1970-01-01','YYYY-MM-DD')) * 86400 as LASTDAY"
     table = "%s.%s" % (DBUSER, 'MV_block_stat0_last_access')
     whereCondition =" SiteName like %s" % '%s'
-    query = "select %s from %s where %s" % (vars,table,whereCondition)
+    query = "select %s from %s where %s" % (vars, table, whereCondition)
 
     if applyPatch:
         query = "select 'T2_CH_CERN' as SITENAME, COLLNAME, max(tday - to_date('1970-01-01','YYYY-MM-DD')) * 86400 as LASTDAY from " + table + " where SITENAME = 'T0_CH_CERN' or SITENAME = 'T2_CH_CERN' group by COLLNAME"
@@ -91,8 +91,8 @@ def WhatInSiteWithStatLastAcc(collType, params):
         if applyPatch:
             cursor.execute(query)
         else:
-            cursor.execute(query,[params.SiteName])
-        data= victorinterfaceUtility.genericTranslateInListDictVict(cursor,'SITENAME','COLLNAME')
+            cursor.execute(query, [params.SiteName])
+        data= victorinterfaceUtility.genericTranslateInListDictVict(cursor, 'SITENAME', 'COLLNAME')
         
     except Exception as e:
         raise PopularityDBException(query, e)
