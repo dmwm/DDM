@@ -128,7 +128,7 @@ def AccessStatsByDirAtSite(params):
         cursor = connections[DBUSER].cursor()
 
         # For wildcard queries, we need to add the % wildcard in the bind variable...
-        cursor.execute(query, [params.SiteName, params.DirName+'%'])
+        cursor.execute(query, [params.SiteName, params.TopDir+'%'])
 
         data = victorinterfaceUtility.genericTranslateInListDictVict(cursor, 'SITENAME', 'PATH')
         
