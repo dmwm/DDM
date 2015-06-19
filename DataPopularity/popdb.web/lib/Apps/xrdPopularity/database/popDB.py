@@ -139,7 +139,7 @@ def MostPopDSStat(params):
     vtime         = "trunc(TDay,'%s')" % (timeformatTrunc)
     
     groupBy = "group by %s, collName" % vtime
-    vars  = ''' %s as TDay, sum(numAccesses) as nAcc, 
+    vars  = ''' %s as TDay, sum(numAccesses) as naccess, 
                round(sum(totCPU)/3600,0) as totCPU,
                sum(numUsers) as nUsers
             ''' % (vtime)

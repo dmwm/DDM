@@ -1,8 +1,8 @@
 from collections import defaultdict
 from django.db import connection, transaction
+from Apps.popCommon.utils.utility import assignValue
 
-
-def genericTranslateInListVict(cursor,theKey,theVal):
+def genericTranslateInListVict(cursor, theKey, theVal):
     
     res = defaultdict(dict)
 
@@ -40,7 +40,7 @@ def genericTranslateInListVict(cursor,theKey,theVal):
         
     return res
 
-def genericTranslateInListDictVict(cursor,theKey,theVal):
+def genericTranslateInListDictVict(cursor, theKey, theVal):
     
     res = defaultdict(dict)
 
@@ -70,7 +70,7 @@ def genericTranslateInListDictVict(cursor,theKey,theVal):
             counter+=1
             key=row[ikey]
             l={}
-        l[row[ival]]=dict((v,row[k]) for k,v in others.items())
+        l[row[ival]]=dict((v, assignValue(row[k])) for k, v in others.items())
 
     #for the last entries, need to do that outside the loop
     if counter!=-1:

@@ -39,6 +39,12 @@ class victorinterfaceparams:
         if lexicon.accsource(source):
              return True
         raise Paramvalidationexception('source', 'param must be a valid source name')
+
+    def validateDir(self, dirname):
+        if lexicon.dirname(dirname):
+            return True
+        raise Paramvalidationexception('dirname', 'param must be a valid directory name')
+
     """
     def validateSite(self, sitename):
         if sitename == '':
@@ -73,4 +79,8 @@ class victorinterfaceparams:
 
     def setSource(self, source):
         if self.validateSource(source):
-           self.source = source
+            self.source = source
+
+    def setTopDir(self, dirname):
+        if self.validateDir(dirname):
+            self.TopDir = dirname
