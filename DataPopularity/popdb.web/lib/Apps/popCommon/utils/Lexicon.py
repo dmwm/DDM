@@ -71,3 +71,8 @@ def datestr(candidate):
 
 def accsource(candidate):
     return candidate == 'crab' or candidate == 'xrootd'    
+
+def dirname(candidate):
+    regexpression = "^/[A-Za-z0-9_./+:@-]*$"
+    return check(regexpression, candidate)
+    
