@@ -21,7 +21,6 @@ from dq2.victor.replicaReduction import ReplicaReduction
 from dq2.victor.notifications import sendErrorMail
 from dq2.victor.utils import HOUR, prepareSummary
 from dq2.victor.victorDao import VictorDao
-from dq2.common.DQException import DQException
 
 
 class Victor:
