@@ -8,6 +8,7 @@ Victor class
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import print_function
 
 import traceback
 import time
@@ -64,6 +65,6 @@ class Victor:
             
         except Exception as e:             
         
-            print traceback.format_exc()
+            print(traceback.format_exc())
             self.__logger.critical(traceback.format_exc())     
             #sendErrorMail('%s\n%s'%(e,traceback.format_exc()))

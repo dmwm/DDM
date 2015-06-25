@@ -1,3 +1,4 @@
+from __future__ import print_function
 import socket
 import sys
 import time
@@ -13,7 +14,7 @@ try:
 except:
     pass
 
-print 'num messages ' , Nmsg
+print('num messages ' , Nmsg)
 num_retransmits = 0
 seed = calendar.timegm(time.gmtime())
 while(num_retransmits < Nmsg):
@@ -47,4 +48,4 @@ while(num_retransmits < Nmsg):
             } 
  
     client_socket.sendto(json.dumps(data), (HOST,PORT))
-print "sent all messages"
+print("sent all messages")

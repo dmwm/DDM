@@ -1,3 +1,4 @@
+from __future__ import print_function
 import httplib2
 import urllib
 import httplib
@@ -86,7 +87,7 @@ def get_url(url):
     """
     Download a URL as json and deserialise to a dict
     """
-    print url
+    print(url)
     logger.debug('Accessing %s' % url)
     http_handler = httplib2.Http("cache")
 
@@ -372,9 +373,9 @@ class DB2DB:
 
 
         if self.config.debug :
-            print "---------------------------" 
+            print("---------------------------") 
             for field,val in data.items():
-                print "%s \t %s " % (field,val)
+                print("%s \t %s " % (field,val))
 
         self.CountFiles+=1
 

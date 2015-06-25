@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import subprocess
 import cx_Oracle
 import datetime
@@ -28,12 +29,12 @@ while True:
     if not group and not p.poll():
         break
     else:
-        print "========================================================================="
-        print group
+        print("=========================================================================")
+        print(group)
         q=subprocess.Popen(["/usr/bin/eos","quota","ls","-m","-g","zh","/eos/cms/store/group/%s" % group ], stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         out2, err2 = q.communicate()
-        print out2
-        print
+        print(out2)
+        print()
 
         alldirs={}
 
@@ -57,7 +58,7 @@ while True:
         
         header ='LAST_ACCESS\tFIRST_ACCESS\tCHANGE_TIME\tMB_READ\t\tN_ACCESSES\tPATH'
 
-        print header
+        print(header)
 
         popdirs={}
 
@@ -80,8 +81,8 @@ while True:
     
 
         for direc in sorteddirs:
-            print str(direc[0])+"\t"+str(direc[1])+"\t"+str(direc[2])+"\t"+("{0:.2f}".format(direc[3])).rjust(10, ' ')+"\t"+str(direc[4])+"\t"+direc[5]
+            print(str(direc[0])+"\t"+str(direc[1])+"\t"+str(direc[2])+"\t"+("{0:.2f}".format(direc[3])).rjust(10, ' ')+"\t"+str(direc[4])+"\t"+direc[5])
 
-        print "========================================================================="
-        print
+        print("=========================================================================")
+        print()
 

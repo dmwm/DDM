@@ -1,6 +1,7 @@
+from __future__ import print_function
 import os
 import sys
-print sys.version_info
+print(sys.version_info)
 
 import django.core.handlers.wsgi
 
