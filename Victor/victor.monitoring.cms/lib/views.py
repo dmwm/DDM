@@ -46,16 +46,13 @@ def generateAssociationMenu():
     #Flatten out the structure
     flat_structure = []
     
-    clouds = structure.keys()
-    clouds.sort()
+    clouds = sorted(structure.keys())
     for cloud in clouds:
         print (cloud)                
-        sites = structure[cloud].keys()
-        sites.sort()
+        sites = sorted(structure[cloud].keys())
         site_dicts = []
         for site in sites:
-            groups = structure[cloud][site]
-            groups.sort()
+            groups = sorted(structure[cloud][site])
             site_dicts.append({'name': site, 'groups': groups})
             
         flat_structure.append({'name': cloud, 'sites': site_dicts})
@@ -72,9 +69,9 @@ def accountingView(request):
     for row in rows: 
         total, used, toBeDeleted, inDeletionQueue, newlyCleaned, association = row
 
-        if type(total)==decimal.Decimal:
+        if isinstance(total, decimal.Decimal):
             total = float(total)
-        if type(used)==decimal.Decimal:
+        if isinstance(used, decimal.Decimal):
             used = float(used)
 
         full = False
@@ -105,8 +102,7 @@ def accountingView(request):
             #clouds_dict[cloud]['newlyCleaned_list'].append(newlyCleaned)
             
     #Flatten out the dictionary
-    clouds = clouds_dict.keys()
-    clouds.sort()
+    clouds = sorted(clouds_dict.keys())
     clouds_flat = map(lambda cloud: (cloud, clouds_dict[cloud]), clouds)
     
     if 'full' in clouds:

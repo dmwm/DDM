@@ -156,11 +156,11 @@ class DatasetSelection:
         
         for data in datasetsinfo:      
             cur = data[self.__DATASET_SIZE_COL]
-            if not type(cur)==int:       
+            if not isinstance(cur, int):       
                 self.__logger.info('Dataset: %s has invalid DATASETSIZE attribute: %s'%(data[self.__DATASET_NAME_COL],str(cur)))
                 self.__logger.info('Invoking alternative method to calculate dataset size...')
                 cur=self.__getreplicasize(data[self.__DATASET_NAME_COL])
-                if not type(cur)==int: 
+                if not isinstance(cur, int): 
                     continue                
                 self.__logger.info('The size of dataset is: %d Bytes'%cur)      
             
@@ -205,11 +205,11 @@ class DatasetSelection:
         space=0
         for data in secondarydatasets:       
             cur = data[self.__DATASET_SIZE_COL]
-            if not type(cur)==int:       
+            if not isinstance(cur, int):       
                 self.__logger.info('Dataset: %s has invalid DATASETSIZE attribute: %s'%(data[self.__DATASET_NAME_COL], str(cur)))
                 self.__logger.info('Invoking alternative method to calculate dataset size...')
                 cur = self.__getreplicasize(data[self.__DATASET_NAME_COL])
-                if not type(cur)==int: 
+                if not isinstance(cur, int): 
                     continue                
                 self.__logger.info('The size of dataset is: %d Bytes'%cur)                 
             space+=cur                       
