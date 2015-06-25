@@ -24,7 +24,7 @@ class VictorDao:
         password       = config.get_config('db_password', type='str')
         connectionName = config.get_config('db_conn', type='str')
         if not user or not password or not connectionName:
-            raise Exception, 'No DB connection specified in configuration file'
+            raise Exception('No DB connection specified in configuration file')
         
         connection_string = '%s/%s@%s'%(user, password, connectionName)
         self.__connection = cx_Oracle.Connection(connection_string)
