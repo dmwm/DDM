@@ -12,9 +12,9 @@ class confSettings:
     def __init__(self):
         configfilenames = ['conf.ini','conf_secret.ini']
         #self.popularity_base = os.path.abspath(os.path.join(os.path.dirname(__file__),"../../.."))
-        self.popularity_base = self.inversedirwalk(os.path.abspath(os.path.dirname(__file__)), "CMSDataPopularity").next()
+        self.popularity_base = next(self.inversedirwalk(os.path.abspath(os.path.dirname(__file__)), "CMSDataPopularity"))
         try:
-            self.configfilepath = [self.dirwalk(self.popularity_base, configfilename).next()+'/'+configfilename for configfilename in configfilenames]
+            self.configfilepath = [next(self.dirwalk(self.popularity_base, configfilename))+'/'+configfilename for configfilename in configfilenames]
             logger.info("popularity_base: %s" % self.popularity_base)
         except Exception as err:
             raise PopularityConfigException("configfile not found")
