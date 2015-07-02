@@ -75,7 +75,7 @@ if __name__ == "__main__":
     print 'Usage: %s <API Name> <Output File Name>' % argv[0]
     exit(1)
 
-  # Authenticate to CERN SSO and retrieve document from the actual service
+  # Authenticate via X509 and retrieve document from the actual service
   pop_base_url = "https://cmsweb.cern.ch/popdb/"
   pop_url = '%s/%s'%(pop_base_url,argv[1])  
 
