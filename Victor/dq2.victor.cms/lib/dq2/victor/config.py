@@ -13,7 +13,6 @@ import os
 
 from ConfigParser import SafeConfigParser
 from threading import Lock
-from dq2.common.validator import is_timedelta
 
 class BadConfigurationError(Exception):
     pass
@@ -162,21 +161,6 @@ def get_dict(configParam,type=None ,section='dq2-agents-diskspacemonitor'):
         cfgdict = __convertToDictionary(cfgdict,__parseFloat)
     
     return cfgdict
-
-
-def get_time_difference(configParam ,section='dq2-agents-diskspacemonitor'):
-    
-    time_diff = get_config(configParam, str, section = section)    
-    if time_diff is None:
-        return None
-        
-    try:
-        is_timedelta([time_diff])
-    except:
-        return None 
-       
-    return time_diff
-
 
     
 

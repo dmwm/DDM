@@ -1,3 +1,4 @@
+from __future__ import print_function
 import httplib2
 import urllib
 import httplib
@@ -89,7 +90,7 @@ def get_url(url):
     """
     Download a URL as json and deserialise to a dict
     """
-    print url
+    print(url)
     logger.debug('Accessing %s' % url)
     http_handler = httplib2.Http("cache")
 
@@ -123,8 +124,8 @@ def request_data(date_tuple):
 
 def request_data_from_file(date_tuple):
 
-    print "open file "
-    print str(date_tuple)
+    print("open file ")
+    print(str(date_tuple))
     json_data=open(str(date_tuple))
     data = json.load(json_data)
     #pprint(data)

@@ -89,8 +89,7 @@ def dumpAccountingInfo(data):
     f=open('%s/AccountingSummary.csv'%(PATH), 'w')
     f.write('site used(TB) total(TB) tobedeleted(TB) indeletionqueue(TB)\n')
     
-    sites=data.keys()
-    sites.sort()
+    sites=sorted(data.keys())
     
     for site in sites:
         if data[site]['used']:

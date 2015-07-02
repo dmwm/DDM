@@ -12,6 +12,7 @@
 
 
 
+from __future__ import print_function
 import logging
 import sys
 from optparse import OptionParser
@@ -63,11 +64,11 @@ def main():
     limit   = opts.limit
     myPhedex = PHEDEXInterface(debug=debug)
     logger.debug(query)
-    print 'query \n' , query
+    print('query \n' , query)
     data = myPhedex.get_phedex_data(host,query)
     logger.debug(data)
-    print ' '
-    print 'final result\n' , data
+    print(' ')
+    print('final result\n' , data)
 
 #
 # main

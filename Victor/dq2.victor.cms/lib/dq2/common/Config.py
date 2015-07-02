@@ -83,7 +83,7 @@ class Config (object):
         @return: A reference to the config object of the requested package
         """
         # return the config immediately if we already have one for this package
-        if not self._configs.has_key(packageName):
+        if packageName not in self._configs:
             
             # else load it and return afterwards
             if mypath is not None:
@@ -171,13 +171,13 @@ def _load_configuration (aDir, configurationSection):
     
     # dq2.cfg
     f = ''.join((aDir, '/etc/dq2.cfg'))
-    if not _LOADED.has_key(f):
+    if f not in _LOADED:
         try:
             config.read(f)
             _LOADED[f] = None # file was successfully loaded
             # for dq2.cfg you must load all new sections
             for section in config.sections():
-                if not _CONFIGURATIONS.has_key(section):
+                if section not in _CONFIGURATIONS:
                     _CONFIGURATIONS[section] = {}
                     for k, v in (section):
                         _CONFIGURATIONS[section][k] = v
@@ -189,7 +189,7 @@ def _load_configuration (aDir, configurationSection):
     
     # configurationSection/configurationSection.cfg
     f = ''.join((aDir, '/etc/', configurationSection, '/', configurationSection,'.cfg'))
-    if not _LOADED.has_key(f):
+    if f not in _LOADED:
         try:
             config.read(f)
             _LOADED[f] = None # file was successfully loaded
