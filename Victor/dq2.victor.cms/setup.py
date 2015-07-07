@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import glob
 
-from distutils.core import setup,Extension
+from distutils.core import setup, Extension
 from ConfigParser import ConfigParser
 
 config = ConfigParser()

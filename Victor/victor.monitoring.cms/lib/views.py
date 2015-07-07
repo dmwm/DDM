@@ -40,8 +40,8 @@ def generateAssociationMenu():
     for row in rows:
         association = str(row[0])
         cloud, site, tier, group = splitAssociation(association)
-        structure.setdefault(cloud,{})
-        structure[cloud].setdefault(site,[])
+        structure.setdefault(cloud, {})
+        structure[cloud].setdefault(site, [])
         structure[cloud][site].append(group)
     
     #Flatten out the structure

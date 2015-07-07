@@ -25,23 +25,23 @@ class AccountingInterface(object):
         """
         return []
     
-    def getUsedSpace(self,site):
+    def getUsedSpace(self, site):
         return 0
     
         
-    def getTotalSpace(self,site):            
+    def getTotalSpace(self, site):            
         return 0
         
     
-    def getToBeDeletedSpace(self,site):
+    def getToBeDeletedSpace(self, site):
         return 0        
         
         
-    def refreshSiteStatistics(self,site):            
+    def refreshSiteStatistics(self, site):            
         return True
         
     
-    def getSpaceInDeletionQueue(self,site):
+    def getSpaceInDeletionQueue(self, site):
         return 0
         
         

@@ -75,7 +75,7 @@ def get_config(param, type=str, mandatory=False, section='victor'):
                 elif type == list or type=='list_2':
                     value = value.strip().split(',')
                     assert(isinstance(value, list))
-                    value=map(lambda x: x.strip(),value)
+                    value=map(lambda x: x.strip(), value)
                     while True:
                         try: value.remove('')
                         except ValueError: break

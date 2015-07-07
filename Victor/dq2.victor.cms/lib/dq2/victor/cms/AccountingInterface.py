@@ -234,7 +234,7 @@ class AccountingInterface(AccountingInterface):
             return None                      
 
 
-    def getUsedSpace(self,site):
+    def getUsedSpace(self, site):
         
         site, physicsgroup = site.split('^')
         return self.__getUsedSpaceGroup(site, physicsgroup)
@@ -267,27 +267,27 @@ class AccountingInterface(AccountingInterface):
             return None    
 
             
-    def getTotalSpace(self,site):    
+    def getTotalSpace(self, site):    
 
         site, physicsgroup = site.split('^')
         return self.__getGroupPledge(site, physicsgroup)
         
     
-    def getToBeDeletedSpace(self,site):
+    def getToBeDeletedSpace(self, site):
         """
         MOCK. Not needed by CMS
         """
         return 0                
         
         
-    def refreshSiteStatistics(self,site):            
+    def refreshSiteStatistics(self, site):            
         """
         MOCK. Not needed by CMS
         """
         return True
         
     
-    def getSpaceInDeletionQueue(self,site):                    
+    def getSpaceInDeletionQueue(self, site):                    
         '''
         Return space which is freed up by deletion
         '''

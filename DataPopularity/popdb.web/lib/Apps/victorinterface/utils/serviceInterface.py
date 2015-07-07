@@ -117,7 +117,7 @@ class phedexInterface(httpInterface):
         if  not Lexicon.wildcardtier(sitename):
             raise phedexInterfaceException("Given hostname has not a valid format")
 
-    def format_response(self, phedex_data,sitename):
+    def format_response(self, phedex_data, sitename):
         try:
             phedexReplicaList=phedex_data[u'phedex'][u'block']
             if not phedexReplicaList:
@@ -129,7 +129,7 @@ class phedexInterface(httpInterface):
                 dasRecord={}
                 dasRecord['name']=block['name']
                 dasRecord['replica']={}
-                for val in ('group','custodial','complete'):
+                for val in ('group', 'custodial', 'complete'):
                     dasRecord['replica'][val]=block['replica'][0][val]
                 dasRecord['replica']['nfiles']=int(block['replica'][0]['files'])
                 dasRecord['replica']['size']=int(block['replica'][0]['bytes'])
@@ -151,7 +151,7 @@ class phedexInterface(httpInterface):
             logger.info('changing name of T1_US_FNAL to T1_US_FNAL_Buffer for the PhEDEx query')
         params = {'node':site}
         phedex_data = httpInterface.get_json_data(self, params)
-        formatted_data = self.format_response(phedex_data,site)
+        formatted_data = self.format_response(phedex_data, site)
         return formatted_data
 
 class dasInterfaceException(PopularityException):

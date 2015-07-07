@@ -33,7 +33,7 @@ urlpatterns = patterns('',
                        #url(r'^xrdmoninsertionsMI$', views.xrdMonitoring, {'table':'MV_xrdmon_inserts_x_MI'      }, "xrdmoninsertionsMI"),
                        #url(r'^xrdmoninsertions$'  , views.xrdMonitoring, {'table':'MV_xrdmon_inserts_x_H'       }, "xrdmoninsertions"  ),
                        #url(r'^xrdmonstarttime$'   , views.xrdMonitoring, {'table':'MV_xrdmon_starttime_x_H'     }, "xrdmonstarttime"   ),
-                       url(r'^xrdmonendtime$'     , views.xrdMonitoring, {'table':'MV_xrdmon_endtime_x_H'       }, "xrdmonendtime"     ),
+                       url(r'^xrdmonendtime$', views.xrdMonitoring, {'table':'MV_xrdmon_endtime_x_H'       }, "xrdmonendtime"     ),
                        #url(r'^xrdmonppssrm$'      , views.xrdMonitoring, {'table':'MV_xrdmon_pps_srmmon_test_x_H'}, "xrdmonppssrm"      ),
                        #url(r'^xrdmonppsdteam$'    , views.xrdMonitoring, {'table':'MV_xrdmon_pps_dteam_test_x_H'}, "xrdmonppsdteam"    ),
 
@@ -59,22 +59,22 @@ urlpatterns = patterns('',
 
                        ## this renders tables
 
-                       url(r'^xrddatasettable$'    , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetTable.html'    }, "xrdDataSetTable"    ),
-                       url(r'^xrddatatiertable$'   , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataTierTable.html'   }, "xrdDataTierTable"   ),
+                       url(r'^xrddatasettable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetTable.html'    }, "xrdDataSetTable"    ),
+                       url(r'^xrddatatiertable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataTierTable.html'   }, "xrdDataTierTable"   ),
                        url(r'^xrddatasetnametable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetNameTable.html'}, "xrdDataSetNameTable"),
-                       url(r'^xrduserdatatable$'    , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdUserDataTable.html'    }, "xrdUserDataTable"    ),
+                       url(r'^xrduserdatatable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdUserDataTable.html'    }, "xrdUserDataTable"    ),
 
 
-                       url(r'^DSStatInTimeWindow$'      , views.getDSStatInTimeWindow, {'MView':'DS'      }, "xrdDSStatInTimeWindow"      ),
+                       url(r'^DSStatInTimeWindow$', views.getDSStatInTimeWindow, {'MView':'DS'      }, "xrdDSStatInTimeWindow"      ),
                        url(r'^DataTierStatInTimeWindow$', views.getDSStatInTimeWindow, {'MView':'DataTier'}, "xrdDataTierStatInTimeWindow"),
-                       url(r'^DSNameStatInTimeWindow$'  , views.getDSStatInTimeWindow, {'MView':'DSName'  }, "xrdDSNameStatInTimeWindow"  ),
-                       url(r'^UserDSStatInTimeWindow$'  , views.getDSStatInTimeWindow, {'MView':'UserDS'  }, "xrdUserDSStatInTimeWindow"  ),
+                       url(r'^DSNameStatInTimeWindow$', views.getDSStatInTimeWindow, {'MView':'DSName'  }, "xrdDSNameStatInTimeWindow"  ),
+                       url(r'^UserDSStatInTimeWindow$', views.getDSStatInTimeWindow, {'MView':'UserDS'  }, "xrdUserDSStatInTimeWindow"  ),
 
                        url(r'^xrduserstattable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdUserStatTable.html', 'contextRequests': {'datatiers': map(lambda x: x["COLLNAME"], popCommonDB.getDataTierList(DBUSER))} }, "xrdUserStatTable"),
-                       url(r'^xrduserstat$' , views.getUserStat, {}, "xrdUserStat"),
+                       url(r'^xrduserstat$', views.getUserStat, {}, "xrdUserStat"),
 
                        url(r'^xrdlocalglobaluserstattable$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdLocalGlobalUserStatTable.html'}, "xrdLocalGlobalUserStatTable"),
-                       url(r'^xrdlocalglobaluserstat$' , views.getLocalGlobalUserStat, {}, "xrdLocalGlobalUserStat"),
+                       url(r'^xrdlocalglobaluserstat$', views.getLocalGlobalUserStat, {}, "xrdLocalGlobalUserStat"),
 
 
                        ####################
@@ -90,17 +90,17 @@ urlpatterns = patterns('',
                        #
                        ## this renders tables
 
-                       url(r'^xrddatasetplot$'      , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetPlot.html'    }, "xrdDataSetPlot"    ),
-                       url(r'^xrddatatierplot$'     , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataTierPlot.html'   }, "xrdDataTierPlot"   ),
-                       url(r'^xrddatasetnameplot$'  , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetNamePlot.html'}, "xrdDataSetNamePlot"),
-                       url(r'^xrduserdataplot$'     , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdUserDataPlot.html'   }, "xrdUserDataPlot"   ),
-                       url(r'^customDSPlot$'    , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdCustomDataSetPlot.html'}, "xrdCustomdsplot"    ),
-                       url(r'^customProcessedDSPlot$'    , views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdCustomProcessedDataSetPlot.html'}, "xrdCustomprocesseddsplot"    ),
+                       url(r'^xrddatasetplot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetPlot.html'    }, "xrdDataSetPlot"    ),
+                       url(r'^xrddatatierplot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataTierPlot.html'   }, "xrdDataTierPlot"   ),
+                       url(r'^xrddatasetnameplot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdDataSetNamePlot.html'}, "xrdDataSetNamePlot"),
+                       url(r'^xrduserdataplot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdUserDataPlot.html'   }, "xrdUserDataPlot"   ),
+                       url(r'^customDSPlot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdCustomDataSetPlot.html'}, "xrdCustomdsplot"    ),
+                       url(r'^customProcessedDSPlot$', views.xrdRenderTemplate, {'tmplPath': 'xrdPopularity/xrdCustomProcessedDataSetPlot.html'}, "xrdCustomprocesseddsplot"    ),
 
-                       url(r'^getDSdata'     , views.getTimeEvolutionPlotData, {'MView':'DS'      }, "xrdGetDSPlotData"      ),
-                       url(r'^getDTdata'     , views.getTimeEvolutionPlotData, {'MView':'DataTier'}, "xrdGetDTPlotData"      ),
-                       url(r'^getDSNdata'    , views.getTimeEvolutionPlotData, {'MView':'DSName'  }, "xrdGetDSNPlotData"     ),
-                       url(r'^getUserDSdata' , views.getTimeEvolutionPlotData, {'MView':'UserDS'  }, "xrdGetUserDSPlotData"  ),
+                       url(r'^getDSdata', views.getTimeEvolutionPlotData, {'MView':'DS'      }, "xrdGetDSPlotData"      ),
+                       url(r'^getDTdata', views.getTimeEvolutionPlotData, {'MView':'DataTier'}, "xrdGetDTPlotData"      ),
+                       url(r'^getDSNdata', views.getTimeEvolutionPlotData, {'MView':'DSName'  }, "xrdGetDSNPlotData"     ),
+                       url(r'^getUserDSdata', views.getTimeEvolutionPlotData, {'MView':'UserDS'  }, "xrdGetUserDSPlotData"  ),
                        url(r'^getSingleDSstat', views.getDataSetStat, {}, "xrdGetSingleDSPlotStat"),
                        url(r'^getSingleProcessedDSstat', views.getProcessedDataSetStat, {}, "xrdGetSingleProcessedDSPlotStat"),
 

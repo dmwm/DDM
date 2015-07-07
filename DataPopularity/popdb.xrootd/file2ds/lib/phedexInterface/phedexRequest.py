@@ -24,7 +24,7 @@ class PHEDEXInterface:
             self.opener = urllib2.build_opener(hdlr)
         else:
             self.opener = urllib2.build_opener()
-        header='XRootDMon API/1.0 (CMS) %s/%s %s/%s (%s)' % (urllib2.__name__,urllib2.__version__,platform.system(),platform.release(),platform.processor())
+        header='XRootDMon API/1.0 (CMS) %s/%s %s/%s (%s)' % (urllib2.__name__, urllib2.__version__, platform.system(), platform.release(), platform.processor())
         self.opener.addheaders = [('User-agent', header)]
         self._PidPattern = re.compile(r'^[a-z0-9]{32}')
         
@@ -37,7 +37,7 @@ class PHEDEXInterface:
         fdesc.close()
         return data
 
-    def getDataSetsData(self,val,listData):
+    def getDataSetsData(self, val, listData):
         for ds in val['dataset']:
             dname=ds['name']
             for block in ds['block']:
@@ -45,10 +45,10 @@ class PHEDEXInterface:
                 for file in block['file']:
                     lfn=file['lfn']
                     #listData.append({'dataset':dname,'block':bname,'file':lfn})
-                    listData.append((dname,bname,lfn))
+                    listData.append((dname, bname, lfn))
                     
 
-    def decodePhedexData(self,data):
+    def decodePhedexData(self, data):
         try:
             #dataDict=json.loads(data)
             dataDict=yaml.load(data)
@@ -72,7 +72,7 @@ class PHEDEXInterface:
 
         listData=[]
         for val in dbsData:
-            self.getDataSetsData(val,listData)
+            self.getDataSetsData(val, listData)
 
         return listData
     
@@ -87,7 +87,7 @@ class PHEDEXInterface:
         url = host + path
 
                 
-        url += '?%s' % query.replace("#","%23")
+        url += '?%s' % query.replace("#", "%23")
         logger.debug('\nrequest url\n %s' % url )
 
         data = self.phedexRequest(url)

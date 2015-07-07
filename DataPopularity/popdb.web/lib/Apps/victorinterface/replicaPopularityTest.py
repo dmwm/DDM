@@ -64,7 +64,7 @@ def main():
         sitename=args[0]
     except IndexError:
         raise Exception('You must provide input SITENAME')
-    combiner = ReplicaPopularity(debug=debug,dasHost=host,popHost=pophost)
+    combiner = ReplicaPopularity(debug=debug, dasHost=host, popHost=pophost)
 #    combiner.get_das_data(host, sitename, idx, limit)
 #    combiner.get_pop_data(pophost, sitename, timestart, timestop)
     outdict = combiner.combine(sitename, timestart, timestop, incomplete, debug)

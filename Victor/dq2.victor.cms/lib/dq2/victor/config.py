@@ -77,7 +77,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
                 elif type == list or type=='list_2':
                     value = value.strip().split(',')
                     assert(isinstance(value, list))
-                    value=map(lambda x: x.strip(),value)
+                    value=map(lambda x: x.strip(), value)
                     while True:
                         try: value.remove('')
                         except ValueError: break
@@ -103,11 +103,11 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
         _lock.release()
 
 
-def __convertToDictionary(stringTuple,valueParser):
+def __convertToDictionary(stringTuple, valueParser):
         
     dict={}
     for string in stringTuple:
-        key,value=string.split(':')
+        key, value=string.split(':')
         key=key.strip()
         #value=float(value)
         value=valueParser(value)
@@ -154,11 +154,11 @@ def get_dict(configParam,type=None ,section='dq2-agents-diskspacemonitor'):
         return None
      
     if   type =='size':
-        cfgdict = __convertToDictionary(cfgdict,__parseSize)
+        cfgdict = __convertToDictionary(cfgdict, __parseSize)
     elif type =='positive_int':
-        cfgdict = __convertToDictionary(cfgdict,__parsePositiveInt)
+        cfgdict = __convertToDictionary(cfgdict, __parsePositiveInt)
     else:
-        cfgdict = __convertToDictionary(cfgdict,__parseFloat)
+        cfgdict = __convertToDictionary(cfgdict, __parseFloat)
     
     return cfgdict
 

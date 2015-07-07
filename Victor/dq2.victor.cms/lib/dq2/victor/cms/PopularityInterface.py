@@ -52,7 +52,7 @@ class PopularityInterface(PopularityInterface):
                 
     def __hasCustodialCopy(self, blockname):
         url='https://cmsweb.cern.ch/phedex/datasvc/json/prod/blockreplicas?custodial=y&complete=y&block=%s'%(blockname)
-        url = url.replace('#','%23')
+        url = url.replace('#', '%23')
         self.__logger.debug(url)
         replicas = get_json_data(url)
         '''
@@ -203,7 +203,7 @@ class PopularityInterface(PopularityInterface):
         '''
         Get the list of a site's unpopular block replicas according to the input criteria.
         ''' 
-        def compdate(x,y):
+        def compdate(x, y):
             COMPARE_COL=self.__REPLICA_CREATION_DATE_COL
             if   epochTime(x[COMPARE_COL]) > epochTime(y[COMPARE_COL]):
                 return 1
@@ -227,7 +227,7 @@ class PopularityInterface(PopularityInterface):
 
         except Exception as e:            
             self.__logger.critical('Failed to process site %s [%s - %s]'%(site, e, traceback.format_exc()))
-            sendErrorMail('%s\n%s'%(e,traceback.format_exc()))            
+            sendErrorMail('%s\n%s'%(e, traceback.format_exc()))            
             return {} 
         
         finally:

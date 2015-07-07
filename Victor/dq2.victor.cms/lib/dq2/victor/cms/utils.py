@@ -96,11 +96,11 @@ def get_json_data_improper(url):
 def get_json_data_https(url):
 	
     headers = {"Accept": "application/json", "User-Agent": "Victor"}
-    req = urllib2.Request(url=url,headers=headers)
+    req = urllib2.Request(url=url, headers=headers)
     cert = config.get_config('certificate', type='str')
     key = config.get_config('privatekey', type='str')
 
-    opener = urllib2.build_opener(HTTPSClientAuthHandler(cert=cert,key=key))
+    opener = urllib2.build_opener(HTTPSClientAuthHandler(cert=cert, key=key))
     f = opener.open(req)
     data = simplejson.load(f)
     f.close()

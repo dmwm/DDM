@@ -56,7 +56,7 @@ def main():
     limit   = opts.limit
     myDas = DASInterface(debug=debug)
     logger.debug(query)
-    data = myDas.get_das_data(host,query,idx,limit)
+    data = myDas.get_das_data(host, query, idx, limit)
     logger.debug(data)
     
 #

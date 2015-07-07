@@ -64,11 +64,11 @@ def main():
     limit   = opts.limit
     myPhedex = PHEDEXInterface(debug=debug)
     logger.debug(query)
-    print('query \n' , query)
-    data = myPhedex.get_phedex_data(host,query)
+    print('query \n', query)
+    data = myPhedex.get_phedex_data(host, query)
     logger.debug(data)
     print(' ')
-    print('final result\n' , data)
+    print('final result\n', data)
 
 #
 # main

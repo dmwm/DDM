@@ -73,7 +73,7 @@ class replicaCombiner:
                 continue
             outrep={}
 
-            for val in ('group','custodial','creation_time','nfiles','size'):
+            for val in ('group', 'custodial', 'creation_time', 'nfiles', 'size'):
                 if (val == 'group') and (row['block'][0]['replica'][val] == ''):
                     outrep[val] = None
                 else:
@@ -139,7 +139,7 @@ class replicaCombiner:
                 continue
             outrep={}
 
-            for val in ('group','custodial','creation_time','nfiles','size'):
+            for val in ('group', 'custodial', 'creation_time', 'nfiles', 'size'):
                 if (val == 'group') and (row['block'][0]['replica'][val] == ''):
                     outrep[val] = None
                 else:

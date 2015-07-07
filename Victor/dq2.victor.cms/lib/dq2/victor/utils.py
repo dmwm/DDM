@@ -42,7 +42,7 @@ def callRetry(call, *args, **kwargs):
 
 def castListToIntegers(lst):
     
-    return map(lambda x: int(x),lst)
+    return map(lambda x: int(x), lst)
 
 
 def epochTime(datetime_var):

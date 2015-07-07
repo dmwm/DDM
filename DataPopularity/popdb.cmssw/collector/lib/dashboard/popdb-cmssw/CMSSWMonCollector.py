@@ -117,13 +117,13 @@ class CMSSWMonCollector(Service):
         self.localQueue.purge(60, 60)  
         self._next_purge = time.time() + self.PURGE_INTERVAL
 
-    def validate_length(self,bodies):
+    def validate_length(self, bodies):
         a = [len(x.keys()) for x in bodies]
         m = max(a)
         if a[0] < m:
             idx = a.index(m)
             bodies[0], bodies[idx] = bodies[idx], bodies[0]
-            self._logger.warning("swap message positions 0 and %s. Missing keys %s" % (idx,[x for x in bodies[0].keys() if x not in bodies[idx].keys()]))
+            self._logger.warning("swap message positions 0 and %s. Missing keys %s" % (idx, [x for x in bodies[0].keys() if x not in bodies[idx].keys()]))
         return bodies
     
     def insert_messages(self, names, bodies):
@@ -136,7 +136,7 @@ class CMSSWMonCollector(Service):
         try:
             # Get a site DAO to work with
             ctx = DAOContext.getDAOContext(section=self.dbsection) 
-            dao = DAOFactory.getDAOFactory().getDAOObject(ctx,'xrootd','XRootDDAO')
+            dao = DAOFactory.getDAOFactory().getDAOObject(ctx, 'xrootd', 'XRootDDAO')
             
             # Try to make a bulk insert 
             if len(bodies) > 0:
@@ -182,7 +182,7 @@ class CMSSWMonCollector(Service):
         """
         try:
             body = message.get_body()
-            body = body.replace(', ,',',')
+            body = body.replace(', ,', ',')
             msgDict = self.JSON_format(body)
             try:
                 if msgDict['fallback'] == True:

@@ -22,6 +22,6 @@ class Configuration(ConfigurationInterface):
         self.name = name
         
     
-    def getSiteProperty(self,site,property):
+    def getSiteProperty(self, site, property):
         return None       
     

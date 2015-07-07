@@ -8,7 +8,7 @@ You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE
 #!/usr/bin/env python
 import glob
 
-from distutils.core import setup,Extension
+from distutils.core import setup, Extension
 from ConfigParser import ConfigParser
 
 config = ConfigParser()
@@ -30,9 +30,9 @@ setup(
     package_dir={'': 'lib'},
 
     data_files=[
-        ('lib/'                             , glob.glob('lib/*sh')),
-        ('etc/'                             , ['config/auth.txt']),
-        ('/etc/cron.d'                , ['config/crab_popularity_collector']),
+        ('lib/', glob.glob('lib/*sh')),
+        ('etc/', ['config/auth.txt']),
+        ('/etc/cron.d', ['config/crab_popularity_collector']),
 
 
    ]
