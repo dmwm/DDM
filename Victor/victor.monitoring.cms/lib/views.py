@@ -6,13 +6,14 @@ You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
 from __future__ import print_function
+from __future__ import absolute_import
 
 from django.http      import HttpResponseNotFound
 from django.http      import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from datetime import date
 import time
-import victorDao
+from . import victorDao
 import decimal
 
 threshold = 0.9
