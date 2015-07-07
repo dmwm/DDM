@@ -1,3 +1,4 @@
+from __future__ import print_function
 import cx_Oracle
 
 def genericTranslateInDict(cursor):
@@ -60,5 +61,5 @@ for e1 in list1:
         elif list1[e1] not in only_crab:
             only_crab.append(list1[e1])
 
-print "Overlap: ", len(matching)/float(len(list1))
-print "Only in crab ", len(only_crab), " crab entries ", len(list1), " cmssw entries ", len(list2)
+print("Overlap: ", len(matching)/float(len(list1)))
+print("Only in crab ", len(only_crab), " crab entries ", len(list1), " cmssw entries ", len(list2))
