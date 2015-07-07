@@ -3,12 +3,13 @@
 """
 DAS query test program
 """
+from __future__ import absolute_import
 __author__ = "Nicolo Magini"
 
 import logging
 import sys
 from optparse import OptionParser
-from dasInterface import DASInterface
+from .dasInterface import DASInterface
 
 logger = logging.getLogger(__name__)
 
