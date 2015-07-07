@@ -58,7 +58,7 @@ def processedDataSets(request):
 #---------------------------------------------------------------------
 
 def _getDSStatInTimeWindowJSON(params,MView=''):
-    data = popDB.DSStatInTimeWindow(params,MView)
+    data = popDB.DSStatInTimeWindow(params, MView)
     data['SITENAME']=params.SiteName
     jdata = json.dumps(data)
     return jdata
@@ -73,7 +73,7 @@ def getDSStatInTimeWindow(request,MView=''):
 
         par.setOrder(request.GET.get('orderby', 'totcpu'))
         par.setSiteName(request.GET.get('sitename', 'summary'))
-        jdata = _getDSStatInTimeWindowJSON(par,MView)
+        jdata = _getDSStatInTimeWindowJSON(par, MView)
 
     except Paramvalidationexception as e:           
         #return HttpResponseBadRequest("Given %s not valid (%s)" % (e.param, e.cause))
@@ -92,12 +92,12 @@ def getDSStatInTimeWindow(request,MView=''):
 
 def _getMostPopStatDict(params,MView=''):
     data = {}
-    dataP = popDB.DSStatInTimeWindow(params,MView) 
+    dataP = popDB.DSStatInTimeWindow(params, MView) 
     i = 0
     for entry in dataP['DATA']:
         collName = entry['COLLNAME']
         collData = {"COLLNAME" : collName}
-        collData.update(popDB.MostPopDSStat(params,MView,collName))
+        collData.update(popDB.MostPopDSStat(params, MView, collName))
         data[i]=collData.copy()
         i+=1
         if i >= params.FirstN and params.FirstN>0:
@@ -153,7 +153,7 @@ def _getCorruptedFilesInTimeWindowJSON(params):
     return jdata
 
 @cache_page(60*60, cache="onfile")
-def getCorruptedFiles(request,dbview):
+def getCorruptedFiles(request, dbview):
     par = Popularityparams()
     logger.info(dbview)
     dbviewValidation = {'detail':'v_CorruptedFilesDetail', 'siteSummary': 'v_corruptedFilesSiteSummary', 'dsSummary':'v_corruptedFilesDSSummary'}
@@ -209,7 +209,7 @@ def getPlotData(request,MView=''):
         """
         idx = (par.FirstN)-1
         
-        data= _getMostPopStatDict(par,MView)        
+        data= _getMostPopStatDict(par, MView)        
 
     except Paramvalidationexception as e:
         return HttpResponseBadRequest(e.getmessage())
@@ -225,7 +225,7 @@ def getPlotData(request,MView=''):
     series2 = []
 
     for entry in collData['DATA']:
-        millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'],'%Y/%m/%d'))
+        millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'], '%Y/%m/%d'))
         series1.append( [  millisecondSinceEpoch, entry['TOTCPU'] ] )
         series2.append( [  millisecondSinceEpoch, entry['NACC'  ] ] )  
     
@@ -257,7 +257,7 @@ def getTimeEvolutionPlotData(request,MView=''):
         """
         idx = (par.FirstN)-1
         logger.info(MView)
-        data = _getMostPopStatDict(par,MView)
+        data = _getMostPopStatDict(par, MView)
 
     except Paramvalidationexception as e:
         #return HttpResponseBadRequest("Given %s not valid (%s)" % (pEx.param, pEx.cause))
@@ -274,7 +274,7 @@ def getTimeEvolutionPlotData(request,MView=''):
         series1 = []
         series2 = []
         for entry in data[i]['DATA']:
-            millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'],'%Y/%m/%d'))
+            millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'], '%Y/%m/%d'))
             if (par.orderVar == "totcpu"):
                 series1.append( [  millisecondSinceEpoch, entry['TOTCPU'] ] )
             elif (par.orderVar == "naccess"):
@@ -385,7 +385,7 @@ def _getSingleElementStat(par, MView):
     listRes = []
     series1 = []
     for entry in data['DATA']:
-        millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'],'%Y/%m/%d'))
+        millisecondSinceEpoch=1000*calendar.timegm(time.strptime(entry['TDAY'], '%Y/%m/%d'))
         if (par.orderVar == "totcpu"):
             series1.append( [  millisecondSinceEpoch, entry['TOTCPU'] ] )
         elif (par.orderVar == "naccess"):

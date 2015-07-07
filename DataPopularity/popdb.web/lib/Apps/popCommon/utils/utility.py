@@ -26,7 +26,7 @@ def genericTranslateInList(cursor):
     for row in cursor.fetchall():
         values  = ( val for val in row  )
         dic={}
-        for key, val in zip(keys,values):
+        for key, val in zip(keys, values):
             dic[key] = assignValue(val)
         data.append(dic)
     return data

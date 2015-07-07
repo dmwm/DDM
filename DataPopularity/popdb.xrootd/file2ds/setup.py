@@ -8,7 +8,7 @@ You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE
 #!/usr/bin/env python
 import glob
 
-from distutils.core import setup,Extension
+from distutils.core import setup, Extension
 from ConfigParser import ConfigParser
 
 config = ConfigParser()
@@ -25,13 +25,13 @@ setup(
     long_description   = config.get('module', 'long_description'),
     url                = config.get('module', 'url'),
 
-    packages=['','phedexInterface'],
+    packages=['', 'phedexInterface'],
 
     package_dir={'': 'lib'},
 
     data_files=[
-        ('lib/'        , glob.glob('lib/*sh')),
-        ('etc/'        , ['config/auth.txt']),
-        ('/etc/cron.d' , ['config/xrootd_popularity_file2ds']),
+        ('lib/', glob.glob('lib/*sh')),
+        ('etc/', ['config/auth.txt']),
+        ('/etc/cron.d', ['config/xrootd_popularity_file2ds']),
    ]
 )

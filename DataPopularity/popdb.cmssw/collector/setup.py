@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import glob
 
-from distutils.core import setup,Extension
+from distutils.core import setup, Extension
 from ConfigParser import ConfigParser
 
 config = ConfigParser()
@@ -18,7 +18,7 @@ setup(
     long_description   = config.get('module', 'long_description'),
     url                = config.get('module', 'url'),
 
-    packages=['dashboard.popdb-cmssw','dashboard.popdb-cmssw.test',
+    packages=['dashboard.popdb-cmssw', 'dashboard.popdb-cmssw.test',
               'dashboard.dao.oracle.xrootd'],
 
     package_dir={'': 'lib'},
@@ -26,10 +26,10 @@ setup(
     data_files=[
         ('etc/dashboard-dao', glob.glob('config/etc/dashboard-dao/*')),
         ('etc/dashboard-simplevisor', glob.glob('config/etc/dashboard-simplevisor/*')),
-        ('etc/dashboard-service-config/cmssw-collector/etc',glob.glob('config/etc/dashboard-service-config/cmssw-collector/etc/*')),
-        ('etc/dashboard-service-config/cmssw-listener/etc',glob.glob('config/etc/dashboard-service-config/cmssw-listener/etc/*')),
-        ('etc/dashboard-service-config',glob.glob('config/etc/dashboard-service-config/*.cfg')),
-        ('etc/dashboard-service-config',glob.glob('config/etc/dashboard-service-config/*.xml')),
+        ('etc/dashboard-service-config/cmssw-collector/etc', glob.glob('config/etc/dashboard-service-config/cmssw-collector/etc/*')),
+        ('etc/dashboard-service-config/cmssw-listener/etc', glob.glob('config/etc/dashboard-service-config/cmssw-listener/etc/*')),
+        ('etc/dashboard-service-config', glob.glob('config/etc/dashboard-service-config/*.cfg')),
+        ('etc/dashboard-service-config', glob.glob('config/etc/dashboard-service-config/*.xml')),
         ('cron', ['config/cron/dashbServices.config']),
         ('db', glob.glob('config/db/*')),
    ]

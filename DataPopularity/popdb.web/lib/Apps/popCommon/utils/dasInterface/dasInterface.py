@@ -24,7 +24,7 @@ class DASInterface:
             self.opener = urllib2.build_opener(hdlr)
         else:
             self.opener = urllib2.build_opener()
-        header='PopDB API/1.0 (CMS) %s/%s %s/%s (%s)' % (urllib2.__name__,urllib2.__version__,platform.system(),platform.release(),platform.processor())
+        header='PopDB API/1.0 (CMS) %s/%s %s/%s (%s)' % (urllib2.__name__, urllib2.__version__, platform.system(), platform.release(), platform.processor())
         self.opener.addheaders = [('User-agent', header)]
         self._PidPattern = re.compile(r'^[a-z0-9]{32}')
         
@@ -41,7 +41,7 @@ class DASInterface:
         fdesc.close()
         return data
 
-    def decodeDasData(self,data):
+    def decodeDasData(self, data):
         try:
             dataDict=json.loads(data)
         except ValueError as err:

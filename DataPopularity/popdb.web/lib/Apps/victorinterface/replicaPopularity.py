@@ -28,7 +28,7 @@ def replicaPopularity(opts):
     
     if  not sitename:
         raise Exception('You must provide input sitename')
-    combiner = ReplicaPopularity(debug=debug,dasHost=dasHost,popHost=popHost)
+    combiner = ReplicaPopularity(debug=debug, dasHost=dasHost, popHost=popHost)
     outdict = combiner.combine(sitename, timestart, timestop, incomplete, debug)
     logger.debug(outdict)
     return outdict

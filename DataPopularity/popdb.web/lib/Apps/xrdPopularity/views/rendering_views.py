@@ -27,7 +27,7 @@ DBUSER = 'CMS_EOS_POPULARITY_SYSTEM'
 # This is a generic method to render an html template 
 def xrdRenderTemplate(request, tmplPath='', contextRequests = {}):
     tmpl = loader.get_template(tmplPath)
-    cont = RequestContext(request,contextRequests)
+    cont = RequestContext(request, contextRequests)
     return HttpResponse(tmpl.render(cont))
 
 #---------------------------------------------------------------------
@@ -96,7 +96,7 @@ def xrdMonitoringPlotData(request):
         queryDict = request.GET
 
         pars.setTStart(queryDict.get('tstart', start.strftime("%Y-%m-%d")))
-        pars.setTStop (queryDict.get('tstop' ,  stop.strftime("%Y-%m-%d")))
+        pars.setTStop (queryDict.get('tstop',  stop.strftime("%Y-%m-%d")))
 
         plList = queryDict.getlist('plot')
         yvList = queryDict.getlist('yval')
@@ -104,7 +104,7 @@ def xrdMonitoringPlotData(request):
         try:
             tableList = [ plotOptions[pl] for pl in plList ]
         except:
-            raise Paramvalidationexception('plot','option not specified or not matching the options: plot=%s' % yValueOptions.keys())
+            raise Paramvalidationexception('plot', 'option not specified or not matching the options: plot=%s' % yValueOptions.keys())
 
         try:    
             if  len(tableList) != len(yvList): 
@@ -113,7 +113,7 @@ def xrdMonitoringPlotData(request):
             else:
                 yvalList = [ yValueOptions[yv]        for yv in yvList ]
         except:
-            raise Paramvalidationexception('plot','option not specified: yval=%s' % yValueOptions.keys())
+            raise Paramvalidationexception('plot', 'option not specified: yval=%s' % yValueOptions.keys())
         
         parList = []
         for pl, table, yval in zip(plList, tableList, yvalList):    

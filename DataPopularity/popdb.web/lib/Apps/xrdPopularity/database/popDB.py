@@ -63,7 +63,7 @@ def DSStatInTimeWindow(params):
     whereCondition = '''TDay >= to_date('%s','YYYY-MM-DD') 
                         and TDay <= to_date('%s','YYYY-MM-DD')
                         and isUserCMS = %s
-                     ''' % (params.TStart, params.TStop,params.isUserCMS)
+                     ''' % (params.TStart, params.TStop, params.isUserCMS)
     groupBy  = "collName" 
 
     orderBy  = "%s desc" % params.orderVar
@@ -134,7 +134,7 @@ def MostPopDSStat(params):
 
     whereCondition = '''collName = \'%s\'
                       and isUserCMS = %s
-                     ''' % (params.collName,params.isUserCMS)
+                     ''' % (params.collName, params.isUserCMS)
     orderBy       = "TDay " 
     vtime         = "trunc(TDay,'%s')" % (timeformatTrunc)
     
@@ -155,7 +155,7 @@ def MostPopDSStat(params):
                )*86400)*1000
                as millisecondsSinceEpoch,
                ta.%s
-               from ( %s ) ta order by %s''' % (params.orderVar,query,orderBy)
+               from ( %s ) ta order by %s''' % (params.orderVar, query, orderBy)
 
     logger.info(query)         
     try:
@@ -166,7 +166,7 @@ def MostPopDSStat(params):
         raise PopularityDBException(query, e)
 
 
-    data = {'data': [(utility.assignValue(row[0]),utility.assignValue(row[1])) for row in cursor.fetchall() ],
+    data = {'data': [(utility.assignValue(row[0]), utility.assignValue(row[1])) for row in cursor.fetchall() ],
             'name': params.collName}
     return data
 

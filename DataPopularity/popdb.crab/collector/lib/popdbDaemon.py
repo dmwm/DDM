@@ -31,7 +31,7 @@ def set_loggerOptions(options):
     if options.debug:
         log_level = logging.DEBUG
                 
-    logging.basicConfig( format=FORMAT , level = log_level )
+    logging.basicConfig( format=FORMAT, level = log_level )
 
     options.logger = logger
 
@@ -79,9 +79,9 @@ def do_options():
     logger.info(options)
     return options
 
-def printStats(start,stop,comment):
+def printStats(start, stop, comment):
     delta=stop - start
-    logger.info("\n--------------------------------------\n %s: start %s \t stop %s \t delta %s s \t %s mus\n--------------------------------------\n" % (comment,datetime.strftime(start,timeformat),datetime.strftime(stop,timeformat),delta.seconds,delta.microseconds))
+    logger.info("\n--------------------------------------\n %s: start %s \t stop %s \t delta %s s \t %s mus\n--------------------------------------\n" % (comment, datetime.strftime(start, timeformat), datetime.strftime(stop, timeformat), delta.seconds, delta.microseconds))
     
 def get_url(url):
     """
@@ -91,14 +91,14 @@ def get_url(url):
     logger.debug('Accessing %s' % url)
     http_handler = httplib2.Http("cache")
 
-    response, data = http_handler.request(url, 'GET',headers={'Accept':'application/json'} )
+    response, data = http_handler.request(url, 'GET', headers={'Accept':'application/json'} )
     
     if int(response['status']) < 400:
         #logger.debug(response)
         return json.loads(data)
     else:
         logger.warning("Didn't get an OK response")
-        for k,v in response.items():
+        for k, v in response.items():
             logger.error('%s = %s' % (k, v))
         raise Exception("Failed get_url %s" % url)
 
@@ -122,12 +122,12 @@ def request_data(date_tuple):
             attempt_count+=1
             time_sleep = factorial(attempt_count) * 60
             time.sleep(time_sleep)
-            logger.error("Failed to get_url. Attempt %s of %s\n%s\ngoing to sleep for %s s, then retry.)"%(attempt_count,max_attemps,err,time_sleep))
+            logger.error("Failed to get_url. Attempt %s of %s\n%s\ngoing to sleep for %s s, then retry.)"%(attempt_count, max_attemps, err, time_sleep))
             if attempt_count >= max_attemps:
                 raise Exception
         
     stop_time=datetime.now()
-    printStats(start_time,stop_time,"time needed to get_url")
+    printStats(start_time, stop_time, "time needed to get_url")
 
     
     #This could be a long print
@@ -151,9 +151,9 @@ def _refresh_SingleMV(table,mode='F'):
     connection = cx_Oracle.Connection(connection_string)
     cursor = cx_Oracle.Cursor(connection)
     
-    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH',[table,mode]);
+    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH', [table, mode]);
     stop_time=datetime.now()
-    printStats(start_time,stop_time,table)
+    printStats(start_time, stop_time, table)
     
     connection.commit()
     cursor.close()
@@ -169,9 +169,9 @@ def _refresh_with_alter(table,mode='F'):
     cursor = cx_Oracle.Cursor(connection)
 
     cursor.execute('alter session set "_replace_virtual_columns"=FALSE')
-    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH',[table,mode]);
+    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH', [table, mode]);
     stop_time=datetime.now()
-    printStats(start_time,stop_time,table)
+    printStats(start_time, stop_time, table)
     
     connection.commit()
     cursor.close()
@@ -189,7 +189,7 @@ def _refresh_T_CorruptedFiles():
     
     cursor.callproc('CMS_POPULARITY_SYSTEM.CORRUPTEDFILEREFRESH');
     stop_time=datetime.now()
-    printStats(start_time,stop_time,'CORRUPTEDFILEREFRESH')
+    printStats(start_time, stop_time, 'CORRUPTEDFILEREFRESH')
     
     connection.commit()
     cursor.close()
@@ -254,7 +254,7 @@ class DB2DB:
             start_time=datetime.now()
             self.connection.commit()
             stop_time=datetime.now()
-            printStats(start_time,stop_time,"time needed to commit connection")
+            printStats(start_time, stop_time, "time needed to commit connection")
                 
     def _populatePopDB(self):
         """
@@ -264,7 +264,7 @@ class DB2DB:
         start_time=datetime.now()
         self._SequentialUpload()
         stop_time=datetime.now()
-        printStats(start_time,stop_time,"time needed to do the sequential upload")
+        printStats(start_time, stop_time, "time needed to do the sequential upload")
         
         self._commit()
             
@@ -299,31 +299,31 @@ class DB2DB:
 
         mvPool = Pool(3)
         table_input=['MV_DS_Files', 'MV_block_stat0', 'MV_USER_USERID']
-        map_input = [ (x,'F') for x in table_input ]        
+        map_input = [ (x, 'F') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
         
-        _refresh_with_alter('MV_DS_STAT0','F')
+        _refresh_with_alter('MV_DS_STAT0', 'F')
 
         mvPool = Pool(10)
-        table_input=['MV_DS_STAT0_AGGR1','MV_DS_STAT0_AGGR2','MV_DS_STAT0_AGGR1_SUMM','MV_DS_STAT0_AGGR2_SUMM','MV_DS_STAT0_AGGR3','MV_DS_STAT0_AGGR4','MV_DS_STAT0_AGGR4_SUMM','MV_DS_CountFiles','MV_block_stat0_aggr_5_weeks','MV_DS_stat0_remote']                
-        map_input = [ (x,'C') for x in table_input ]        
+        table_input=['MV_DS_STAT0_AGGR1', 'MV_DS_STAT0_AGGR2', 'MV_DS_STAT0_AGGR1_SUMM', 'MV_DS_STAT0_AGGR2_SUMM', 'MV_DS_STAT0_AGGR3', 'MV_DS_STAT0_AGGR4', 'MV_DS_STAT0_AGGR4_SUMM', 'MV_DS_CountFiles', 'MV_block_stat0_aggr_5_weeks', 'MV_DS_stat0_remote']                
+        map_input = [ (x, 'C') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
 
         mvPool = Pool(6)
-        table_input=['MV_DSName','MV_DS','MV_DataTier','MV_Site','MV_block_stat0_last_access','MV_block_stat0_aggr_180_days']
-        map_input = [ (x,'C') for x in table_input ]        
+        table_input=['MV_DSName', 'MV_DS', 'MV_DataTier', 'MV_Site', 'MV_block_stat0_last_access', 'MV_block_stat0_aggr_180_days']
+        map_input = [ (x, 'C') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
 
         _refresh_T_CorruptedFiles()
 
-        _refresh_SingleMV('MV_CorruptedFiles','C');
+        _refresh_SingleMV('MV_CorruptedFiles', 'C');
         
 
         
-    def _setPopDBAttributes(self,data):
+    def _setPopDBAttributes(self, data):
         #print data
         
         PopDBAttribute = {}
@@ -374,8 +374,8 @@ class DB2DB:
 
         if self.config.debug :
             print("---------------------------") 
-            for field,val in data.items():
-                print("%s \t %s " % (field,val))
+            for field, val in data.items():
+                print("%s \t %s " % (field, val))
 
         self.CountFiles+=1
 
@@ -384,7 +384,7 @@ class DB2DB:
             self.CountFilesInJobWithFlagOne=0 #initialize counter
             
         if ( PopDBAttribute["JOBID"] != self.old_jobid ):
-            self._SummarizeJobInfo(self.PopDBAttributeJobList,self.CountFilesInJobWithFlagOne)
+            self._SummarizeJobInfo(self.PopDBAttributeJobList, self.CountFilesInJobWithFlagOne)
             self.CountJobs+=1
             
             self._insertDataToPopDB(self.PopDBAttributeJobList)
@@ -399,19 +399,19 @@ class DB2DB:
             self.CountFilesInJobWithFlagOne+=1
 
 
-    def _set_INSERTTIME			(self,data):
+    def _set_INSERTTIME			(self, data):
         return '%s' % self.now
 
-    def _set_FILENAME			(self,data):
+    def _set_FILENAME			(self, data):
         return  str(data["FileName"])
 
-    def _set_FILESIZE			(self,data):
+    def _set_FILESIZE			(self, data):
         return 0 # FIXME data["FILESIZE"]
 
-    def _set_ISPARENT			(self,data):
+    def _set_ISPARENT			(self, data):
         return data["IsParentFile"]
 
-    def _set_ISREMOTE			(self,data):
+    def _set_ISREMOTE			(self, data):
         if re.search('[u,U]nknown', data["ProtocolUsed"]) :
             return -1
         elif re.search('Local', data["ProtocolUsed"]) :
@@ -419,99 +419,99 @@ class DB2DB:
         else:
             return 1
 
-    def _set_PROTOCOL			(self,data):
+    def _set_PROTOCOL			(self, data):
         return  str(data["ProtocolUsed"])
 
-    def _set_LUMIRANGE			(self,data):
+    def _set_LUMIRANGE			(self, data):
         return  str(data["LumiRanges"])
 
-    def _set_FILEEXECEXITCODE		(self,data):
+    def _set_FILEEXECEXITCODE		(self, data):
         return 0 # FIXME data["FILEEXECEXITCODE"]
 
-    def _set_FILESTARTEDRUNNINGTIMESTAMP	(self,data):
+    def _set_FILESTARTEDRUNNINGTIMESTAMP	(self, data):
         return '2011-01-01 00:00:00'
 
-    def _set_FILEFINISHEDTIMESTAMP		(self,data):
+    def _set_FILEFINISHEDTIMESTAMP		(self, data):
         return '2011-01-01 00:00:00'
 
-    def _set_FILERUNNINGTIME		(self,data):
+    def _set_FILERUNNINGTIME		(self, data):
         return 0 # FIXME data["FILERUNNINGTIME"]
 
-    def _set_BLOCKID			(self,data):
+    def _set_BLOCKID			(self, data):
         return data["BlockId"]
 
-    def _set_BLOCKNAME			(self,data):
+    def _set_BLOCKNAME			(self, data):
         return str(data["BlockName"])
 
-    def _set_INPUTCOLLECTION		(self,data):
+    def _set_INPUTCOLLECTION		(self, data):
         return str(data["InputCollection"])
 
-    def _set_APPLICATION			(self,data):
+    def _set_APPLICATION			(self, data):
         return str(data["Application"])
 
-    def _set_TASKTYPE			(self,data):
+    def _set_TASKTYPE			(self, data):
         return str(data["Type"])
 
-    def _set_SUBMISSIONTOOL 		(self,data):
+    def _set_SUBMISSIONTOOL 		(self, data):
         return str(data["SubmissionTool"])
 
-    def _set_INPUTSE			(self,data):
+    def _set_INPUTSE			(self, data):
         return str(data["InputSE"])
 
-    def _set_TARGETCE			(self,data):
+    def _set_TARGETCE			(self, data):
         return str(data["TargetCE"])
 
-    def _set_SITENAME			(self,data):
+    def _set_SITENAME			(self, data):
         return str(data["SiteName"])
 
-    def _set_SCHEDULERNAME			(self,data):        
+    def _set_SCHEDULERNAME			(self, data):        
         return str(data["SchedulerName"])
 
-    def _set_JOBID				(self,data):
+    def _set_JOBID				(self, data):
         return data["JobId"]
 
-    def _set_JOBMONITORID			(self,data):
+    def _set_JOBMONITORID			(self, data):
         return str(data["JobMonitorId"])
 
-    def _set_TASKMONITORID			(self,data):
+    def _set_TASKMONITORID			(self, data):
         return str(data["TaskMonitorId"])
 
-    def _set_TASKJOBID			(self,data):
+    def _set_TASKJOBID			(self, data):
         return data["TaskJobId"]
 
-    def _set_TASKID 			(self,data):
+    def _set_TASKID 			(self, data):
         return data["TaskId"]
 
-    def _set_JOBEXECEXITCODE		(self,data):
+    def _set_JOBEXECEXITCODE		(self, data):
         if(data["JobExecExitCode"] == None):
             return -1
         return data["JobExecExitCode"]
 
-    def _set_JOBEXECEXITTIMESTAMP		(self,data):
-        return str(data["JobExecExitTimeStamp"]).replace("T"," ")
+    def _set_JOBEXECEXITTIMESTAMP		(self, data):
+        return str(data["JobExecExitTimeStamp"]).replace("T", " ")
 
-    def _set_STARTEDRUNNINGTIMESTAMP	(self,data):
-        return  str(data["StartedRunningTimeStamp"]).replace("T"," ")
+    def _set_STARTEDRUNNINGTIMESTAMP	(self, data):
+        return  str(data["StartedRunningTimeStamp"]).replace("T", " ")
 
-    def _set_FINISHEDTIMESTAMP		(self,data):
-        return str(data["FinishedTimeStamp"]).replace("T"," ")
+    def _set_FINISHEDTIMESTAMP		(self, data):
+        return str(data["FinishedTimeStamp"]).replace("T", " ")
 
-    def _set_WALLCLOCKCPUTIME		(self,data):
+    def _set_WALLCLOCKCPUTIME		(self, data):
         return data["WrapWC"]
     
-    def _set_CPUTIME			(self,data):
+    def _set_CPUTIME			(self, data):
         return data["WrapCPU"]
 
-    def _set_USERID			(self,data):
+    def _set_USERID			(self, data):
         return data["UserId"]
 
-    def _set_USERNAME			(self,data):
+    def _set_USERNAME			(self, data):
         return str(data["GridName"])
 
-    def _set_FILETYPE			(self,data):
+    def _set_FILETYPE			(self, data):
         return str(data["FileType"])
 
-    def _set_FILEEXITFLAG		(self,data):
+    def _set_FILEEXITFLAG		(self, data):
         return data["SuccessFlag"]                   
 
 # Giordano 28/11/2011
@@ -528,7 +528,7 @@ class DB2DB:
         return 0
     
 
-    def _SummarizeJobInfo(self,sameJobFileList,filesCounter):
+    def _SummarizeJobInfo(self, sameJobFileList, filesCounter):
 
         # for entry in sameJobFileList:
         #     if ( entry["FILEEXITFLAG"] != 1):
@@ -544,13 +544,13 @@ class DB2DB:
      
     def _get_TimeDelta(self, secs):
         seconds_in_day=24*3600  #NB: this must be integer to work 
-        return  timedelta(days=(secs/seconds_in_day) , seconds=(secs%seconds_in_day))
+        return  timedelta(days=(secs/seconds_in_day), seconds=(secs%seconds_in_day))
         
 
-    def _get_ranges(self,map_input):
+    def _get_ranges(self, map_input):
         delta = self.end - self.start
         self.logger.info( " delta end - start %s (days) %s (seconds) " % (delta.days, delta.seconds))
-        self.logger.info( " split window %s (days) %s (seconds) " % (self.hwindow.days,self.hwindow.seconds))
+        self.logger.info( " split window %s (days) %s (seconds) " % (self.hwindow.days, self.hwindow.seconds))
         tot_seconds=delta.days*24*3600 +delta.seconds
         wind_seconds=self.hwindow.days*24*3600 + self.hwindow.seconds
         size = tot_seconds /  wind_seconds
@@ -589,15 +589,15 @@ class DB2DB:
             #DashData = request_data_from_file("A.txt")
 
             self._HandleData(DashData)
-            self.logger.info("\n--------------------------------------\nNumber of failed insert : bulk %s \t,\t single %s\n--------------------------------------\n" % (self.CountBulkInsertFailures,self.CountSingleInsertFailures))
+            self.logger.info("\n--------------------------------------\nNumber of failed insert : bulk %s \t,\t single %s\n--------------------------------------\n" % (self.CountBulkInsertFailures, self.CountSingleInsertFailures))
             self._commit()
 
-        self.logger.info("\n--------------------------------------\nsize of the buffer retrieved from Dashboard %d \nNumber of jobs %s \n--------------------------------------\n" % (self.CountFiles,self.CountJobs))
-        self.logger.info("\n--------------------------------------\nsize of the buffer uploaded into PopDB %d \nNumber of jobs %s      \n--------------------------------------\n" % (self.CountFilesInPop,self.CountJobsInPop))
+        self.logger.info("\n--------------------------------------\nsize of the buffer retrieved from Dashboard %d \nNumber of jobs %s \n--------------------------------------\n" % (self.CountFiles, self.CountJobs))
+        self.logger.info("\n--------------------------------------\nsize of the buffer uploaded into PopDB %d \nNumber of jobs %s      \n--------------------------------------\n" % (self.CountFilesInPop, self.CountJobsInPop))
 
                 
         
-    def _HandleData(self,data):
+    def _HandleData(self, data):
         """
         organize data following the Data Popularity DB Schema
         """
@@ -606,7 +606,7 @@ class DB2DB:
             self._setPopDBAttributes(entry)        
         
 
-    def _insertDataToPopDB(self,dataList):
+    def _insertDataToPopDB(self, dataList):
         """
         insert data into PopDB
         """
@@ -622,7 +622,7 @@ class DB2DB:
             self._singleInsertSequence(dataList)
 
 
-    def _singleInsertSequence(self,dataList):
+    def _singleInsertSequence(self, dataList):
 
         if self.firstPrepare:
             self._prepareStatement(dataList)
@@ -631,7 +631,7 @@ class DB2DB:
 
             try:
                 if(self.config.fakeUpload == False):
-                    self.cursor.execute(self.statement,row)
+                    self.cursor.execute(self.statement, row)
                     self.countInsertedEntries+=1
             except Exception as inst:
                 self.CountSingleInsertFailures+=1
@@ -647,28 +647,28 @@ class DB2DB:
 #            self.connection.commit()
 
 
-    def _prepareStatement(self,dataList):
+    def _prepareStatement(self, dataList):
         row = dataList[0]
         attrString=""
         attrVal=""
         first=True
-        for key,val in row.items():
+        for key, val in row.items():
             if (first):
                 attrString = ":%s" % key
                 first=False
                 attrVal = "%s" % val
             else:
-                attrString = "%s, :%s" % (attrString,key)
-                attrVal = "%s, %s " % (attrVal,val)
+                attrString = "%s, :%s" % (attrString, key)
+                attrVal = "%s, %s " % (attrVal, val)
                 
         valuesAttr = attrString
 
-        self.statement = "insert into  CMS_POPULARITY_SYSTEM.RAW_FILE( %s ) values( %s )" % (valuesAttr.replace(":",""),attrString)
+        self.statement = "insert into  CMS_POPULARITY_SYSTEM.RAW_FILE( %s ) values( %s )" % (valuesAttr.replace(":", ""), attrString)
         #self.cursor.prepare(self.statement)
         self.firstPrepare= False
         
 
-    def _bulkInsert(self,dataList):
+    def _bulkInsert(self, dataList):
         
         #self.logger.info(statement)
         try:
@@ -678,7 +678,7 @@ class DB2DB:
                 self._prepareStatement(dataList)
                 
             if(self.config.fakeUpload == False):
-                self.cursor.executemany(self.statement,dataList)
+                self.cursor.executemany(self.statement, dataList)
 
             self.countInsertedEntries=len(dataList);
 
@@ -689,7 +689,7 @@ class DB2DB:
         except Exception as inst:
 
             if self.CountBulkInsertFailures%10000==0 :
-                self.logger.error("\n---------------------------\nthere is an error in inserting the statement :\n\t%s\n---------------------------\n %s \n %s" % (self.statement,dataList, inst))
+                self.logger.error("\n---------------------------\nthere is an error in inserting the statement :\n\t%s\n---------------------------\n %s \n %s" % (self.statement, dataList, inst))
                     
             self.CountBulkInsertFailures+=1
 

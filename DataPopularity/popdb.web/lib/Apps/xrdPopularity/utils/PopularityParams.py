@@ -114,7 +114,7 @@ class Popularityparams():
         #else:
         #    raise Paramvalidationexception('n', 'param must be a positive int')
 
-    def setIsCentralUser(self,n):
+    def setIsCentralUser(self, n):
         if ( n == '0' or n == '1' ):
             self.isUserCMS = int(n)
         else:

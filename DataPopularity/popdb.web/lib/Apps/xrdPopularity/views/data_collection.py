@@ -62,7 +62,7 @@ def getUserStatInTimeWindowJSON(params):
     try:
         params.orderVar = translationDict[params.orderVar]
     except:
-        raise Paramvalidationexception('orderby','parameter not specified or not matching the options: %s' % traslationDict.keys())
+        raise Paramvalidationexception('orderby', 'parameter not specified or not matching the options: %s' % traslationDict.keys())
 
     data = popDB.UserStatInTimeWindow(params)
     if not hasattr(params, 'LocalVsGlobal'):
@@ -99,7 +99,7 @@ def getTimeEvolutionPlotDataJSON(params):
     try:
         params.orderVar = translationDict[params.orderVar]
     except:
-        raise Paramvalidationexception('orderby','parameter not specified or not matching the options: %s' % traslationDict.keys())
+        raise Paramvalidationexception('orderby', 'parameter not specified or not matching the options: %s' % traslationDict.keys())
       
 
     data = getMostPopStatDict(params)

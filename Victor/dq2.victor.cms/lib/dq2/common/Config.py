@@ -188,7 +188,7 @@ def _load_configuration (aDir, configurationSection):
             _LOADED[f] = str(e) # don't load again and store exception message
     
     # configurationSection/configurationSection.cfg
-    f = ''.join((aDir, '/etc/', configurationSection, '/', configurationSection,'.cfg'))
+    f = ''.join((aDir, '/etc/', configurationSection, '/', configurationSection, '.cfg'))
     if f not in _LOADED:
         try:
             config.read(f)

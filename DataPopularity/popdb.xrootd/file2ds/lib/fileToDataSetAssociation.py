@@ -59,7 +59,7 @@ class fileToDataSetAssociator:
 
 
         FORMAT = '%(asctime)s %(levelname)s %(message)s'
-        logging.basicConfig( format=FORMAT , level = log_level )
+        logging.basicConfig( format=FORMAT, level = log_level )
         logger = logging.getLogger('fileToDataSetAssociator')
         logger.setLevel(level = log_level)
         logger.info(self.config)
@@ -149,7 +149,7 @@ class fileToDataSetAssociator:
                 statement = "insert into T_XRD_LFC(  lfn, dsname, blockname, fullname ) values(  :lfn, :dsname, :blockname, '%s' || :lfn )" % self.eosPrefix
             
             self.concreteUploadToDB(statement, data)
-            self.logger.info( 'Uploaded data into DB table %s \tsize %s' % (tableName , len(data) ) )
+            self.logger.info( 'Uploaded data into DB table %s \tsize %s' % (tableName, len(data) ) )
             del data[:]
             return True
         except Exception as err :
@@ -357,9 +357,9 @@ class fileToDataSetAssociator:
         succeed = False
         while i < 5 and not succeed :
             i += 1
-            ( succeed , data ) = self.concreteQueryPhedex(query)
+            ( succeed, data ) = self.concreteQueryPhedex(query)
             
-        return (succeed , data )
+        return (succeed, data )
 
     def concreteQueryPhedex(self, query):
         try:
@@ -369,11 +369,11 @@ class fileToDataSetAssociator:
             #print 'final result\n' , dicData
 
             self.countPhEDExQueries += 1 
-            return ( True , dicData )
+            return ( True, dicData )
         
         except Exception as err:
             self.logger.error("Error from PhEDEx interface \n%s" % err)
-            return ( False , [] )
+            return ( False, [] )
 
 
 #-----------------------------------------------------------------
@@ -421,7 +421,7 @@ class fileToDataSetAssociator:
                 self.logger.debug('file already discovered %s' % lfnfile)
                 continue 
                         
-            (result , fileInfo) = self.queryPhedexForFile(lfnfile)
+            (result, fileInfo) = self.queryPhedexForFile(lfnfile)
 
             if result and len(fileInfo) :
 
@@ -440,7 +440,7 @@ class fileToDataSetAssociator:
 
         #print 'fileInfo ' , fileInfo
         dsname = fileInfo[0]['dsname']
-        (result , filesInfo) = self.queryPhedexForDS(dsname) 
+        (result, filesInfo) = self.queryPhedexForDS(dsname) 
 
         files = [ x['lfn'] for x in filesInfo ]
         

@@ -33,7 +33,7 @@ def send_mail(text, contacts, sender, subject):
     smtp=smtplib.SMTP('localhost')
 
     # Send the email
-    smtp.sendmail(sender,contacts,msg.as_string())
+    smtp.sendmail(sender, contacts, msg.as_string())
     logger.info('Mail sent to %s'%(contacts))
     logger.info('Content:\n %s'%(text))
 
