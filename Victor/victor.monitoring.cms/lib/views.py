@@ -13,8 +13,9 @@ from django.http      import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from datetime import date
 import time
-from . import victorDao
 import decimal
+
+import victor.victorDao
 
 threshold = 0.9
 
