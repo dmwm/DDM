@@ -15,7 +15,7 @@ from datetime import date
 import time
 import decimal
 
-import victor.victorDao
+import victor.victorDao as victorDao
 
 threshold = 0.9
 
