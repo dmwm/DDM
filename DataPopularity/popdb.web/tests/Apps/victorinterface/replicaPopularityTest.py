@@ -4,12 +4,13 @@
 """
 PopDB query script based on DAS command line tool by Valentin Kuznetsov
 """
+from __future__ import absolute_import
 __author__ = "Nicolo Magini"
 
 import logging
 import sys
 import datetime
-from replicaPopularityBase import ReplicaPopularity
+from Apps.victorinterface.replicaPopularityBase import ReplicaPopularity
 
 from   optparse import OptionParser
 

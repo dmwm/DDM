@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 from django.conf.urls import *
-import views as views
+from . import views as views
 
 urlpatterns = patterns('',
 

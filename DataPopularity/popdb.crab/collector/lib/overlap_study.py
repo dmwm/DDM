@@ -1,3 +1,4 @@
+from __future__ import print_function
 import cx_Oracle
 
 def genericTranslateInDict(cursor):
@@ -57,8 +58,8 @@ for e1 in list1:
         if (list1[e1]['SITENAME'] == list2[e2]['SITE_NAME'] and list2[e2]['FILE_LFN'] == list1[e1]['FILENAME'] and list1[e1]['STARTEDRUNNINGTIMESTAMP'] <= list2[e2]['START_DATE'] and list2[e2]['START_DATE'] < list1[e1]['FINISHEDTIMESTAMP'] and list1[e1]['STARTEDRUNNINGTIMESTAMP'] < list2[e2]['END_DATE'] and list2[e2]['END_DATE'] <= list1[e1]['FINISHEDTIMESTAMP']):
             matching.append(list1[e1])
             break
-		elif list1[e1] not in only_crab:
-			only_crab.append(list1[e1])
+        elif list1[e1] not in only_crab:
+            only_crab.append(list1[e1])
 
-print "Overlap: ", len(matching)/float(len(list1))
-print "Only in crab ", len(only_crab), " crab entries ", len(list1), " cmssw entries ", len(list2)
+print("Overlap: ", len(matching)/float(len(list1)))
+print("Only in crab ", len(only_crab), " crab entries ", len(list1), " cmssw entries ", len(list2))

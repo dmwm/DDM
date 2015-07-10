@@ -5,6 +5,7 @@
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import absolute_import
 
 import time
 import traceback
@@ -21,7 +22,7 @@ from dq2.victor.popularityInterface import PopularityInterface
 from dq2.victor.utils import callRetry, epochTime, dumpTemporaryInfo
 from dq2.victor.notifications import sendErrorMail
 
-from utils import get_json_data, get_json_data_https, get_json_data_from_file
+from .utils import get_json_data, get_json_data_https, get_json_data_from_file
 
 
 """

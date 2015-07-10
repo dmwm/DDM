@@ -5,10 +5,11 @@
 API to combine replica information from DAS and popularity from PopDB, and returning a dictionary of all block
 replicas at site with associated popularity
 """
+from __future__ import absolute_import
 __author__ = "Nicolo Magini"
 
 import logging
-from replicaPopularityBase import ReplicaPopularity
+from .replicaPopularityBase import ReplicaPopularity
 from Apps.popCommon.utils.confSettings import confSettings
 
 

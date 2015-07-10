@@ -5,6 +5,7 @@
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import absolute_import
 
 import traceback
 import time
@@ -18,8 +19,8 @@ from dq2.victor.accountingInterface import AccountingInterface
 from dq2.victor.utils import callRetry, TERA
 from dq2.victor.factory import create_tool 
 from dq2.victor import config    
-from utils import get_json_data, get_json_data_improper, get_json_data_https
-from groupPledges import groupPledges 
+from .utils import get_json_data, get_json_data_improper, get_json_data_https
+from .groupPledges import groupPledges 
 
 
 class AccountingInterface(AccountingInterface):
