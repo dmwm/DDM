@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from .Apps.popCommon.utils.confSettings import confSettings
+from Apps.popCommon.utils.confSettings import confSettings
 import os
 
 popsettings = confSettings()
