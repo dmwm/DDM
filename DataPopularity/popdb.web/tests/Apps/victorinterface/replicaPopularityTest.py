@@ -10,7 +10,7 @@ __author__ = "Nicolo Magini"
 import logging
 import sys
 import datetime
-from .replicaPopularityBase import ReplicaPopularity
+from Apps.victorinterface.replicaPopularityBase import ReplicaPopularity
 
 from   optparse import OptionParser
 

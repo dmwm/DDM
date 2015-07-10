@@ -9,7 +9,7 @@ __author__ = "Nicolo Magini"
 import logging
 import sys
 from optparse import OptionParser
-from .dasInterface import DASInterface
+from Apps.popCommon.utils.dasInterface.dasInterface import DASInterface
 
 logger = logging.getLogger(__name__)
 
