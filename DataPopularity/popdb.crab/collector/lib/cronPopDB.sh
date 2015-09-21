@@ -24,16 +24,10 @@ while [ $startHour -lt 24 ]; do
 
     endHour=$((startHour+window))
     
-    startHourStr=0$startHour
-    startHourStr=${startHourStr: -2}
-
-    endHourStr=0$endHour
-    endHourStr=${endHourStr: -2}
-
-    startDate="`date -d '-1 day' +\%Y-\%m-\%d` "$startHourStr":00:00"
+    startDate="`date -d '-1 day' +\%Y-\%m-\%d` "$(printf %02d $startHour)":00:00"
 
     if [ $endHour -lt 24 ]; then
-	endDate="`date -d '-1 day' +\%Y-\%m-\%d` "$endHourStr":00:00"
+	endDate="`date -d '-1 day' +\%Y-\%m-\%d` "$(printf %02d $endHour)":00:00"
     else
 	endDate="`date +\%Y-\%m-\%d` 00:00:00"
     fi
