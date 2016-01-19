@@ -18,7 +18,7 @@ export TNS_ADMIN=/etc
 command "cd $CRONPATH/.."
 
 startHour=0
-window=4
+window=2
 
 while [ $startHour -lt 24 ]; do
 
@@ -32,7 +32,7 @@ while [ $startHour -lt 24 ]; do
 	endDate="`date +\%Y-\%m-\%d` 00:00:00"
     fi
 
-    command "python2.6 $CRONPATH/popdbDaemon.py  -w 4 -s \"$startDate\"  -e \"$endDate\" -v -b" 
+    command "python2.6 $CRONPATH/popdbDaemon.py  -w 2 -s \"$startDate\"  -e \"$endDate\" -v -b" 
     
     [ $? -ne 0 ] &&  cat $logfile | mail -s "Problem in PopDB CRAB cronJob of $logfileName" $MAILTO && exit
     
