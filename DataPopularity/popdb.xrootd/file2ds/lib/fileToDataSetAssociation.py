@@ -516,13 +516,13 @@ class fileToDataSetAssociator:
         self.resetCursor()
 
     def getProcessMemory(self, pid):
-        ''' Using pmap to report memory map of a process '''
+        ''' Using ps to report memory usage of a process '''
 
-        process = subprocess.Popen('pmap -x %s | tail -1' % pid, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        process = subprocess.Popen('ps --no-heading -o vsize -p %s' % pid, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         process_tuple = process.communicate()
         memory = 0
         if process_tuple[1] == '':
-            memory = int(process_tuple[0].split()[2])
+            memory = int(process_tuple[0])
 
         self.logger.info('The memory used by the process with pid %s is %s' % (pid, memory) )
         return memory

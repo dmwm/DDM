@@ -4,12 +4,12 @@ B = LOAD '/user/mmeoni/CMS_file2DS.csv' using PigStorage(',') as (storename:char
 
 Aview = FOREACH A GENERATE (((long) start_time) * 1000) as ots, (((long) end_time) * 1000) as cts, (LAST_INDEX_OF(file_lfn, '/store/') == -1 ? 'XXXXX' : SUBSTRING(file_lfn, LAST_INDEX_OF(file_lfn, '/store/'), 999)) as file_lfn, client_host, server_username, ((long)end_time - (long)start_time) as procTime, (long)read_bytes_at_close as readBytes, server_domain;
 Aview1 = FOREACH Aview GENERATE CONCAT ( (chararray)GetYear(ToDate(cts)), CONCAT('/', CONCAT( (chararray)GetMonth(ToDate(cts)), CONCAT('/', (chararray)GetDay(ToDate(cts)) ) ) ) ) as ctsYYMMDD, cts, file_lfn, client_host, server_username, procTime, readBytes, server_domain;
---AviewWhere = FILTER Aview1 BY procTime > 0 AND server_domain = "cern.ch";
 AviewWhere = FILTER Aview1 BY procTime > 0 AND file_lfn != 'XXXXX';
-Bview = FOREACH B GENERATE REPLACE(storename, '\\"', '') as fullname, REPLACE(dsname, '\\"', '') as dsname;
+
+Bview = FOREACH B GENERATE REPLACE(storename, '\\"', '') as fullname;
 
 view = JOIN AviewWhere BY file_lfn, Bview BY fullname;
-groupby = GROUP view BY (ctsYYMMDD, client_host, server_username, dsname);
+groupby = GROUP view BY (ctsYYMMDD, client_host, server_username, fullname);
 
 result = FOREACH groupby GENERATE FLATTEN(group), COUNT(view.client_host) as numAccesses, SUM(view.procTime) as procTime, SUM(view.readBytes) as readBytes;
 
