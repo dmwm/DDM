@@ -183,6 +183,7 @@ class CMSSWMonCollector(Service):
         try:
             body = message.get_body()
             body = body.replace(', ,', ',')
+            body = body.replace(':-nan,', ':null,').replace(':nan,', ':null,')
             msgDict = self.JSON_format(body)
             try:
                 if msgDict['fallback'] == True:
