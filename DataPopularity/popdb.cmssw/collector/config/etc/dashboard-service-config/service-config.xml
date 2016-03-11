@@ -7,8 +7,8 @@
        <param name="id">CMSSW-MON</param>
        <param name="localQueue">/opt/dashboard/var/messages/cmssw</param>
        <param name="bufferSize">10000</param>
-       <param name="transfersDBTable">T_RAW_CMSSW</param>
-       <param name="rejectedDBTable">T_RAW_REJ</param>
+       <param name="transfersDBTable">CMS_CMSSW_POPULARITY.T_RAW_CMSSW</param>
+       <param name="rejectedDBTable">CMS_CMSSW_POPULARITY.T_RAW_REJ</param>
        <param name="dbsection">cms_cmssw_w</param>
      </config>
    </service>

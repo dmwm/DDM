@@ -5,6 +5,7 @@
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import print_function
 
 from dq2.common import log as logging
 
@@ -17,7 +18,7 @@ def timed(f):
     start = time()
     result = f(*args, **kwds)
     elapsed = time() - start
-    print "%s took %d time to finish" % (f.__name__, elapsed)
+    print("%s took %d time to finish" % (f.__name__, elapsed))
     return result
   return wrapper
 

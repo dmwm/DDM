@@ -5,6 +5,7 @@
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import absolute_import
 
 import traceback
 import time
@@ -18,8 +19,8 @@ from dq2.victor.accountingInterface import AccountingInterface
 from dq2.victor.utils import callRetry, TERA
 from dq2.victor.factory import create_tool 
 from dq2.victor import config    
-from utils import get_json_data, get_json_data_improper
-from groupPledges import groupPledges 
+from .utils import get_json_data, get_json_data_improper, get_json_data_https
+from .groupPledges import groupPledges 
 
 
 class AccountingInterface(AccountingInterface):
@@ -67,46 +68,61 @@ class AccountingInterface(AccountingInterface):
         if centralPledge is not None:
             self.__centralPledge = centralPledge        
         
-        self.__site_ids = self.__get_site_ids()        
+        self.__site_name_map = self.__get_site_name_map()
+	self.__sitedb_pledges = self.__get_sitedb_pledges()
     
-    
-    def __get_site_ids(self):                                                                                                                                         
-        
-        url='https://cmsweb.cern.ch/sitedb/reports/showXMLReport/?reportid=naming_convention.ini'
-        req = urllib2.Request(url)
-        opener = urllib2.build_opener()
-        f = opener.open(req)
-        data_s=f.read()
-        f.close()
-        
-        site_dictionary = {}
-        
-        data_doc = parseString(data_s)
-        items = data_doc.getElementsByTagName('item')
-        for item in items:
-        
-            cmsname = item.getElementsByTagName('cms')[0]
-            cmsname = cmsname.childNodes[0].data
-            site_dictionary[cmsname] = {}
-        
-            id = item.getElementsByTagName('id')[0]
-            id = id.childNodes[0].data
-            site_dictionary[cmsname]['id']=id
-        
-            site = item.getElementsByTagName('site')[0]
-            site = site.childNodes[0].data
-            site_dictionary[cmsname]['site'] = site
-        
-            sam = item.getElementsByTagName('sam')[0]
-            sam = sam.childNodes[0].data
-            site_dictionary[cmsname]['sam'] = sam
-            
-            
-        self.__logger.debug(site_dictionary)
-        
-        return site_dictionary
-            
-      
+    def __get_site_name_map(self):
+
+	url='https://cmsweb.cern.ch/sitedb/data/prod/site-names'
+        site_map_data = get_json_data_https(url)
+
+	siteIdx=site_map_data['desc']['columns'].index('site_name')
+	typeIdx=site_map_data['desc']['columns'].index('type')
+	nameIdx=site_map_data['desc']['columns'].index('alias')
+
+	site_name_map = {}
+
+	for item in site_map_data['result']:
+		try:
+			(site_name_map[item[siteIdx]][item[typeIdx]]).append(item[nameIdx])
+     		except KeyError:
+			try:
+				site_name_map[item[siteIdx]][item[typeIdx]]=[item[nameIdx]]
+			except KeyError:
+				site_name_map[item[siteIdx]]={item[typeIdx]:[item[nameIdx]]}
+	self.__logger.debug(site_name_map)
+
+	return site_name_map
+
+    def __get_sitedb_pledges(self):
+
+	url='https://cmsweb.cern.ch/sitedb/data/prod/resource-pledges'
+	resource_pledge_data = get_json_data_https(url)
+
+	siteIdx=resource_pledge_data['desc']['columns'].index('site_name')
+	updateTimeIdx=resource_pledge_data['desc']['columns'].index('pledge_date')
+	yearIdx=resource_pledge_data['desc']['columns'].index('quarter')
+	diskIdx=resource_pledge_data['desc']['columns'].index('disk_store')
+	localDiskIdx=resource_pledge_data['desc']['columns'].index('local_store')
+	
+	resource_pledges = {}
+
+	current_year=time.gmtime().tm_year
+
+	for item in resource_pledge_data['result']:
+		if item[yearIdx]==current_year:
+			try:
+				if item[updateTimeIdx] >= resource_pledges[item[siteIdx]]['pledge_date']:
+					resource_pledges[item[siteIdx]]['disk_store']=item[diskIdx]
+	                                resource_pledges[item[siteIdx]]['local_store']=item[localDiskIdx]
+	                                resource_pledges[item[siteIdx]]['pledge_date']=item[updateTimeIdx]
+			except KeyError:
+				resource_pledges[item[siteIdx]]={'disk_store':item[diskIdx], 'local_store':item[localDiskIdx], 'pledge_date':item[updateTimeIdx]}
+	
+	self.__logger.debug(resource_pledges)
+
+	return resource_pledges
+
     def __get_nodeusage_values(self):
         
         url = "https://cmsweb.cern.ch/phedex/datasvc/json/prod/nodeusage"
@@ -173,24 +189,21 @@ class AccountingInterface(AccountingInterface):
     
     
     def getSites(self, spacetokens=[]):
-        """        
+	"""        
         @return: List with all the sites.
         """
+	
+	sites = []
 
-        url = "https://cmsweb.cern.ch/sitedb/json/index/SitetoCMSName?name"
-        site_dictionary = get_json_data_improper(url)
-        
-        sites = []
-        
-        for site_number in site_dictionary:
-            site_name = site_dictionary[site_number]['name']
-            try:
-                groups = groupPledges[site_name].keys()
-                for group in groups:
-                    sites.append('%s^%s'%(site_name, group))
-            except KeyError:
-                pass        
-        
+	for site in self.__site_name_map:
+		site_name = self.__site_name_map[site]['cms'][0]
+		try:
+        	        groups = groupPledges[site_name].keys()
+	                for group in groups:
+                	    sites.append('%s^%s'%(site_name, group))
+            	except KeyError:
+                	pass
+
         return sites
 
 
@@ -204,7 +217,7 @@ class AccountingInterface(AccountingInterface):
             #THE PREVIOUS CASE IS ONLY VALID FOR T2s!!!
             self.__logger.info('Used space for site %s: %.2f' %(site, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No used space for site %s (%s)' %(site, e))
             return None               
         
@@ -217,31 +230,32 @@ class AccountingInterface(AccountingInterface):
             bytes = self.__groupusage[site][group]['node_bytes']
             self.__logger.info('Used space for site %s by group %s: %.2f' %(site, group, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No used space for site %s by group %s (%s)' %(site, group, e))
             return None                      
 
 
-    def getUsedSpace(self,site):
+    def getUsedSpace(self, site):
         
         site, physicsgroup = site.split('^')
         return self.__getUsedSpaceGroup(site, physicsgroup)
 
 
-    def __getSiteDBPledge(self):
-        
-        try:
-            url='https://cmsweb.cern.ch/sitedb/json/index/Pledge?site=%s' %(self.__site_ids[site]['id'])            
-            data = get_json_data_improper(url)     
-            pledge = (data['0']['disk_store - TB']-data['0']['local_store - TB'])*TERA*self.__centralPledge
-            if pledge is not None:
-                self.__logger.info('Pledged space for site %s: %.2f' %(site, pledge/TERA))
+    def __getSiteDBPledge(self, site):
+
+	for item in self.__site_name_map:
+	    if self.__site_name_map[item]['cms'][0]==site:
+		siteId=item
+
+	try:
+	    pledge=((self.__sitedb_pledges[siteId]['disk_store'] or 0)-(self.__sitedb_pledges[siteId]['local_store'] or 0))*TERA*self.__centralPledge
+	    if pledge is not None:
+               	self.__logger.info('Pledged space for site %s: %.2f' %(site, pledge/TERA))
             return pledge
-        
-        except urllib2.HTTPError:            
-            self.__logger.error('No pledge for site %s' %(site))
-            return None
-        
+
+	except KeyError:
+	    self.__logger.error('No pledge for site %s' %(site))
+	    return None
     
     def __getGroupPledge(self, site, group):
                 
@@ -249,32 +263,32 @@ class AccountingInterface(AccountingInterface):
             bytes = groupPledges[site][group]
             self.__logger.info('Pledged space for site %s by group %s: %.2f' %(site, group, bytes/TERA))
             return bytes
-        except Exception, e:
+        except Exception as e:
             self.__logger.error('No pledged space for site %s by group %s (%s)' %(site, group, e))
             return None    
 
             
-    def getTotalSpace(self,site):    
+    def getTotalSpace(self, site):    
 
         site, physicsgroup = site.split('^')
         return self.__getGroupPledge(site, physicsgroup)
         
     
-    def getToBeDeletedSpace(self,site):
+    def getToBeDeletedSpace(self, site):
         """
         MOCK. Not needed by CMS
         """
         return 0                
         
         
-    def refreshSiteStatistics(self,site):            
+    def refreshSiteStatistics(self, site):            
         """
         MOCK. Not needed by CMS
         """
         return True
         
     
-    def getSpaceInDeletionQueue(self,site):                    
+    def getSpaceInDeletionQueue(self, site):                    
         '''
         Return space which is freed up by deletion
         '''

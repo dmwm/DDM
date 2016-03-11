@@ -83,5 +83,5 @@ def sendErrorMail(errortext):
 def sendWarningMail(text):
     subject=__SUBJECT 
     #subject="DiskSpaceMonitor warning"                    
-    __send_mail('%s%s'%(__HEADER,text), __opsRecipients, __sender, subject)
+    __send_mail('%s%s'%(__HEADER, text), __opsRecipients, __sender, subject)
             

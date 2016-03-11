@@ -21,7 +21,7 @@ class BadConfigurationError(Exception):
 _config = SafeConfigParser()
 try:
     _config.read(['/etc/victormonitoring.cfg'])
-except Exception, e:
+except Exception as e:
     raise BadConfigurationError('Could not parse configuration files due to error [%s]' % e)
 
 # configuration objects
@@ -45,7 +45,7 @@ def get_config(param, type=str, mandatory=False, section='victor'):
         value = None
         try:
             value = _config.get(section, param)
-        except Exception, e:
+        except Exception as e:
             pass
         if not value and mandatory:
             raise BadConfigurationError("Mandatory parameter '%s' missing from configuration file section [%s]" % (param, section))
@@ -75,12 +75,12 @@ def get_config(param, type=str, mandatory=False, section='victor'):
                 elif type == list or type=='list_2':
                     value = value.strip().split(',')
                     assert(isinstance(value, list))
-                    value=map(lambda x: x.strip(),value)
+                    value=map(lambda x: x.strip(), value)
                     while True:
                         try: value.remove('')
                         except ValueError: break
                                 
-        except Exception, e:
+        except Exception as e:
             raise BadConfigurationError('Error reading parameter from configuration file [%s]' % param)
         _params.setdefault(section, {})
         _params[section][param] = value

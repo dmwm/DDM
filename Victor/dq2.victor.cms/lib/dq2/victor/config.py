@@ -13,7 +13,6 @@ import os
 
 from ConfigParser import SafeConfigParser
 from threading import Lock
-from dq2.common.validator import is_timedelta
 
 class BadConfigurationError(Exception):
     pass
@@ -24,7 +23,7 @@ try:
     _config.read(['%s/etc/dq2.cfg' % os.environ.get('DQ2_HOME'),
                   os.path.expanduser('~/.dq2/etc/dq2.cfg'),
                   '/opt/dq2/etc/dq2.cfg'])
-except Exception, e:
+except Exception as e:
     raise BadConfigurationError('Could not parse configuration files due to error [%s]' % e)
 
 # configuration objects
@@ -48,7 +47,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
         value = None
         try:
             value = _config.get(section, param)
-        except Exception, e:
+        except Exception as e:
             pass
         if not value and mandatory:
             raise BadConfigurationError("Mandatory parameter '%s' missing from configuration file section [%s]" % (param, section))
@@ -78,7 +77,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
                 elif type == list or type=='list_2':
                     value = value.strip().split(',')
                     assert(isinstance(value, list))
-                    value=map(lambda x: x.strip(),value)
+                    value=map(lambda x: x.strip(), value)
                     while True:
                         try: value.remove('')
                         except ValueError: break
@@ -95,7 +94,7 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
                 
                            
                     
-        except Exception, e:
+        except Exception as e:
             raise BadConfigurationError('Error reading parameter from configuration file [%s]' % param)
         _params.setdefault(section, {})
         _params[section][param] = value
@@ -104,11 +103,11 @@ def get_config(param, type=str, mandatory=False, section='dq2-victor'):
         _lock.release()
 
 
-def __convertToDictionary(stringTuple,valueParser):
+def __convertToDictionary(stringTuple, valueParser):
         
     dict={}
     for string in stringTuple:
-        key,value=string.split(':')
+        key, value=string.split(':')
         key=key.strip()
         #value=float(value)
         value=valueParser(value)
@@ -155,28 +154,13 @@ def get_dict(configParam,type=None ,section='dq2-agents-diskspacemonitor'):
         return None
      
     if   type =='size':
-        cfgdict = __convertToDictionary(cfgdict,__parseSize)
+        cfgdict = __convertToDictionary(cfgdict, __parseSize)
     elif type =='positive_int':
-        cfgdict = __convertToDictionary(cfgdict,__parsePositiveInt)
+        cfgdict = __convertToDictionary(cfgdict, __parsePositiveInt)
     else:
-        cfgdict = __convertToDictionary(cfgdict,__parseFloat)
+        cfgdict = __convertToDictionary(cfgdict, __parseFloat)
     
     return cfgdict
-
-
-def get_time_difference(configParam ,section='dq2-agents-diskspacemonitor'):
-    
-    time_diff = get_config(configParam, str, section = section)    
-    if time_diff is None:
-        return None
-        
-    try:
-        is_timedelta([time_diff])
-    except:
-        return None 
-       
-    return time_diff
-
 
     
 

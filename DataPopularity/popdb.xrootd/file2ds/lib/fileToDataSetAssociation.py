@@ -59,7 +59,7 @@ class fileToDataSetAssociator:
 
 
         FORMAT = '%(asctime)s %(levelname)s %(message)s'
-        logging.basicConfig( format=FORMAT , level = log_level )
+        logging.basicConfig( format=FORMAT, level = log_level )
         logger = logging.getLogger('fileToDataSetAssociator')
         logger.setLevel(level = log_level)
         logger.info(self.config)
@@ -149,10 +149,10 @@ class fileToDataSetAssociator:
                 statement = "insert into T_XRD_LFC(  lfn, dsname, blockname, fullname ) values(  :lfn, :dsname, :blockname, '%s' || :lfn )" % self.eosPrefix
             
             self.concreteUploadToDB(statement, data)
-            self.logger.info( 'Uploaded data into DB table %s \tsize %s' % (tableName , len(data) ) )
+            self.logger.info( 'Uploaded data into DB table %s \tsize %s' % (tableName, len(data) ) )
             del data[:]
             return True
-        except Exception, err :
+        except Exception as err :
             self.logger.error( 'failing upload data to table %s \nstatement %s\n%s\n%s' % (tableName, statement, Exception, err))
 
             try:
@@ -166,7 +166,7 @@ class fileToDataSetAssociator:
 
                 self.mergeUploadToDB(newstatement, data)
                 return True
-            except Exception, err :
+            except Exception as err :
                 self.logger.error( 'failing also mergeUpload data to table %s \nstatement %s\n%s\n%s\nData %s' % (tableName, newstatement, Exception, err, data))
                 raise err
             
@@ -308,7 +308,7 @@ class fileToDataSetAssociator:
             row = self.cursorQ.fetchone()[0]
             self.logger.info('Last Updated insertTime %s', row)
             return row
-        except Exception, err:
+        except Exception as err:
             self.logger.error('error in performing the query %s' % query )
             raise err
         
@@ -357,9 +357,9 @@ class fileToDataSetAssociator:
         succeed = False
         while i < 5 and not succeed :
             i += 1
-            ( succeed , data ) = self.concreteQueryPhedex(query)
+            ( succeed, data ) = self.concreteQueryPhedex(query)
             
-        return (succeed , data )
+        return (succeed, data )
 
     def concreteQueryPhedex(self, query):
         try:
@@ -369,11 +369,11 @@ class fileToDataSetAssociator:
             #print 'final result\n' , dicData
 
             self.countPhEDExQueries += 1 
-            return ( True , dicData )
+            return ( True, dicData )
         
-        except Exception, err:
+        except Exception as err:
             self.logger.error("Error from PhEDEx interface \n%s" % err)
-            return ( False , [] )
+            return ( False, [] )
 
 
 #-----------------------------------------------------------------
@@ -406,6 +406,8 @@ class fileToDataSetAssociator:
                 continue
             if eosfile.find('/store/unmerged/') != -1:
                 continue
+            if eosfile.find('/store/t0streamer/') != -1:
+                continue
             if eosfile.find('/eos/pps/') != -1:
                 continue
             if eosfile.find('/eos/ppsscratch/') != -1:
@@ -419,7 +421,7 @@ class fileToDataSetAssociator:
                 self.logger.debug('file already discovered %s' % lfnfile)
                 continue 
                         
-            (result , fileInfo) = self.queryPhedexForFile(lfnfile)
+            (result, fileInfo) = self.queryPhedexForFile(lfnfile)
 
             if result and len(fileInfo) :
 
@@ -438,7 +440,7 @@ class fileToDataSetAssociator:
 
         #print 'fileInfo ' , fileInfo
         dsname = fileInfo[0]['dsname']
-        (result , filesInfo) = self.queryPhedexForDS(dsname) 
+        (result, filesInfo) = self.queryPhedexForDS(dsname) 
 
         files = [ x['lfn'] for x in filesInfo ]
         
@@ -514,13 +516,13 @@ class fileToDataSetAssociator:
         self.resetCursor()
 
     def getProcessMemory(self, pid):
-        ''' Using pmap to report memory map of a process '''
+        ''' Using ps to report memory usage of a process '''
 
-        process = subprocess.Popen('pmap -x %s | tail -1' % pid, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        process = subprocess.Popen('ps --no-heading -o vsize -p %s' % pid, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
         process_tuple = process.communicate()
         memory = 0
         if process_tuple[1] == '':
-            memory = int(process_tuple[0].split()[2])
+            memory = int(process_tuple[0])
 
         self.logger.info('The memory used by the process with pid %s is %s' % (pid, memory) )
         return memory

@@ -60,7 +60,7 @@ class CMSSWMonCollector(Service):
         # Try to read the local queue
         try:
             self.localQueue = DQS(path = self.param('localQueue'))
-        except Exception, e:
+        except Exception as e:
             self._logger.error("connection to the local queue failed")
 
     def run(self):
@@ -117,13 +117,13 @@ class CMSSWMonCollector(Service):
         self.localQueue.purge(60, 60)  
         self._next_purge = time.time() + self.PURGE_INTERVAL
 
-    def validate_length(self,bodies):
+    def validate_length(self, bodies):
         a = [len(x.keys()) for x in bodies]
         m = max(a)
         if a[0] < m:
             idx = a.index(m)
             bodies[0], bodies[idx] = bodies[idx], bodies[0]
-            self._logger.warning("swap message positions 0 and %s. Missing keys %s" % (idx,[x for x in bodies[0].keys() if x not in bodies[idx].keys()]))
+            self._logger.warning("swap message positions 0 and %s. Missing keys %s" % (idx, [x for x in bodies[0].keys() if x not in bodies[idx].keys()]))
         return bodies
     
     def insert_messages(self, names, bodies):
@@ -136,7 +136,7 @@ class CMSSWMonCollector(Service):
         try:
             # Get a site DAO to work with
             ctx = DAOContext.getDAOContext(section=self.dbsection) 
-            dao = DAOFactory.getDAOFactory().getDAOObject(ctx,'xrootd','XRootDDAO')
+            dao = DAOFactory.getDAOFactory().getDAOObject(ctx, 'xrootd', 'XRootDDAO')
             
             # Try to make a bulk insert 
             if len(bodies) > 0:
@@ -144,7 +144,7 @@ class CMSSWMonCollector(Service):
                     bodies = self.validate_length(bodies)
                     dao.insertMessages(bodies, self.transfers_db_table)
                     successes = len(bodies)
-                except Exception, msg:
+                except Exception as msg:
                     is_bulk = False
                     self._logger.warning("couldn't feed all the data: %s" % msg)
                     self._logger.warning("failed to insert %s messages. Inserting messages one by one" % len(bodies))
@@ -154,7 +154,7 @@ class CMSSWMonCollector(Service):
                         try:
                             dao.insertMessages(body, self.transfers_db_table)
                             successes += 1
-                        except Exception, msg:
+                        except Exception as msg:
                             failures += 1
 
                             # Try to insert the malformed message in a table without any constraint
@@ -168,7 +168,7 @@ class CMSSWMonCollector(Service):
             ctx.commit()
             self.delete_messages(names)
 
-        except Exception, msg:
+        except Exception as msg:
             # maybe it would be necessary to manage if something is wrong in the database (downtime for instance)
             self._logger.error("%s" % msg)
             ctx.destroy()
@@ -182,8 +182,8 @@ class CMSSWMonCollector(Service):
         """
         try:
             body = message.get_body()
-            body = body.replace(', ,',',')
-            body = body.replace(':-nan,',':null,').replace(':nan,',':null,')
+            body = body.replace(', ,', ',')
+            body = body.replace(':-nan,', ':null,').replace(':nan,', ':null,')
             msgDict = self.JSON_format(body)
             try:
                 if msgDict['fallback'] == True:
@@ -201,10 +201,10 @@ class CMSSWMonCollector(Service):
         
             bodies.append(msgDict)
 
-        except ValueError, msg:
+        except ValueError as msg:
             self._logger.warning("Impossible to decode the message: %s by JSON" % message)
             self._logger.error(msg)
             #raise msg
-        except Exception, msg:
+        except Exception as msg:
             self._logger.warning("Exception: %s" % msg)
 

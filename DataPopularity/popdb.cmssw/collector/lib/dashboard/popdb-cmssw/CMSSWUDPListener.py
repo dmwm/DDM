@@ -47,26 +47,26 @@ class CMSSWUDPHandler(SocketServer.BaseRequestHandler):
 
     def __del__(self):
         if gcounter % 100 == 0:
-            glogger.info('Current Thread %s  - Num msg uploaded %s' % (threading.current_thread().name,gcounter))
+            glogger.info('Current Thread %s  - Num msg uploaded %s' % (threading.current_thread().name, gcounter))
 
     def handle(self):
         try:
             data = self.request[0].strip()
             socket = self.request[1]
             #glogger.info("%s wrote:" % (self.client_address[0]))
-            jsonDict = data.replace('\n',' ')
+            jsonDict = data.replace('\n', ' ')
 
             msg = Message(body=jsonDict)
         
             try:
                 mqid = gmq.add_message(msg)
                 #glogger.info("msg added as %s" % mqid)
-            except Exception,  err :
+            except Exception as  err :
                 glogger.error( "failing upload to local queue. Error: %s" % (err))
                 raise Exception
             global gcounter
             gcounter += 1
-        except Exception,  err :
+        except Exception as  err :
             glogger.error( "Error: %s" % (err))
             
 class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer): pass
@@ -95,12 +95,12 @@ class CMSSWUDPListener(Service):
             global gmq
             gmq = DQS(path = self.param('localQueue'))
             self._logger.info( "Created connection to local queue %s" % self.param('localQueue'))
-        except Exception,  err :
+        except Exception as  err :
             self._logger.error( "Failing connection to local queue %s" % (err))
             raise Exception
 
-        self._logger.info('UDP listener on %s:%s'%(self.udp_host,self.udp_port))
-        self.server = ThreadedUDPServer((self.udp_host,self.udp_port),CMSSWUDPHandler)   
+        self._logger.info('UDP listener on %s:%s'%(self.udp_host, self.udp_port))
+        self.server = ThreadedUDPServer((self.udp_host, self.udp_port), CMSSWUDPHandler)   
 
         self._logger.info('created server. going to serve_forever in thread')
         self.server_thread = threading.Thread(target=self.server.serve_forever)
@@ -120,7 +120,7 @@ class CMSSWUDPListener(Service):
             while self.status() is not None:
                 pass
                         
-        except Exception,  err :
+        except Exception as  err :
             self._logger.error( "%s" % (err))
             self.server.shutdown()
             raise Exception

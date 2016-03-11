@@ -13,6 +13,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def getDirsInSiteWithStat(request):
+    par = victorinterfaceparams()
+    try:
+        par.setSiteName(request.GET.get('sitename'))
+        logger.info('debug. siteName = %s' % par.SiteName)
+
+        source = request.GET.get('source', '')
+        if source=='':
+            par.setSource('xrootd')
+        else:
+            par.setSource(source)
+        
+        par.setTopDir(request.GET.get('topdir'))
+            
+        data = victorinterfaceDB.AccessStatsByDirAtSite(par)
+
+        logger.info('getDirsInSiteWithStat data: %s' % data)
+
+    except Paramvalidationexception as e:
+        return HttpResponseBadRequest(e.getmessage())
+    except victorinterfaceDB.PopularityDBException as dbe:
+        return HttpResponseServerError(dbe.getmessage())
+    except Exception as ex:
+        return HttpResponseServerError(ex)
+
+    return HttpResponse(json.dumps(data))
+
 
 def getCollectionInSiteWithStat(request, collType, lastAcc=False, source=''):
     stop = datetime.now()

@@ -7,7 +7,7 @@ import datetime
 from Apps.popCommon.utils import Lexicon
 from Apps.popCommon.utils.confSettings import confSettings
 from Apps.popCommon.PopularityException import PopularityConfigException
-from Apps.victorinterface.utils.serviceInterface import popularityInterface
+from Apps.victorinterface.utils.serviceInterface import popularityDBInterface
 #from Apps.victorinterface.utils.serviceInterface import dasInterface
 
 logger = logging.getLogger(__name__)
@@ -17,12 +17,11 @@ class replicaCombiner:
     def __init__(self, lastAcc=False):
         self.lastAccOpt = lastAcc
         popsettings = confSettings()
-        self.popHost = popsettings.getSetting("victorinterface", "POPULARITY_HOST")
         self.interface = popsettings.getSetting("victorinterface", "DATASERVICE_INTERFACE") + 'Interface'
         try:
             module = __import__('Apps.victorinterface.utils.serviceInterface', globals(), locals(), [self.interface], -1)
             self.replicaInterface = getattr(module, self.interface)
-        except Exception, err:
+        except Exception as err:
             msg = 'unable to import replica interface: %s ' % self.interface
             logger.error(msg)
             raise Exception(msg)
@@ -41,22 +40,22 @@ class replicaCombiner:
         try:
             replica = self.replicaInterface(self.replicaHost)
             replica_data = replica.get_json_data(sitename)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch replica information from %s" % self.replicaInterface.__name__)
             logger.error(err)
             raise err
 
         try:
-            popinterface = popularityInterface(self.popHost)
+            popinterface = popularityDBInterface()
             pop_data = popinterface.get_json_data(sitename, source, timestart, timestop)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch popularity information from PopDB")
             logger.error(err)
             raise err
 
         try:
             data = replica_data['data']
-        except KeyError, err:
+        except KeyError as err:
             logger.warning("No replica data result")
             raise err
 
@@ -74,7 +73,7 @@ class replicaCombiner:
                 continue
             outrep={}
 
-            for val in ('group','custodial','creation_time','nfiles','size'):
+            for val in ('group', 'custodial', 'creation_time', 'nfiles', 'size'):
                 if (val == 'group') and (row['block'][0]['replica'][val] == ''):
                     outrep[val] = None
                 else:
@@ -108,22 +107,22 @@ class replicaCombiner:
         try:
             replica = self.replicaInterface(self.replicaHost)
             replica_data = replica.get_json_data(sitename)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch replica information from %s" % self.replicaInterface.__name__)
             logger.error(err)
             raise err
 
         try:
-            popinterface = popularityInterface(self.popHost, lastAcc = True)
+            popinterface = popularityDBInterface(lastAcc = True)
             pop_data = popinterface.get_json_data(sitename, source)
-        except Exception, err:
+        except Exception as err:
             logger.error("Unable to fetch popularity information from PopDB")
             logger.error(err)
             raise err
 
         try:
             data = replica_data['data']
-        except KeyError, err:
+        except KeyError as err:
             logger.warning("No replica data result")
             raise err
 
@@ -140,7 +139,7 @@ class replicaCombiner:
                 continue
             outrep={}
 
-            for val in ('group','custodial','creation_time','nfiles','size'):
+            for val in ('group', 'custodial', 'creation_time', 'nfiles', 'size'):
                 if (val == 'group') and (row['block'][0]['replica'][val] == ''):
                     outrep[val] = None
                 else:

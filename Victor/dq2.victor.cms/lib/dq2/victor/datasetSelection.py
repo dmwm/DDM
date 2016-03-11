@@ -71,11 +71,11 @@ class DatasetSelection:
             self.__logger.error('Failed to parse thresholds from configuration file. Using default ones: %s'%str(self.__thresholds))
         
         # parse algorithm2 parameters
-        algorithm2_spacetokens   = config.get_config('algorithm2_spacetokens'   ,list)
+        algorithm2_spacetokens   = config.get_config('algorithm2_spacetokens', list)
         if algorithm2_spacetokens is None:
             algorithm2_spacetokens = []
-        algorithm2_creationlimit = config.get_dict  ('algorithm2_creationlimit' ,type='positive_int')        
-        self.__algorithm2_spacetokens , self.__algorithm2_creationlimit = self.__verifyAlgorithm2param(algorithm2_spacetokens,
+        algorithm2_creationlimit = config.get_dict  ('algorithm2_creationlimit', type='positive_int')        
+        self.__algorithm2_spacetokens, self.__algorithm2_creationlimit = self.__verifyAlgorithm2param(algorithm2_spacetokens,
                                                                                                        algorithm2_creationlimit)
         self.__logger.debug('Algorithm2_spacetokens   : %s'%self.__algorithm2_spacetokens)
         self.__logger.debug('Algorithm2_creationlimit : %s'%self.__algorithm2_creationlimit)
@@ -156,11 +156,11 @@ class DatasetSelection:
         
         for data in datasetsinfo:      
             cur = data[self.__DATASET_SIZE_COL]
-            if not type(cur)==int:       
-                self.__logger.info('Dataset: %s has invalid DATASETSIZE attribute: %s'%(data[self.__DATASET_NAME_COL],str(cur)))
+            if not isinstance(cur, int):       
+                self.__logger.info('Dataset: %s has invalid DATASETSIZE attribute: %s'%(data[self.__DATASET_NAME_COL], str(cur)))
                 self.__logger.info('Invoking alternative method to calculate dataset size...')
                 cur=self.__getreplicasize(data[self.__DATASET_NAME_COL])
-                if not type(cur)==int: 
+                if not isinstance(cur, int): 
                     continue                
                 self.__logger.info('The size of dataset is: %d Bytes'%cur)      
             
@@ -205,11 +205,11 @@ class DatasetSelection:
         space=0
         for data in secondarydatasets:       
             cur = data[self.__DATASET_SIZE_COL]
-            if not type(cur)==int:       
+            if not isinstance(cur, int):       
                 self.__logger.info('Dataset: %s has invalid DATASETSIZE attribute: %s'%(data[self.__DATASET_NAME_COL], str(cur)))
                 self.__logger.info('Invoking alternative method to calculate dataset size...')
                 cur = self.__getreplicasize(data[self.__DATASET_NAME_COL])
-                if not type(cur)==int: 
+                if not isinstance(cur, int): 
                     continue                
                 self.__logger.info('The size of dataset is: %d Bytes'%cur)                 
             space+=cur                       
@@ -222,9 +222,9 @@ class DatasetSelection:
         creationlimit = self.__algorithm2_creationlimit[spacetoken] #days
         replicatype   = self.__algorithm2_custodiality  #'default'
                 
-        datasets=self.__popularity.getUnpopularDatasets(site,lastaccess=lastaccess,threshold=threshold,creationlimit=creationlimit,replicatype=replicatype)                       
+        datasets=self.__popularity.getUnpopularDatasets(site, lastaccess=lastaccess, threshold=threshold, creationlimit=creationlimit, replicatype=replicatype)                       
         datasetstodelete, spacefordataset, dates, cleaned, cleanedspace, cputimes, naccs, nBlocks, maxAccsCont, totalAccsCont = self.__filterDatasetsToDelete(site, spacetoclean, datasets)
-        return datasetstodelete, spacefordataset, dates, cleaned,cleanedspace, cputimes, naccs, nBlocks, maxAccsCont, totalAccsCont    
+        return datasetstodelete, spacefordataset, dates, cleaned, cleanedspace, cputimes, naccs, nBlocks, maxAccsCont, totalAccsCont    
         
 
     def __getDatasetsToDeleteStandard(self, site, spacetoclean):
@@ -237,8 +237,8 @@ class DatasetSelection:
         for threshold_set in self.__thresholds:
             threshold=threshold_set['threshold']            
             for lastaccess in threshold_set['lastaccess']:  
-                self.__logger.debug('Threshold: %d Lastaccess: %d'%(threshold,lastaccess))             
-                datasets = self.__popularity.getUnpopularDatasets(site,lastaccess=lastaccess,threshold=threshold,creationlimit=self.__creationlimit)                                
+                self.__logger.debug('Threshold: %d Lastaccess: %d'%(threshold, lastaccess))             
+                datasets = self.__popularity.getUnpopularDatasets(site, lastaccess=lastaccess, threshold=threshold, creationlimit=self.__creationlimit)                                
                 datasets = self.__appendDatasets(datasets, datasetstodeleteTotal)                
                 datasetstodelete, spacefordataset, dates, cleaned, cleanedspace, cputimes, naccs, nBlocks, maxAccsCont, totalAccsCont = self.__filterDatasetsToDelete(site, spacetoclean, datasets)
                 
@@ -273,7 +273,7 @@ class DatasetSelection:
                 self.__logger.info   ("Getting space for secondary datasets for site %s....." %site) 
                 totalscnd        = self.getSecondarySpace(site)
                 oldscnd          = self.getOldSecondarySpace(site)
-                scndspacesummary = [totalscnd,oldscnd]            
+                scndspacesummary = [totalscnd, oldscnd]            
                 self.__logger.info   ("Finished with secondary datasets site %s....." %site)                
                 return datasetstodelete, spacefordataset, dates, cleaned, cputimes, naccs, cleanedspace, scndspacesummary, nBlocks, maxAccsCont, totalAccsCont
             

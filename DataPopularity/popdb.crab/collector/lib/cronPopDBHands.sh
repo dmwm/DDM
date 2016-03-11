@@ -20,6 +20,32 @@ export TNS_ADMIN=/etc
 
 command "cd $CRONPATH/.."
 
-command "python2.6 $CRONPATH/popdbDaemon.py  -w 4 -s \"$startDate\"  -e \"$endDate\" -v -b " 
+startTime=$(date -d "$startDate" -u +%s)
+endTime=$(date -d "$endDate" -u +%s)
+
+window=2
+
+endWindowTime=$startTime
+
+while [ $endWindowTime -lt $endTime ]; do
+
+    endWindowTime=$((startTime+(window*3600)))
+
+    startWindowDate="`date -u -d @$startTime +\%Y-\%m-\%d\ \%H:\%M\:%S`"
+
+    if [ $endWindowTime -lt $endTime ]; then
+	endWindowDate="`date -u -d @$endWindowTime +\%Y-\%m-\%d\ \%H:\%M\:%S`"
+    else
+	endWindowDate=$endDate
+    fi
+
+    command "python2.6 $CRONPATH/popdbDaemon.py  -w $window -s \"$startWindowDate\"  -e \"$endWindowDate\" -v -b"
+
+    [ $? -ne 0 ] &&  cat $logfile | mail -s "Problem in PopDB CRAB cronJob of $logfileName" $MAILTO && exit
+
+    startTime=$endWindowTime
+
+done
+
 
 

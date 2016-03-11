@@ -1,3 +1,4 @@
+from __future__ import print_function
 import httplib2
 import urllib
 import httplib
@@ -81,19 +82,19 @@ def do_options():
     logger.info(options)
     return options
 
-def printStats(start,stop,comment):
+def printStats(start, stop, comment):
     delta=stop - start
-    logger.info("\n--------------------------------------\n %s: start %s \t stop %s \t delta %s s \t %s mus\n--------------------------------------\n" % (comment,datetime.strftime(start,timeformat),datetime.strftime(stop,timeformat),delta.seconds,delta.microseconds))
+    logger.info("\n--------------------------------------\n %s: start %s \t stop %s \t delta %s s \t %s mus\n--------------------------------------\n" % (comment, datetime.strftime(start, timeformat), datetime.strftime(stop, timeformat), delta.seconds, delta.microseconds))
     
 def get_url(url):
     """
     Download a URL as json and deserialise to a dict
     """
-    print url
+    print(url)
     logger.debug('Accessing %s' % url)
     http_handler = httplib2.Http("cache")
 
-    response, data = http_handler.request(url, 'GET',headers={'Accept':'application/json'} )
+    response, data = http_handler.request(url, 'GET', headers={'Accept':'application/json'} )
     
     if int(response['status']) < 400:
         #logger.debug(response)
@@ -113,7 +114,7 @@ def request_data(date_tuple):
     start_time=datetime.now()
     dashboard_data = get_url('%s?%s' % (dashboard_url, urllib.urlencode(params)))
     stop_time=datetime.now()
-    printStats(start_time,stop_time,"time needed to get_url")
+    printStats(start_time, stop_time, "time needed to get_url")
 
     
     #This could be a long print
@@ -123,8 +124,8 @@ def request_data(date_tuple):
 
 def request_data_from_file(date_tuple):
 
-    print "open file "
-    print str(date_tuple)
+    print("open file ")
+    print(str(date_tuple))
     json_data=open(str(date_tuple))
     data = json.load(json_data)
     #pprint(data)
@@ -139,9 +140,9 @@ def _refresh_SingleMV(table,mode='F'):
     connection = cx_Oracle.Connection(connection_string)
     cursor = cx_Oracle.Cursor(connection)
     
-    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH',[table,mode]);
+    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH', [table, mode]);
     stop_time=datetime.now()
-    printStats(start_time,stop_time,table)
+    printStats(start_time, stop_time, table)
     
     connection.commit()
     cursor.close()
@@ -157,9 +158,9 @@ def _refresh_with_alter(table,mode='F'):
     cursor = cx_Oracle.Cursor(connection)
 
     cursor.execute('alter session set "_replace_virtual_columns"=FALSE')
-    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH',[table,mode]);
+    cursor.callproc('CMS_POPULARITY_SYSTEM.MVREFRESH', [table, mode]);
     stop_time=datetime.now()
-    printStats(start_time,stop_time,table)
+    printStats(start_time, stop_time, table)
     
     connection.commit()
     cursor.close()
@@ -177,7 +178,7 @@ def _refresh_T_CorruptedFiles():
     
     cursor.callproc('CMS_POPULARITY_SYSTEM.CORRUPTEDFILEREFRESH');
     stop_time=datetime.now()
-    printStats(start_time,stop_time,'CORRUPTEDFILEREFRESH')
+    printStats(start_time, stop_time, 'CORRUPTEDFILEREFRESH')
     
     connection.commit()
     cursor.close()
@@ -243,7 +244,7 @@ class DB2DB:
             start_time=datetime.now()
             self.connection.commit()
             stop_time=datetime.now()
-            printStats(start_time,stop_time,"time needed to commit connection")
+            printStats(start_time, stop_time, "time needed to commit connection")
                 
     def _populatePopDB(self):
             
@@ -251,13 +252,13 @@ class DB2DB:
         start_time=datetime.now()
         self._refresh_MV()
         stop_time=datetime.now()
-        printStats(start_time,stop_time,"time needed to refresh the PopDb MV")
+        printStats(start_time, stop_time, "time needed to refresh the PopDb MV")
 
         start_time=datetime.now()
         self.cursor.close()
         self.connection.close()
         stop_time=datetime.now()
-        printStats(start_time,stop_time,"time needed to close connection")
+        printStats(start_time, stop_time, "time needed to close connection")
 
 
     def _getDBConnection(self):
@@ -304,27 +305,27 @@ class DB2DB:
 
         mvPool = Pool(3)
         table_input=['MV_DS_Files', 'MV_block_stat0', 'MV_USER_USERID'] #,'MV_CorruptedFiles']        
-        map_input = [ (x,'F') for x in table_input ]        
+        map_input = [ (x, 'F') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
         
-        _refresh_with_alter('MV_DS_STAT0','F')
+        _refresh_with_alter('MV_DS_STAT0', 'F')
 
         mvPool = Pool(10)
-        table_input=['MV_DS_STAT0_AGGR1','MV_DS_STAT0_AGGR2','MV_DS_STAT0_AGGR1_SUMM','MV_DS_STAT0_AGGR2_SUMM','MV_DS_STAT0_AGGR3','MV_DS_STAT0_AGGR4','MV_DS_STAT0_AGGR4_SUMM','MV_DS_CountFiles','MV_block_stat0_aggr_5_weeks','MV_DS_stat0_remote']                
-        map_input = [ (x,'C') for x in table_input ]        
+        table_input=['MV_DS_STAT0_AGGR1', 'MV_DS_STAT0_AGGR2', 'MV_DS_STAT0_AGGR1_SUMM', 'MV_DS_STAT0_AGGR2_SUMM', 'MV_DS_STAT0_AGGR3', 'MV_DS_STAT0_AGGR4', 'MV_DS_STAT0_AGGR4_SUMM', 'MV_DS_CountFiles', 'MV_block_stat0_aggr_5_weeks', 'MV_DS_stat0_remote']                
+        map_input = [ (x, 'C') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
 
         mvPool = Pool(7)
-        table_input=['MV_DSName','MV_DS','MV_DataTier','MV_Site','MV_block_stat0_last_access','MV_block_stat0_aggr_180_days','MV_block_stat0_aggr_12_months']
-        map_input = [ (x,'C') for x in table_input ]        
+        table_input=['MV_DSName', 'MV_DS', 'MV_DataTier', 'MV_Site', 'MV_block_stat0_last_access', 'MV_block_stat0_aggr_180_days', 'MV_block_stat0_aggr_12_months']
+        map_input = [ (x, 'C') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
 
         _refresh_T_CorruptedFiles()
 
-        _refresh_SingleMV('MV_CorruptedFiles','C');
+        _refresh_SingleMV('MV_CorruptedFiles', 'C');
         
 
         

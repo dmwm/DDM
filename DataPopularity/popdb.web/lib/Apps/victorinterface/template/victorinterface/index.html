@@ -157,6 +157,46 @@
                 </td>
         </tr>
 
+	<tr>
+	        <td class="elementName" colspan="2">accessedDirsStat</td>
+        </tr>
+        <tr>
+                <td class="feature" width="15%">Method</td>
+                <td class="descr" width="85%">GET</td>
+        </tr>
+        <tr>
+                <td class="feature">Description</td>
+                <td class="descr">
+  		        Returns a JSON with the Site and the list of accessed directories under a certain top-level dir with corresponding access statistics (calculated since the beginnging of time).
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Arguments</td>
+                <td class="descr">
+                        SiteName (e.g. T2_CH_CERN) - name of the site for which to retrieve statistics. Mandatory, supports % wildcard.
+			<br>TopDir (e.g. /store/group/alca_global) - name of the top-level LFN dir under which to retrieve statistics. Mandatory.
+                </td>
+        </tr>
+	<tr>
+                <td class="feature">Output</td>
+		<td class="descr">
+		        {SiteName: {DirName: {READMBYTES, LASTDAY, FIRSTDAY, NACC}}
+                        <br>SiteName - name of the site
+			<br>DirName - name of each subdirectory under TopDir with non-zero access statistics
+			<br>READMBYTES - total amount of data read from DirName, in MB
+			<br>LASTDAY - most recent access time of a file in DirName, in seconds since epoch
+			<br>FIRSTDAY - most remote access time of a file in DirName, in seconds since epoch
+			<br>NACC - total number of accesses for all files in DirName
+                </td>
+        </tr>
+        <tr>
+                <td class="feature">Examples</td>
+                <td class="descr">
+                        1. Retrieve the list for a given site (e.g. T2_CH_CERN) under a given dir: <a href="{% url accessedDirsStat %}?sitename=T2_CH_CERN&topdir=/store/group/alca_global">accessedDirsStat?sitename=T2_CH_CERN&topdir=/store/group/alca_global</a>
+                        <br>
+                </td>
+        </tr>
+
 
 	</table>
 

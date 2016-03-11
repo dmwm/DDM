@@ -7,7 +7,14 @@ Main module
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
-
+from optparse import OptionParser
 from dq2.victor.victor import Victor
-victor = Victor('victor', '/opt/dq2/etc/dq2.cfg')
+
+parser = OptionParser()
+parser.add_option('-c', '--conf', type='string', dest='config', default='/opt/dq2/etc/dq2.cfg',
+                  help='Path to the configuration to be used by victor.')
+
+(options, args) = parser.parse_args()
+
+victor = Victor('victor', options.config)
 victor.run()

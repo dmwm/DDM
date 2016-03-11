@@ -5,6 +5,7 @@
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import absolute_import
 
 import time
 import traceback
@@ -21,12 +22,12 @@ from dq2.victor.popularityInterface import PopularityInterface
 from dq2.victor.utils import callRetry, epochTime, dumpTemporaryInfo
 from dq2.victor.notifications import sendErrorMail
 
-from utils import get_json_data, get_json_data_from_file
+from .utils import get_json_data, get_json_data_https, get_json_data_from_file
 
 
 """
 host = 'https://cmsweb.cern.ch'
-pophost = 'http://cms-popularity-prod.cern.ch'
+pophost = 'https://cmsweb.cern.ch'
 idx = 0
 limit = 0
 incomplete = '0'
@@ -52,7 +53,7 @@ class PopularityInterface(PopularityInterface):
                 
     def __hasCustodialCopy(self, blockname):
         url='https://cmsweb.cern.ch/phedex/datasvc/json/prod/blockreplicas?custodial=y&complete=y&block=%s'%(blockname)
-        url = url.replace('#','%23')
+        url = url.replace('#', '%23')
         self.__logger.debug(url)
         replicas = get_json_data(url)
         '''
@@ -192,8 +193,8 @@ class PopularityInterface(PopularityInterface):
             return unpopularBlocks
         
         else:
-            url = 'http://cms-popularity-prod.cern.ch/popdb/victorinterface/popdbcombine/?sitename=%s' %(site)
-            unpopularBlocks = get_json_data(url)
+            url = 'https://cmsweb.cern.ch/popdb/victorinterface/popdbcombine/?sitename=%s' %(site)
+            unpopularBlocks = get_json_data_https(url)
             
             dumpTemporaryInfo(unpopularBlocks, self.__tmpdirectory, 'blocks_%s'%(site))      
             return unpopularBlocks 
@@ -203,7 +204,7 @@ class PopularityInterface(PopularityInterface):
         '''
         Get the list of a site's unpopular block replicas according to the input criteria.
         ''' 
-        def compdate(x,y):
+        def compdate(x, y):
             COMPARE_COL=self.__REPLICA_CREATION_DATE_COL
             if   epochTime(x[COMPARE_COL]) > epochTime(y[COMPARE_COL]):
                 return 1
@@ -225,9 +226,9 @@ class PopularityInterface(PopularityInterface):
                 
             unpopularBlocksListed = self.__parseUnpopularBlocks(site, blocks, threshold, creationlimit, physicsgroup)
 
-        except Exception, e:            
+        except Exception as e:            
             self.__logger.critical('Failed to process site %s [%s - %s]'%(site, e, traceback.format_exc()))
-            sendErrorMail('%s\n%s'%(e,traceback.format_exc()))            
+            sendErrorMail('%s\n%s'%(e, traceback.format_exc()))            
             return {} 
         
         finally:

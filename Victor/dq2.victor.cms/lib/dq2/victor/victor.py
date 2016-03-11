@@ -8,6 +8,7 @@ Victor class
 You may not use this file except in compliance with the License.
 You may obtain a copy of the License at U{http://www.apache.org/licenses/LICENSE-2.0}
 """
+from __future__ import print_function
 
 import traceback
 import time
@@ -21,7 +22,6 @@ from dq2.victor.replicaReduction import ReplicaReduction
 from dq2.victor.notifications import sendErrorMail
 from dq2.victor.utils import HOUR, prepareSummary
 from dq2.victor.victorDao import VictorDao
-from dq2.common.DQException import DQException
 
 
 class Victor:
@@ -63,8 +63,8 @@ class Victor:
             self.__victorDao.insertAccountingSummary(accountingSummary)
             self.__victorDao.closeRun()
             
-        except Exception, e:             
+        except Exception as e:             
         
-            print traceback.format_exc()
+            print(traceback.format_exc())
             self.__logger.critical(traceback.format_exc())     
             #sendErrorMail('%s\n%s'%(e,traceback.format_exc()))

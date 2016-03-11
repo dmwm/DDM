@@ -1,0 +1,5 @@
+create or replace
+PROCEDURE MVREFRESH  IS
+BEGIN
+  DBMS_MVIEW.REFRESH('MV_last_run','C');
+END MVREFRESH;
