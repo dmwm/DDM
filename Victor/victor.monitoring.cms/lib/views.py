@@ -51,7 +51,6 @@ def generateAssociationMenu():
     
     clouds = sorted(structure.keys())
     for cloud in clouds:
-        print (cloud)                
         sites = sorted(structure[cloud].keys())
         site_dicts = []
         for site in sites:
