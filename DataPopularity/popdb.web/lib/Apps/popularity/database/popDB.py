@@ -15,7 +15,10 @@ def DSStatInTimeWindow(params, MView):
     if MView == 'DataTier':
         table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR2")
     elif MView == 'DS':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
+        if params.includeWMAgent == 'y':
+            table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
+        elif params.includeWMAgent == 'n':
+            table = "%s.%s" % (DBUSER, "MV_DS_STAT1_AGGR1")
     elif MView == 'DSName':
         table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR4")
 
@@ -76,7 +79,10 @@ def MostPopDSStat(params, MView, collName):
     if MView == 'DataTier':
         table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR2")
     elif MView == 'DS':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
+        if params.includeWMAgent == 'y':
+            table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
+        elif params.includeWMAgent == 'n':
+            table = "%s.%s" % (DBUSER, "MV_DS_STAT1_AGGR1")
     elif MView == 'DSName':
         table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR4")
 

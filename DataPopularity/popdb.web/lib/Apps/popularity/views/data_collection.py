@@ -73,6 +73,8 @@ def getDSStatInTimeWindow(request,MView=''):
 
         par.setOrder(request.GET.get('orderby', 'totcpu'))
         par.setSiteName(request.GET.get('sitename', 'summary'))
+        par.setIncludeWMAgent(request.GET.get('includewmagent', 'n'))
+
         jdata = _getDSStatInTimeWindowJSON(par, MView)
 
     except Paramvalidationexception as e:           
@@ -250,7 +252,7 @@ def getTimeEvolutionPlotData(request,MView=''):
         par.setSiteName(request.GET.get('sitename', 'summary'))
         if (par.FirstN == 0):
             return HttpResponseBadRequest("Given n not valid (param must be > 0)")
-
+        par.setIncludeWMAgent(request.GET.get('includewmagent', 'n'))
 
         """
         data indexing start from 0
@@ -304,6 +306,7 @@ def getDataSetStat(request):
         par.setN('1')
         par.setOrder(request.GET.get('orderby', 'totcpu'))
         par.setSiteName(request.GET.get('sitename', 'summary'))
+        par.setIncludeWMAgent(request.GET.get('includewmagent', 'n'))
         """ 
         data indexing start from 0
         """
