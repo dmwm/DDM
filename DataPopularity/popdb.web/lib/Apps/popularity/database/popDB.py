@@ -12,17 +12,20 @@ DBUSER = popsettings.getSetting("popCommon", "DBUSER")
 def DSStatInTimeWindow(params, MView):
     
     #cursor = connection.cursor()
+    if params.includeWMAgent == 'y':
+        baseMV = "STAT0"
+    elif params.includeWMAgent == 'n':
+        baseMV = "STAT1"
+
     if MView == 'DataTier':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR2")
+        aggrMV = "AGGR2"
     elif MView == 'DS':
-        if params.includeWMAgent == 'y':
-            table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
-        elif params.includeWMAgent == 'n':
-            table = "%s.%s" % (DBUSER, "MV_DS_STAT1_AGGR1")
+        aggrMV = "AGGR1"
     elif MView == 'DSName':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR4")
+        aggrMV = 'AGGR4'
 
-
+    table = "%s.MV_DS_%s_%s" % (DBUSER, baseMV, aggrMV)
+    
     vars  = '''collName , sum(numAccesses) as nAcc, round(sum(totCPU)/3600,0) 
              as totCPU, sum(numUsers) as nUsers''' 
     whereCondition = '''TDay >= to_date('%s','YYYY-MM-DD') 
@@ -76,16 +79,20 @@ def MostPopDSStat(params, MView, collName):
 
     #cursor = connection.cursor()
 
-    if MView == 'DataTier':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR2")
-    elif MView == 'DS':
-        if params.includeWMAgent == 'y':
-            table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR1")
-        elif params.includeWMAgent == 'n':
-            table = "%s.%s" % (DBUSER, "MV_DS_STAT1_AGGR1")
-    elif MView == 'DSName':
-        table = "%s.%s" % (DBUSER, "MV_DS_STAT0_AGGR4")
+    if params.includeWMAgent == 'y':
+        baseMV = "STAT0"
+    elif params.includeWMAgent == 'n':
+        baseMV = "STAT1"
 
+    if MView == 'DataTier':
+        aggrMV = "AGGR2"
+    elif MView == 'DS':
+        aggrMV = "AGGR1"
+    elif MView == 'DSName':
+        aggrMV = 'AGGR4'
+
+    table = "%s.MV_DS_%s_%s" % (DBUSER, baseMV, aggrMV)
+    
     #TimeFormats: timeformat acts to the displayed date, timeformatTrunc acts to the truncation of the input dates, and should be keept with the format of the aggregation
 
     timeformat = 'YYYY/MM/DD'

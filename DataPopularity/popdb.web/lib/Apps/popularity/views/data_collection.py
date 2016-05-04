@@ -335,6 +335,7 @@ def getDataTierStat(request):
         par.setN('1')
         par.setOrder(request.GET.get('orderby', 'totcpu'))
         par.setSiteName(request.GET.get('sitename', 'summary'))
+        par.setIncludeWMAgent(request.GET.get('includewmagent', 'n'))
         """ 
         data indexing start from 0
         """
@@ -363,6 +364,7 @@ def getProcessedDataSetStat(request):
         par.setN('1')
         par.setOrder(request.GET.get('orderby', 'totcpu'))
         par.setSiteName(request.GET.get('sitename', 'summary'))
+        par.setIncludeWMAgent(request.GET.get('includewmagent', 'n'))
         """ 
         data indexing start from 0
         """
