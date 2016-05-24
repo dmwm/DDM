@@ -311,8 +311,10 @@ class DB2DB:
         
         _refresh_with_alter('MV_DS_STAT0', 'F')
 
-        mvPool = Pool(10)
-        table_input=['MV_DS_STAT0_AGGR1', 'MV_DS_STAT0_AGGR2', 'MV_DS_STAT0_AGGR1_SUMM', 'MV_DS_STAT0_AGGR2_SUMM', 'MV_DS_STAT0_AGGR3', 'MV_DS_STAT0_AGGR4', 'MV_DS_STAT0_AGGR4_SUMM', 'MV_DS_CountFiles', 'MV_block_stat0_aggr_5_weeks', 'MV_DS_stat0_remote']                
+        mvPool = Pool(16)
+        table_input=['MV_DS_STAT0_AGGR1', 'MV_DS_STAT0_AGGR2', 'MV_DS_STAT0_AGGR1_SUMM', 'MV_DS_STAT0_AGGR2_SUMM', 'MV_DS_STAT0_AGGR3', 'MV_DS_STAT0_AGGR4', 'MV_DS_STAT0_AGGR4_SUMM',
+                     'MV_DS_STAT1_AGGR1', 'MV_DS_STAT1_AGGR2', 'MV_DS_STAT1_AGGR1_SUMM', 'MV_DS_STAT1_AGGR2_SUMM', 'MV_DS_STAT1_AGGR4', 'MV_DS_STAT1_AGGR4_SUMM',
+                     'MV_DS_CountFiles', 'MV_block_stat0_aggr_5_weeks', 'MV_DS_stat0_remote']                
         map_input = [ (x, 'C') for x in table_input ]        
         mvPool.map(_refresh_SingleMV_Wrapper, map_input)
         mvPool.close()
