@@ -88,7 +88,10 @@ class Popularityparams():
             return True
         raise Paramvalidationexception('n', 'param must be a positive int')
 	    
-	    
+    def validateincludewmagent(self, includewmagent):
+        if includewmagent in ['y', 'n']:
+            return True
+        raise Paramvalidationexception('includewmagent', 'includewmagent must be y or n')
 
     def setSiteName(self, sitename):
               
@@ -140,7 +143,10 @@ class Popularityparams():
             self.orderVar = order
         #else:
         #    raise Paramvalidationexception('orderby', 'param must be a string in %s' % (self.ordervalues))
-            
+    
+    def setIncludeWMAgent(self, includewmagent):
+        if self.validateincludewmagent(includewmagent):
+            self.includeWMAgent = includewmagent
             
 class Userstatparams(Popularityparams):
 
