@@ -237,11 +237,12 @@ BUILD IMMEDIATE
 REFRESH FAST
 ENABLE QUERY REWRITE
 AS
-select  trunc(finishedtimestamp) as TDay , siteName, userid, inputcollection as collName, isRemote, 
+select  trunc(finishedtimestamp) as TDay , siteName, userid, inputcollection as collName, isRemote,
+ submissiontool,
  count(*) as numAccesses, sum(CPUTIME) as totCPU
 from raw_file 
 where fileexitflag=1
-GROUP BY trunc(finishedtimestamp), siteName, userid, inputcollection, isRemote
+GROUP BY trunc(finishedtimestamp), siteName, userid, inputcollection, isRemote, submissiontool
 ;
 commit;
 
