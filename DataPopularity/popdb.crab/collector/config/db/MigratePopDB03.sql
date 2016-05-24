@@ -115,7 +115,6 @@ grant select on MV_DS_STAT1_AGGR2_SUMM to CMS_POPULARITY_SYSTEM_R;
 grant select on MV_DS_STAT1_AGGR4 to CMS_POPULARITY_SYSTEM_R;
 grant select on MV_DS_STAT1_AGGR4_SUMM to CMS_POPULARITY_SYSTEM_R;
 
-grant select, insert, update, delete on MV_DS_STAT0 to CMS_POPULARITY_SYSTEM_W;
 grant select, insert, update, delete on MV_DS_STAT1_AGGR1 to CMS_POPULARITY_SYSTEM_W;
 grant select, insert, update, delete on MV_DS_STAT1_AGGR1_SUMM to CMS_POPULARITY_SYSTEM_W;
 grant select, insert, update, delete on MV_DS_STAT1_AGGR2 to CMS_POPULARITY_SYSTEM_W;
