@@ -51,7 +51,8 @@ CREATE MATERIALIZED VIEW LOG ON T_XRD_LFC WITH SEQUENCE, ROWID
 (
 lfn,
 blockname,
-dsname
+dsname,
+fullname
 )
 INCLUDING NEW VALUES;
 
