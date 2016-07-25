@@ -414,6 +414,12 @@ class fileToDataSetAssociator:
                 continue
             if eosfile.find('/eos/cms/opstest/') != -1:
                 continue
+            if eosfile.find('/eos/cms/tier0') != -1:
+                continue
+            # 2016-06-29 NM: hack to skip a 227k file dataset in PhEDEx which is choking the script
+            if eosfile.find('/store/mc/RunIISummer15wmLHEGS/QCD_Inclusive_VBFFilter_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/LHE/VBFPostMGFilter_MCRUN2_71_V1-v2') != -1:
+                continue
+
             
             # do not spend time to search for files already discovered
             # using another file of the same block
