@@ -30,11 +30,11 @@ create or replace
 PROCEDURE REFRESHAllMVs IS
 BEGIN
 MVREFRESHLOG('MV_xrdmon_rates_x_H');
-MVREFRESHLOG('MV_xrdmon_inserts_x_H','C');
-MVREFRESHLOG('MV_xrdmon_starttime_x_H','C');
-MVREFRESHLOG('MV_xrdmon_starttime_norepl_x_H','C');
-MVREFRESHLOG('MV_xrdmon_starttime_repl_x_H','C');
-MVREFRESHLOG('MV_xrdmon_endtime_x_H','C');
+MVREFRESHLOG('MV_xrdmon_inserts_x_H');
+MVREFRESHLOG('MV_xrdmon_starttime_x_H');
+MVREFRESHLOG('MV_xrdmon_starttime_norepl_x_H');
+MVREFRESHLOG('MV_xrdmon_starttime_repl_x_H');
+MVREFRESHLOG('MV_xrdmon_endtime_x_H');
 --MVREFRESHLOG('MV_xrdmon_pps_srmmon_test_x_H');
 --MVREFRESHLOG('MV_xrdmon_pps_dteam_test_x_H');
 --MVREFRESHLOG('MV_xrdmon_procTime_x_H');
@@ -45,25 +45,37 @@ create or replace
 PROCEDURE REFRESHSTAT0MVs IS
 BEGIN
 
-MVREFRESHLOG('MV_XRD_stat0_pre','C');                                                                                                                                                       
-MVREFRESHLOG('MV_XRD_stat0','C');                                                                                                                                                       
-MVREFRESHLOG('MV_XRD_DS_stat0_aggr1','C');                                                                                                                                              
-MVREFRESHLOG('MV_XRD_DS_stat0_aggr2','C');                                                                                                                                              
-MVREFRESHLOG('MV_XRD_DS_stat0_aggr3','C');                                                                                                                                              
+MVREFRESHLOG('MV_XRD_stat0_pre');
+MVREFRESHLOG('MV_XRD_stat0','C');
+MVREFRESHLOG('MV_XRD_DS_stat0_aggr1','C');
+MVREFRESHLOG('MV_XRD_DS_stat0_aggr2','C');
+MVREFRESHLOG('MV_XRD_DS_stat0_aggr3','C');
 MVREFRESHLOG('MV_XRD_DS_stat0_aggr4','C');  
-MVREFRESHLOG('MV_block_stat0_aggr_180_days','C');  
+MVREFRESHLOG('MV_block_stat0_aggr_180_days','C');
+MVREFRESHLOG('MV_block_stat0_aggr_12_months','C');
 MVREFRESHLOG('MV_block_stat0_last_access','C');  
 
-MVREFRESHLOG('MV_DS','C');                                                                                                                                                              
-MVREFRESHLOG('MV_DSName','C');                                                                                                                                                          
-MVREFRESHLOG('MV_DataTier','C');                                                                                                                                                        
-
-MVREFRESHLOG('MV_XRD_stat1');                                                                                                                                                       
-MVREFRESHLOG('MV_XRD_DS_stat1_aggr1','C');
-
-
-MVREFRESHLOG('MV_XRD_stat2');                                                                                                                                                       
+MVREFRESHLOG('MV_DS','C');
+MVREFRESHLOG('MV_DSName','C');
+MVREFRESHLOG('MV_DataTier','C');
 
 END REFRESHSTAT0MVs;
 
 
+create or replace
+PROCEDURE REFRESHSTAT1MVs IS
+BEGIN
+
+MVREFRESHLOG('MV_XRD_stat1');
+MVREFRESHLOG('MV_XRD_DS_stat1_aggr1','C');
+
+END REFRESHSTAT1MVs;
+
+
+create or replace
+PROCEDURE REFRESHSTAT2MVs IS
+BEGIN
+
+MVREFRESHLOG('MV_XRD_stat2');
+
+END REFRESHSTAT2MVs;
