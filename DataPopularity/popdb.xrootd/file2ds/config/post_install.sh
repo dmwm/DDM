@@ -15,6 +15,7 @@ echo "EMAIL notification address is ${POPDB_NOTIFICATION}"
 sed -i "s@cmspopdb@$POPDBUSER@" /etc/cron.d/xrootd_popularity_file2ds
 sed -i "s;insert_MAILTO;${POPDB_NOTIFICATION};" /etc/cron.d/xrootd_popularity_file2ds
 sed -i "s;insert_MAILTO;${POPDB_NOTIFICATION};" /opt/CMSDataPopularity/xrootd/lib/cronRestartFileToDS.sh
+sed -i "s;insert_MAILTO;${POPDB_NOTIFICATION};" /etc/cron.d/xrootd_popularity_checkmviews
 
 changeOwner /opt/CMSDataPopularity/xrootd
 changeOwner /opt/CMSDataPopularity/xrootd/log

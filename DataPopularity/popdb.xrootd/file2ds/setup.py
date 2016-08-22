@@ -33,5 +33,6 @@ setup(
         ('lib/', glob.glob('lib/*sh')),
         ('etc/', ['config/auth.txt']),
         ('/etc/cron.d', ['config/xrootd_popularity_file2ds']),
+        ('/etc/cron.d', ['config/xrootd_popularity_checkmviews']),
    ]
 )

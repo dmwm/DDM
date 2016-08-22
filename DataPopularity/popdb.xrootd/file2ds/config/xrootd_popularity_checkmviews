@@ -1,0 +1,4 @@
+MAILTO=insert_MAILTO
+
+#00 03 * * * root cd /opt/CMSDataPopularity/xrootd; python2.6 lib/checkMViews.py
+
