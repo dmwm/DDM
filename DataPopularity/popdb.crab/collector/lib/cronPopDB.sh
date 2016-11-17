@@ -18,7 +18,7 @@ export TNS_ADMIN=/etc
 command "cd $CRONPATH/.."
 
 startHour=0
-window=2
+window=1
 
 while [ $startHour -lt 24 ]; do
 
