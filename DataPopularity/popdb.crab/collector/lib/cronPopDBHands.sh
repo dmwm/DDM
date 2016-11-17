@@ -23,7 +23,7 @@ command "cd $CRONPATH/.."
 startTime=$(date -d "$startDate" -u +%s)
 endTime=$(date -d "$endDate" -u +%s)
 
-window=2
+window=1
 
 endWindowTime=$startTime
 
