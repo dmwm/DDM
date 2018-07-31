@@ -138,5 +138,8 @@ update T_MVREFRESH_LOG set endtime=sysdate;
 
 select max(unique_id) from T_MVREFRESH_LOG;
 
-
+-- Add parallelism to tables to speed up refresh of materialized views
+ALTER TABLE T_XRD_LFC PARALLEL (DEGREE 4); 
+ALTER TABLE T_XRD_RAW_FILE PARALLEL (DEGREE 4); 
+ALTER TABLE T_XRD_USERFILE PARALLEL (DEGREE 4); 
 
