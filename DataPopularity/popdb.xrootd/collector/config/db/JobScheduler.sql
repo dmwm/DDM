@@ -5,7 +5,7 @@ BEGIN
    job_type        => 'PLSQL_BLOCK',
    job_action      => 'BEGIN REFRESHALLMVs; END;',
    start_date      => to_date('2012-02-29 11:00:00','yyyy-mm-dd hh24:mi:ss'),
-   repeat_interval => 'FREQ=Hourly',
+   repeat_interval => 'FREQ=HOURLY; interval=8',
    end_date        => NULL,
    enabled         => TRUE,
    comments        => 'Refresh the MVs of the EOSCMS account as defined in REFRESHAllMVs procedure'
@@ -38,7 +38,7 @@ BEGIN
    job_type        => 'PLSQL_BLOCK',
    job_action      => 'BEGIN REFRESHSTAT0MVs; END;',
    start_date      => to_date('2014-03-08 12:30:00','yyyy-mm-dd hh24:mi:ss'),
-   repeat_interval => 'FREQ=HOURLY; INTERVAL=4;',
+   repeat_interval => 'FREQ=DAILY; INTERVAL=1;',
    end_date        => NULL,
    enabled         => TRUE,
    comments        => 'Refresh the MVs of the EOSCMS account as defined in REFRESHSTAT0MVs procedure'
@@ -73,7 +73,7 @@ BEGIN
    job_type        => 'PLSQL_BLOCK',
    job_action      => 'BEGIN REFRESHSTAT1MVs; END;',
    start_date      => to_date('2014-03-08 9:30:00','yyyy-mm-dd hh24:mi:ss'),
-   repeat_interval => 'FREQ=HOURLY; INTERVAL=12;',
+   repeat_interval => 'FREQ=DAILY; INTERVAL=1;',
    end_date        => NULL,
    enabled         => TRUE,
    comments        => 'Refresh the MVs of the EOSCMS account as defined in REFRESHSTAT0MVs procedure'
@@ -101,7 +101,7 @@ BEGIN
 DBMS_SCHEDULER.set_attribute(
 name        => 'refreshMV_eoscms_job_stat1',
 attribute => 'repeat_interval',
-value => 'FREQ=HOURLY; INTERVAL=4;'
+value => 'FREQ=DAILY; INTERVAL=1;'
 );
 END;
 
@@ -115,7 +115,7 @@ BEGIN
    job_type        => 'PLSQL_BLOCK',
    job_action      => 'BEGIN REFRESHSTAT2MVs; END;',
    start_date      => to_date('2014-03-08 12:00:00','yyyy-mm-dd hh24:mi:ss'),
-   repeat_interval => 'FREQ=HOURLY; INTERVAL=4;',
+   repeat_interval => 'FREQ=HOURLY; INTERVAL=8;',
    end_date        => NULL,
    enabled         => TRUE,
    comments        => 'Refresh the MVs of the EOSCMS account as defined in REFRESHSTAT0MVs procedure'
